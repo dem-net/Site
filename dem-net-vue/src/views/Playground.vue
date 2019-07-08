@@ -1,16 +1,16 @@
 <template>
   <div class="playground">
-    <MapXFI></MapXFI>
+    <MapPoint></MapPoint>
   </div>
 </template>
 
 <script>
 
-import MapXFI from '@/components/Map.vue'
+import MapPoint from '@/components/MapPoint.vue'
 
 export default {
   name: 'playground',
-  components: { MapXFI
+  components: { MapPoint
   }
 }
 </script>

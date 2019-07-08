@@ -14,7 +14,7 @@
           <div class="column">
             <l-map ref="map" id="map" :zoom="zoom" :center="center" @click="mapClick">
               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-marker v-if="marker" :lat-lng="marker" draggable></l-marker>
+              <l-marker v-if="marker" :lat-lng="marker" draggable @drag="markerMoved" @dragend="markerMovedEnd"></l-marker>
             </l-map>
           </div>
           <div class="column">
@@ -33,14 +33,16 @@
 </template>
 
 <script>
+import L from 'leaflet';
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import leafletdraw from "leaflet-draw";
 
 export default {
   components: { LMap, LTileLayer, LMarker },
+  
   mounted() {
       this.$nextTick(() => {
-          var localM = this.$refs.map.mapObject;//.L.latLng(47.41322, 1.219482);
+          //var localM = this.$refs.map.mapObject;//.L.latLng(47.41322, 1.219482);
       })
     
   },
@@ -49,6 +51,12 @@ export default {
         //alert("click" + e.latlng.toString());
         this.marker = e.latlng;
        // marker: this.$refs.map.mapObject
+    },
+    markerMoved(e) {
+      this.marker = e.latlng;
+    },    
+    markerMovedEnd() {
+      alert("drag end");
     }
   },
   data() {
