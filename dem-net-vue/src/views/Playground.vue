@@ -10,8 +10,7 @@ import MapPoint from '@/components/MapPoint.vue'
 
 export default {
   name: 'playground',
-  components: { MapPoint
-  }
+  components: { MapPoint }
 }
 </script>
 

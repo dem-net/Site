@@ -20,6 +20,7 @@
           <div class="column">
               <h1>Choose a point</h1>
               <p>{{ this.marker }}</p>
+              <ElevationResult :elevation="this.markerLocationResult"></ElevationResult>
           </div>
         </div>
       </div>
@@ -36,9 +37,11 @@
 import L from 'leaflet';
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import leafletdraw from "leaflet-draw";
+import ElevationResult from '@/components/ElevationResult.vue';
 
 export default {
-  components: { LMap, LTileLayer, LMarker },
+  name: 'MapPoint',
+  components: { LMap, LTileLayer, LMarker, ElevationResult },
   
   mounted() {
       this.$nextTick(() => {
@@ -48,22 +51,24 @@ export default {
   },
   methods: {
     mapClick(e) {
-        //alert("click" + e.latlng.toString());
         this.$store.commit('setSinglePointLocation', e.latlng);
         this.marker = e.latlng;
-       // marker: this.$refs.map.mapObject
+        this.$store.dispatch('getSinglePointElevation', e.latlng);
     },
     markerMoved(e) {
       this.marker = e.latlng;
     },    
     markerMovedEnd() {
       this.$store.commit('setSinglePointLocation', this.marker);
-      
+      this.$store.dispatch('getSinglePointElevation', this.marker);
     }
   },
   computed: {
     markerLocation() {
       return this.$store.state.singlePointLocation;
+    },
+    markerLocationResult() {
+      return this.$store.state.singlePointLocationElevationResult;
     }
   },
   data() {
