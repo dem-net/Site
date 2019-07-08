@@ -14,7 +14,7 @@
           <div class="column">
             <l-map ref="map" id="map" :zoom="zoom" :center="center" @click="mapClick">
               <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-marker v-if="marker" :lat-lng="marker" draggable @drag="markerMoved" @dragend="markerMovedEnd"></l-marker>
+              <l-marker v-if="marker" :lat-lng="markerLocation" draggable @drag="markerMoved" @dragend="markerMovedEnd"></l-marker>
             </l-map>
           </div>
           <div class="column">
@@ -49,6 +49,7 @@ export default {
   methods: {
     mapClick(e) {
         //alert("click" + e.latlng.toString());
+        this.$store.commit('setSinglePointLocation', e.latlng);
         this.marker = e.latlng;
        // marker: this.$refs.map.mapObject
     },
@@ -56,7 +57,13 @@ export default {
       this.marker = e.latlng;
     },    
     markerMovedEnd() {
-      alert("drag end");
+      this.$store.commit('setSinglePointLocation', this.marker);
+      
+    }
+  },
+  computed: {
+    markerLocation() {
+      return this.$store.state.singlePointLocation;
     }
   },
   data() {
