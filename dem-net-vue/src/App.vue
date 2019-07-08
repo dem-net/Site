@@ -18,7 +18,7 @@
             <div id="navbarMenuHeroC" class="navbar-menu">
               <div class="navbar-end">
                 <router-link to="/" class="navbar-item">Home</router-link>
-                <router-link to="/playground" class="navbar-item">Playground</router-link>
+                <router-link :to="{ name: 'playground'}" class="navbar-item">Playground</router-link>
                 <router-link to="/about" class="navbar-item">About</router-link>
                 <span class="navbar-item">
                   <b-button size="is-medium" icon-left="github">
@@ -45,4 +45,7 @@
 
 
 <style>
+.router-link-active {
+  color: red;
+}
 </style>
