@@ -3,22 +3,36 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// Leaflet
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { Icon } from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
+
+delete Icon.Default.prototype._getIconUrl;
+
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
+
+// Font awesome
+//
 import { library } from '@fortawesome/fontawesome-svg-core';
 // internal icons
-import { faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
-    faArrowUp, faAngleRight, faAngleLeft, faAngleDown, faUser, faHome, faSyncAlt,
-    faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload, faTachometerAlt } from "@fortawesome/free-solid-svg-icons";
+import { } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faJs, faVuejs, faGithub, faGithubAlt} from '@fortawesome/free-brands-svg-icons';
+import { faGithub} from '@fortawesome/free-brands-svg-icons';
 
-library.add(faCheck, faCheckCircle, faInfoCircle, faExclamationTriangle, faExclamationCircle,
-    faArrowUp, faAngleRight, faAngleLeft, faAngleDown, faUser, faHome, faSyncAlt,
-    faEye, faEyeSlash, faCaretDown, faCaretUp, faUpload, faTachometerAlt,
-    faJs, faVuejs, faGithub, faGithubAlt);
+library.add(faGithub);
 Vue.component('vue-fontawesome', FontAwesomeIcon);
 
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+import 'buefy/dist/buefy.min.css'
 
 Vue.use(Buefy, {
   defaultIconPack: 'fab',
