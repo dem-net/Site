@@ -23,12 +23,14 @@
             </div>
               <!-- Dataset selection and results -->
             <div class="column">
-              <section>
-                <DatasetSelector />
+              <section class="is-large">
+                <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>   
               </section>
-              <section>
+              <div class="box">
+              <section class="is-large">
                 <ElevationResult :elevation="this.markerLocationResult"></ElevationResult>
               </section>
+              </div>
             </div>
           </div>
         </div>
@@ -57,14 +59,24 @@ export default {
     mapClick(e) {
       this.$store.commit("setSinglePointLocation", e.latlng);
       this.marker = e.latlng;
-      this.$store.dispatch("getSinglePointElevation", e.latlng);
+
+      var payload = {'location': e.latlng, 'dataset': this.selectedDataSet};
+      this.$store.dispatch("getSinglePointElevation", payload);
     },
     markerMoved(e) {
       this.marker = e.latlng;
     },
     markerMovedEnd() {
       this.$store.commit("setSinglePointLocation", this.marker);
-      this.$store.dispatch("getSinglePointElevation", this.marker);
+      var payload = {'location': this.marker, 'dataset': this.selectedDataSet};
+      this.$store.dispatch("getSinglePointElevation", payload);
+    },
+    onDatasetSelected(dstName) {
+      if (this.marker) {
+        this.dataSet = dstName;
+        var payload = {'location': this.marker, 'dataset': this.selectedDataSet};
+        this.$store.dispatch("getSinglePointElevation", payload);
+      }
     }
   },
   computed: {
@@ -73,6 +85,9 @@ export default {
     },
     markerLocationResult() {
       return this.$store.state.singlePointLocationElevationResult;
+    },
+    selectedDataSet: function() {
+      return this.dataSet;
     }
   },
   data() {
@@ -83,7 +98,8 @@ export default {
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       marker: null,
-      isActive: true
+      isActive: true,
+      dataSet: 'SRTM_GL3',
     };
   }
 };

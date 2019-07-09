@@ -1,7 +1,6 @@
 <template>
   <section>
     <div v-if="elevation">
-      <p>{{ this.elevation }}</p>
       <nav class="level">
         <div class="level-item has-text-centered">
           <div>
@@ -12,25 +11,26 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="heading">Dataset</p>
-            <p class="title">SRTM_GL3</p>
+            <p class="title">{{ dataSet.name }}</p>
           </div>
         </div>
+      </nav>
+      <nav class="level">
         <div class="level-item has-text-centered">
           <div>
-            <p class="heading">Followers</p>
-            <p class="title">456K</p>
+            <p class="heading">Resolution</p>
+            <p class="title">{{ dataSet.resolutionMeters }} m</p>
           </div>
-        </div>
-        <div class="level-item has-text-centered">
+        </div><div class="level-item has-text-centered">
           <div>
-            <p class="heading">Likes</p>
-            <p class="title">789</p>
+            <p class="heading">Attribution</p>
+            <p class="title"><a :href="dataSet.attribution.url">{{ dataSet.attribution.text }}</a></p>
           </div>
         </div>
       </nav>
     </div>
     <div v-else>
-      test
+      No results. First, click on the map to add a marker on the desired location to get its elevation.
     </div>
   </section>
 </template>
@@ -43,6 +43,9 @@ export default {
   computed: {
     pointElevation() {
       return this.elevation.data.geoPoints[0].elevation.toFixed(2);
+    },
+    dataSet() {
+      return this.elevation.data.dataSet;
     }
   }
 };

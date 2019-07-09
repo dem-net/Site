@@ -33,7 +33,16 @@
 
       <!-- Hero content: will be in the middle -->
       <div class="hero-body">
+        
         <div class="container has-text-centered">
+          <b-notification v-if="initErrors"
+            type="is-warning"
+            has-icon
+            icon-pack="fas"
+            aria-close-label="Close notification"
+            role="alert">
+            Application cannot connect to back-end server. Please try again later.
+        </b-notification>
           <router-view />
         </div>
       </div>
@@ -47,6 +56,14 @@ export default {
   name: 'app',
   created() {
     this.$store.dispatch('getDatasets');
+  },
+  computed: {
+    initErrors() {
+      if (this.$store.state.initErrors)
+      return true;
+      else
+      return false;
+    }
   }
 }
 </script>
