@@ -1,7 +1,9 @@
 <template>
+<section class="section">
+  <h1 class="title">Single point elevation</h1>  
   <div class="card">
     <header class="card-header">
-      <p class="card-header-title">Point elevation test</p>
+      <p class="card-header-title">Point elevation: place a marker on the map to get its elevation info.</p>
       <a href="#" class="card-header-icon" aria-label="more options">
         <span class="icon">
           <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -18,19 +20,22 @@
             </l-map>
           </div>
           <div class="column">
-              <h1>Choose a point</h1>
+            <section>
+              <b-message title="How to" type="is-info" aria-close-label="Close message">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit
+              </b-message>
+            </section>
+              <section>
               <p>{{ this.marker }}</p>
               <ElevationResult :elevation="this.markerLocationResult"></ElevationResult>
+              </section>
           </div>
         </div>
       </div>
     </div>
-    <footer class="card-footer">
-      <a href="#" class="card-footer-item">Save</a>
-      <a href="#" class="card-footer-item">Edit</a>
-      <a href="#" class="card-footer-item">Delete</a>
-    </footer>
+    
   </div>
+</section>
 </template>
 
 <script>
@@ -78,7 +83,8 @@ export default {
       url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: null
+      marker: null,
+      isActive: true
     };
   }
 };
