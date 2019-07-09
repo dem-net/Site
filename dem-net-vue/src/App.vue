@@ -42,6 +42,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'app',
+  created() {
+    this.$store.dispatch('getDatasets');
+  }
+}
+</script>
+
 
 
 <style>
