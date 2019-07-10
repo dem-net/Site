@@ -26,16 +26,16 @@
                     <router-link :to="{ name: 'PlaygroundPoint'}" class="navbar-item">
                       Single point elevation
                     </router-link>
-                    <router-link :to="{ name: 'lineElevation'}" class="navbar-item">
+                    <router-link :to="{ name: 'PlaygroundLine'}" class="navbar-item">
                       Line elevation
                     </router-link>
                     <hr class="navbar-divider">
-                    <a class="navbar-item">
+                     <router-link to="/about" class="navbar-item">
                       GPX to 3D (glTF and GLB)
-                    </a>
-                    <a class="navbar-item">
+                    </router-link>
+                    <router-link to="/about" class="navbar-item">
                       3D (glTF and GLB)
-                    </a>
+                    </router-link>
                   </div>
                 </div>
                 <router-link to="/about" class="navbar-item">About</router-link>

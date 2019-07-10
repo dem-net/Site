@@ -1,43 +1,43 @@
 <template>
-   <section>          
-    <div class="columns">
-      <div class="column">
-        <!-- Map -->
-        <l-map ref="map" id="map" :zoom="zoom" :center="center" @click="mapClick" :options="{worldCopyJump: true}">
-          <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-          <l-marker
-            v-if="marker"
-            :lat-lng="markerLocation"
-            draggable
-            @drag="markerMoved"
-            @dragend="markerMovedEnd"
-          ></l-marker>
-        </l-map>
-      </div>
-        <!-- Dataset selection and results -->
-      <div class="column">
-        <section class="is-large">
-          <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>   
-        </section>
-        <div class="box">
-        <section class="is-large">
-          <ElevationResult :elevation="this.markerLocationResult"></ElevationResult>
-        </section>
-        </div>
+  <section>
+  <div class="columns">
+    <div class="column">
+      <!-- Map -->
+      <l-map ref="map" id="map" :zoom="zoom" :center="center" @click="mapClick" :options="{worldCopyJump: true}">
+        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-marker
+          v-if="marker"
+          :lat-lng="markerLocation"
+          draggable
+          @drag="markerMoved"
+          @dragend="markerMovedEnd"
+        ></l-marker>
+      </l-map>
+    </div>
+      <!-- Dataset selection and results -->
+    <div class="column">
+      <section class="is-large">
+        <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>   
+      </section>
+      <div class="box">
+      <section class="is-large">
+        <ElevationResult :elevation="this.markerLocationResult"></ElevationResult>
+      </section>
       </div>
     </div>
-    </section>
+  </div>
+  </section>
 </template>
 
 <script>
 import L from "leaflet";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
-//import leafletdraw from "leaflet-draw";
+// import leafletdraw from "leaflet-draw";
 import ElevationResult from "@/components/ElevationResult.vue";
 import DatasetSelector from "@/components/DatasetSelector.vue";
 
 export default {
-  name: "MapPoint",
+  name: "MapLine",
   components: { LMap, LTileLayer, LMarker, ElevationResult, DatasetSelector },
 
   mounted() {
