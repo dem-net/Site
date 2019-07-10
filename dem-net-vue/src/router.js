@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Playground from './views/Playground.vue'
+import PlaygroundPoint from './views/PlaygroundPoint.vue'
 import About from './views/About.vue'
 
 Vue.use(Router)
@@ -15,9 +15,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/playground',
-      name: 'playground',
-      component: Playground
+      path: '/playgroundpoint',
+      name: 'PlaygroundPoint',
+      component: PlaygroundPoint
     },
     {
       path: '/about',

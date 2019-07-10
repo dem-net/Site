@@ -10,7 +10,7 @@
           <div class="columns">
             <div class="column">
               <!-- Map -->
-              <l-map ref="map" id="map" :zoom="zoom" :center="center" @click="mapClick">
+              <l-map ref="map" id="map" :zoom="zoom" :center="center" @click="mapClick" :options="{worldCopyJump: true}">
                 <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
                 <l-marker
                   v-if="marker"

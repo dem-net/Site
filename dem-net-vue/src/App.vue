@@ -18,7 +18,26 @@
             <div id="navbarMenuHeroC" class="navbar-menu">
               <div class="navbar-end">
                 <router-link to="/" class="navbar-item">Home</router-link>
-                <router-link :to="{ name: 'playground'}" class="navbar-item">Playground</router-link>
+                <div class="navbar-item has-dropdown is-hoverable">
+                   <router-link :to="{ name: 'PlaygroundPoint'}" class="navbar-link">
+                    Playground
+                   </router-link>
+                  <div class="navbar-dropdown">
+                    <router-link :to="{ name: 'PlaygroundPoint'}" class="navbar-item">
+                      Single point elevation
+                    </router-link>
+                    <router-link :to="{ name: 'lineElevation'}" class="navbar-item">
+                      Line elevation
+                    </router-link>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item">
+                      GPX to 3D (glTF and GLB)
+                    </a>
+                    <a class="navbar-item">
+                      3D (glTF and GLB)
+                    </a>
+                  </div>
+                </div>
                 <router-link to="/about" class="navbar-item">About</router-link>
                 <span class="navbar-item">
                   <b-button size="is-medium" icon-left="github">
