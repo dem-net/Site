@@ -8,7 +8,7 @@
         :options='{ zoomControl: false }'
         attribution='© Проект А'>
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-geo-json v-for="(gj, idx) in geojson" :geojson="gj.geometry" :key="idx" :options="options(gj)">
+              <l-geo-json v-for="(gj, idx) in geojson" :geojson="gj.geometry" :key="idx">
           </l-geo-json>
         </l-map>
       </div>
@@ -42,18 +42,25 @@ export default {
   mounted() {
     this.$nextTick(() => {
       const map = this.$refs.map.mapObject;
+      this.editableLayers = new window.L.FeatureGroup().addTo(map);
 
       this.drawControl = new window.L.Control.Draw({
         position: 'topright',
         draw: {
           polyline: {
             allowIntersection: false,
-            showArea: true
+            showArea: true,
+            lineEdit: true
           },
           polygon: false,
-          rectangle: false,
+          rectangle: true,
           circle: false
-        }
+        },
+        edit: {
+             featureGroup: this.editableLayers,
+             edit: true
+         },
+         remove: true
       });
 
       window.L.DrawToolbar.include({
@@ -78,7 +85,7 @@ export default {
 
       map.addControl(this.drawControl);
 
-      this.editableLayers = new window.L.FeatureGroup().addTo(map);
+      
       const control = this.drawControl._container.querySelector('.leaflet-draw-toolbar');
 
       /* Commit drawn line */
@@ -108,11 +115,16 @@ export default {
       this.nokBtn = control.appendChild(link);
 
       map.on(window.L.Draw.Event.CREATED, (e) => {
+        
+        // hack from https://github.com/Leaflet/Leaflet.draw/issues/869 to enable editing
         const layer = e.layer;
+
+        layer.options.editing = { };
+        layer.editing.enable();
+
         const coords = layer._latlngs.map(objCoordinates => [objCoordinates.lng, objCoordinates.lat] );
 
         this.newLine.geometry.coordinates.push(coords);
-        this.newLine.categoryDate = 0;
         this.editableLayers.addLayer(layer);
         this.layers.push(layer);
         this.okBtn.style.display = 'block';
@@ -152,22 +164,7 @@ export default {
   },
 
   methods: {
-    onEachFeatureFunction(line) {
-      alert(line);
-      // return (feature, layer) => {
-      //   const popup = this.renderPopup(line);
-      //   layer.bindTooltip('<div style="font-weight:bold;">'+ line.name + '</div>', { permanent: false, sticky: true });
-      //   layer.bindPopup(
-      //     popup,
-      //   { permanent: false, sticky: true });
-      // };
-    },
-
-    options(line) {
-      return {
-        onEachFeature: this.onEachFeatureFunction.call(this, line)
-      };
-    },
+   
   },
 };
 
