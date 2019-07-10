@@ -4,13 +4,16 @@ import router from './router'
 import store from './store'
 
 // Leaflet
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LControl, LFeatureGroup } from 'vue2-leaflet';
 import { Icon } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-draw/dist/leaflet.draw.css'
 
 Vue.component('l-map', LMap);
 Vue.component('l-tile-layer', LTileLayer);
 Vue.component('l-marker', LMarker);
+Vue.component('l-control', LControl);
+Vue.component('l-featuregroup', LFeatureGroup);
 
 delete Icon.Default.prototype._getIconUrl;
 
