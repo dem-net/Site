@@ -27,11 +27,11 @@ Icon.Default.mergeOptions({
 //
 import { library } from '@fortawesome/fontawesome-svg-core';
 // internal icons
-import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { faExclamationTriangle, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
-library.add(faGithub,faExclamationTriangle);
+library.add(faGithub,faExclamationTriangle, faSpinner);
 Vue.component('vue-fontawesome', FontAwesomeIcon);
 
 import Buefy from 'buefy'

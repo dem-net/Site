@@ -28,13 +28,13 @@
 
 
 <script>
-import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet";
+import { LMap, LTileLayer } from "vue2-leaflet";
 import 'leaflet-draw';
 
 export default {
   name: 'MapLine',
   components: {
-    LMap, LTileLayer, LGeoJson
+    LMap, LTileLayer
   },
 
   mounted() {

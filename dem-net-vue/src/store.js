@@ -9,7 +9,8 @@ export default new Vuex.Store({
     singlePointLocation: null,
     singlePointLocationElevationResult: null,
     dataSets: null,
-    initErrors: null
+    initErrors: null,
+    clientBusy: false
   },
   mutations: {
     setSinglePointLocation(state, location) {
@@ -18,18 +19,23 @@ export default new Vuex.Store({
     setSinglePointLocationElevationResult(state, result, location){
       state.singlePointLocationElevationResult = result;
       state.singlePointLocation = location;
+      state.clientBusy = false;
     },
     setDatasets(state, datasets) {
       state.dataSets = datasets;
     },
     setError(state, error){
       state.initErrors = error;
+    },
+    isBusy(state, value) {
+      state.clientBusy = value;
     }
   },
   actions: {
     getSinglePointElevation({ commit }, payload){
       const location = payload.location;
       const dataset = payload.dataset;
+      commit('isBusy', true);
       axios.get("/api/elevation/", {
         params: {
           lat: location.lat,

@@ -4,7 +4,7 @@
     <h1 class="title">Line elevation</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Draw a line on the map to get its elevation info.</p>
+        <p class="card-header-title">Draw a line on the map and save it to get its elevation info.</p>
       </header>
       <div class="card-content">
         <div class="content">
