@@ -43,6 +43,9 @@ export default new Vuex.Store({
       axios.get('/api/dataset')
       .then(result => commit('setDatasets', result.data))
       .catch(err=> commit('setError', err));
+    },
+    lineEdit({commit}) {
+      
     }
   }
 })
