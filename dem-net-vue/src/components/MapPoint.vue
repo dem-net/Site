@@ -82,11 +82,11 @@ export default {
   },
   data() {
     return {
-      zoom: 10,
-      center: L.latLng(47.41322, 1.219482),
-      url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
+      zoom: 5,
+      center: [45.75583, 3.61778],
+      url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
       marker: null,
       isActive: true,
       dataSet: 'SRTM_GL3',
