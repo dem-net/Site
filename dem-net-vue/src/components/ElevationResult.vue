@@ -24,7 +24,7 @@
         </div><div class="level-item has-text-centered">
           <div>
             <p class="heading">Attribution</p>
-            <p class="title"><a :href="dataSet.attribution.url">{{ dataSet.attribution.text }}</a></p>
+            <p class="title"><a :href="dataSet.publicUrl">{{ dataSet.attribution.text }}</a></p>
           </div>
         </div>
       </nav>
