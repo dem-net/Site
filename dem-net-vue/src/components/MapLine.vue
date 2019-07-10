@@ -5,17 +5,15 @@
       <div style="width: 100%;height: 100%; background-color:#eee; position:relative;">
         <l-map ref="map" id="map" :zoom="zoom"
         :center="center"
-        :options='{ zoomControl: false }'
-        attribution='© Проект А'>
+        :options='{ zoomControl: true }'>
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-geo-json v-for="(gj, idx) in geojson" :geojson="gj.geometry" :key="idx">
-          </l-geo-json>
         </l-map>
       </div>
   </div>
     <!-- Dataset selection and results -->
       <div class="column">
         <section class="is-large">
+          test {{ geojson }}
           <!-- <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>    -->
         </section>
         <div class="box">
@@ -45,91 +43,45 @@ export default {
       this.editableLayers = new window.L.FeatureGroup().addTo(map);
 
       this.drawControl = new window.L.Control.Draw({
-        position: 'topright',
         draw: {
-          polyline: {
-            allowIntersection: false,
-            showArea: true,
-            lineEdit: true
-          },
+          polyline: true,
           polygon: false,
-          rectangle: true,
-          circle: false
+          rectangle: false,
+          circle: false,
+          marker: false
         },
         edit: {
-             featureGroup: this.editableLayers,
-             edit: true
-         },
-         remove: true
-      });
-
-      window.L.DrawToolbar.include({
-        getModeHandlers(_map) {
-          return [
-            {
-              enabled: true,
-              handler: new window.L.Draw.Polyline(_map),
-              title: 'Добавить тоннель'
-            }
-          ];
-        }
-      });
-
-      this.drawControl.setDrawingOptions({ // new lines will have different color
-        polyline: {
-          shapeOptions: {
-            color: '#ff0a1e'
-          }
-        }
+             featureGroup: this.editableLayers
+         }
       });
 
       map.addControl(this.drawControl);
-
-      
-      const control = this.drawControl._container.querySelector('.leaflet-draw-toolbar');
-
-      /* Commit drawn line */
-      let link = document.createElement('a');
-      link.className = 'leaflet-draw-draw-OK_ICON';
-      link.style.display = 'none';
-      link.onclick = () => {
-        this.$store.dispatch('lineEdit', this.newLine);
-        this.$emit('lineAdd');
-      };
-      this.okBtn = control.appendChild(link);
-
-      /* Remove drawn line */
-      link = document.createElement('a');
-      link.className = 'leaflet-draw-draw-NOK_ICON';
-      link.style.display = 'none';
-      link.onclick = () => {
-        this.okBtn.style.display = 'none';
-        this.nokBtn.style.display = 'none';
-        this.layers.forEach(l => this.editableLayers.removeLayer(l));
-        this.newLine = {
-          geometry: {
-            coordinates: []
-          }
-        };
-      };
-      this.nokBtn = control.appendChild(link);
 
       map.on(window.L.Draw.Event.CREATED, (e) => {
         
         // hack from https://github.com/Leaflet/Leaflet.draw/issues/869 to enable editing
         const layer = e.layer;
-
         layer.options.editing = { };
         layer.editing.enable();
 
-        const coords = layer._latlngs.map(objCoordinates => [objCoordinates.lng, objCoordinates.lat] );
-
+        const coords = layer._latlngs.map(c => [c.lng, c.lat] );
         this.newLine.geometry.coordinates.push(coords);
         this.editableLayers.addLayer(layer);
         this.layers.push(layer);
-        this.okBtn.style.display = 'block';
-        this.nokBtn.style.display = 'block';
       });
+
+      map.on(window.L.Draw.Event.EDITED, (e) => {
+        var layers = e.layers;
+        const nLine = this.newLine;
+         layers.eachLayer(function (layer) {
+             const coords = layer._latlngs.map(c => [c.lng, c.lat] );
+             nLine.geometry.coordinates = coords;
+             
+         });
+        // const coords = layer._latlngs.map(c => [c.lng, c.lat] );
+        //this.newLine.geometry.coordinates = coords;
+      });
+
     });
   },
 
@@ -139,8 +91,6 @@ export default {
       editableLayers: null,
       drawControl: null,
       layers: [],
-      okBtn: null,
-      cancelBtn: null,
       newLine: {
         geometry: {
           type: 'MultiLineString',
@@ -151,16 +101,12 @@ export default {
       url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       //url: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
       attribution:
-        'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-      marker: window.L.latLng(47.413220, -1.219482),
-      popupRoot: null,
-      line: null,
-      tName: 0
+        'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
     };
   },
 
   computed: {
-    geojson(){ return null; }
+    geojson(){ return this.newLine; }
   },
 
   methods: {
@@ -177,41 +123,4 @@ export default {
   height: 500px;
   margin: 0;
 }
-</style>
-<style lang="scss">
-  $fontSize: 14px;
-
-  .leaflet-popup-content{
-    #leafroot-id{
-      position: relative;
-
-      .popup-img{
-        height: 150px;
-        width: 300px;
-      }
-
-      .popup-text{
-        font-size: $fontSize;
-        &.length{
-          margin-bottom: 20px;
-        }
-      }
-
-      .notice-btn{
-        width: 155px;
-      }
-    }
-  }
-
-  .leaflet-draw-draw-OK_ICON{
-    background-image: url("../assets/ok-btn.png") !important;
-    background-size: 25px auto !important;
-  }
-
-  .leaflet-draw-draw-NOK_ICON{
-    background-image: url("../assets/nok-btn.png") !important;
-    background-size: 25px auto !important;
-
-  }
-
 </style>
