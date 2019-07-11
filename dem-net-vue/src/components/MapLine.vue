@@ -13,12 +13,11 @@
     <!-- Dataset selection and results -->
       <div class="column">
         <section class="is-large">
-          test {{ geojson }}
           <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>
         </section>
         <div class="box">
         <section class="is-large">
-          <!-- <ElevationResult :elevation="this.markerLocationResult"></ElevationResult> -->
+          <LineElevationResult :elevation="this.elevationResult"></LineElevationResult>
         </section>
         </div>
       </div>
@@ -31,11 +30,12 @@
 import { LMap, LTileLayer } from "vue2-leaflet";
 import 'leaflet-draw';
 import DatasetSelector from "@/components/DatasetSelector.vue";
+import LineElevationResult from "@/components/LineElevationResult.vue";
 
 export default {
   name: 'MapLine',
   components: {
-    LMap, LTileLayer, DatasetSelector
+    LMap, LTileLayer, DatasetSelector, LineElevationResult
   },
 
   mounted() {
@@ -124,6 +124,9 @@ export default {
       },
     selectedDataSet: function() {
       return this.dataSet;
+    },
+    elevationResult() {
+      return this.$store.state.lineElevationResult;
     },
   },
 
