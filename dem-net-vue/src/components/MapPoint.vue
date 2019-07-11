@@ -28,7 +28,7 @@
         </section>
         <div class="box">
           <section class="is-large">
-            <b-loading :is-full-page="isLoaderFullPage" :active.sync="isBusy" :can-cancel="true">
+            <b-loading :is-full-page="isLoaderFullPage" :active.sync="isBusy" :can-cancel="false">
               <b-notification :closable="false">
                 
                 <section class="section has-text-centered">
