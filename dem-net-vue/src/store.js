@@ -8,6 +8,10 @@ export default new Vuex.Store({
   state: {
     singlePointLocation: null,
     singlePointLocationElevationResult: null,
+
+    lineElevationResult: null,
+    line: null,
+
     dataSets: null,
     initErrors: null,
     clientBusy: false
@@ -20,6 +24,14 @@ export default new Vuex.Store({
       state.singlePointLocationElevationResult = result;
       state.singlePointLocation = location;
       state.clientBusy = false;
+    },
+
+    setLine(state, line) {
+      state.line = line;
+    },
+    setLineElevationResult(state, result){
+      state.lineElevationResult = result;
+      state.clientBusy = false; 
     },
     setDatasets(state, datasets) {
       state.dataSets = datasets;
@@ -43,18 +55,18 @@ export default new Vuex.Store({
           dataSet: dataset,
         }
       })
-      .then(result => commit('setSinglePointLocationElevationResult', result, location));
+      .then(result => commit('setSinglePointLocationElevationResult', result));
     },
     getLineElevation({ commit }, payload){
-      const geoJson = payload.geoJson.geometry;
+      const geoJson = payload.geoJson;
       const dataset = payload.dataset;
       commit('isBusy', true);
       axios.post("/api/elevation/line/", {
-          line: geoJson,
-          dataSet: dataset,
-          reduction: 50
+          line: geoJson.geometry,
+          dataSetName: dataset,
+          reduceResolution: 50
       })
-      .then(result => commit('setSinglePointLocationElevationResult', result, location));
+      .then(result => commit('setLineElevationResult', result, payload));
     },
     getDatasets({commit}) {
       axios.get('/api/dataset')

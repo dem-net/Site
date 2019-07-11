@@ -66,13 +66,14 @@ export default {
         layer.editing.enable();
 
         const coords = layer._latlngs.map(c => [c.lng, c.lat] );
-        this.newLine.geometry.coordinates.push(coords);
+        this.newLine.geometry.coordinates = coords;
         
         this.editableLayers.addLayer(layer);
         this.layers.push(layer);
 
 
         var payload = { geoJson: this.newLine, dataset: this.$data.dataSet };
+        this.$store.commit('setLine', this.newLine);
         this.$store.dispatch('getLineElevation', payload); 
       });
 
@@ -87,8 +88,10 @@ export default {
              
             payload = { geoJson: nLine, dataset: dataSet };
          });
-
-             this.$store.dispatch('getLineElevation', payload); 
+        
+         payload = { geoJson: nLine, dataset: dataSet };
+         this.$store.commit('setLine', nLine);
+         this.$store.dispatch('getLineElevation', payload); 
       });
 
     });
@@ -102,7 +105,7 @@ export default {
       layers: [],
       newLine: {
         geometry: {
-          type: 'MultiLineString',
+          type: 'LineString',
           coordinates: []
         }
       },
