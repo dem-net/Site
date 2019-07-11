@@ -45,6 +45,17 @@ export default new Vuex.Store({
       })
       .then(result => commit('setSinglePointLocationElevationResult', result, location));
     },
+    getLineElevation({ commit }, payload){
+      const geoJson = payload.geoJson.geometry;
+      const dataset = payload.dataset;
+      commit('isBusy', true);
+      axios.post("/api/elevation/line/", {
+          line: geoJson,
+          dataSet: dataset,
+          reduction: 50
+      })
+      .then(result => commit('setSinglePointLocationElevationResult', result, location));
+    },
     getDatasets({commit}) {
       axios.get('/api/dataset')
       .then(result => commit('setDatasets', result.data))

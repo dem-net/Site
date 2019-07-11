@@ -14,7 +14,7 @@
       <div class="column">
         <section class="is-large">
           test {{ geojson }}
-          <!-- <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>    -->
+          <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>
         </section>
         <div class="box">
         <section class="is-large">
@@ -30,11 +30,12 @@
 <script>
 import { LMap, LTileLayer } from "vue2-leaflet";
 import 'leaflet-draw';
+import DatasetSelector from "@/components/DatasetSelector.vue";
 
 export default {
   name: 'MapLine',
   components: {
-    LMap, LTileLayer
+    LMap, LTileLayer, DatasetSelector
   },
 
   mounted() {
@@ -66,20 +67,28 @@ export default {
 
         const coords = layer._latlngs.map(c => [c.lng, c.lat] );
         this.newLine.geometry.coordinates.push(coords);
+        
         this.editableLayers.addLayer(layer);
         this.layers.push(layer);
+
+
+        var payload = { geoJson: this.newLine, dataset: this.$data.dataSet };
+        this.$store.dispatch('getLineElevation', payload); 
       });
 
       map.on(window.L.Draw.Event.EDITED, (e) => {
         var layers = e.layers;
         const nLine = this.newLine;
+        const dataSet = this.$data.dataSet;
+        var payload = null;
          layers.eachLayer(function (layer) {
              const coords = layer._latlngs.map(c => [c.lng, c.lat] );
              nLine.geometry.coordinates = coords;
              
+            payload = { geoJson: nLine, dataset: dataSet };
          });
-        // const coords = layer._latlngs.map(c => [c.lng, c.lat] );
-        //this.newLine.geometry.coordinates = coords;
+
+             this.$store.dispatch('getLineElevation', payload); 
       });
 
     });
@@ -97,6 +106,7 @@ export default {
           coordinates: []
         }
       },
+      dataSet: "SRTM_GL3",
       center: [45.75583, 3.61778],
       url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
@@ -106,11 +116,18 @@ export default {
   },
 
   computed: {
-    geojson(){ return this.newLine; }
+    geojson(){ 
+      return this.newLine; 
+      },
+    selectedDataSet: function() {
+      return this.dataSet;
+    },
   },
 
   methods: {
-   
+   onDatasetSelected(dstName) {
+        this.dataSet = dstName;
+    }
   },
 };
 
