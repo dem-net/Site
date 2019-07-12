@@ -60,6 +60,13 @@
           </div>
         </div>
       </nav>
+      <div>
+          Test
+          <ElevationChart 
+            v-if="loaded"
+            :chartdata="chartdata"
+            :options="options" />
+      </div>
     </div>
     <div v-else>
       No results. First, click on the map to add a marker on the desired location to get its elevation.
@@ -68,8 +75,11 @@
 </template>
 
 <script>
+import ElevationChart from './ElevationChart.vue'
+
     export default {
         name: "LineElevationResult",
+        components: { ElevationChart },
         props: ["elevation"],
         computed: {
             elevationData() {
@@ -78,6 +88,18 @@
             dataSet() {
                 return this.elevation.data.dataSet;
             }
+        },
+        data() {
+            return {
+                loaded: false,
+                chartdata: null
+            }
+        },
+        async mounted () {
+            this.loaded = false;
+            this.chartdata = this.elevation.data.geoPoints.map(
+                pt => [ pt.distanceFromOriginMeters, pt.elevation ] );
+            this.loaded = true;
         }
     }
 </script>
