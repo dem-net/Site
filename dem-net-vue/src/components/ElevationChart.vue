@@ -1,32 +1,40 @@
-<template>
-    <div>
-
-    </div>
-</template>
-
 <script>
-import { Line, mixins } from 'vue-chartjs'
+import { Scatter, mixins } from 'vue-chartjs'
 const { reactiveProp } = mixins
 
 export default {
-  extends: Line,
+  extends: Scatter,
   mixins: [reactiveProp],
-  props: {
-    chartdata: {
-      type: Array,
-      default: null
-    },
-    options: {
-      type: Object,
-      default: null
+  data () {
+    return {
+      options: { //Chart.js options
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+              display: true
+            }
+          }],
+          xAxes: [ {
+            gridLines: {
+              display: false
+            }
+          }]
+        },
+        legend: {
+          display: true
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        showLines: true
+      }
     }
   },
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+    // this.chartData is created in the mixin
+    this.renderChart(this.chartData, this.options)
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

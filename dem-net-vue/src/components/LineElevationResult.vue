@@ -61,11 +61,8 @@
         </div>
       </nav>
       <div>
-          Test
-          <ElevationChart 
-            v-if="loaded"
-            :chartdata="chartdata"
-            :options="options" />
+          Chart
+          <elevation-chart :chart-data="elevationChartData"></elevation-chart>
       </div>
     </div>
     <div v-else>
@@ -75,6 +72,8 @@
 </template>
 
 <script>
+// script from : https://pusher.com/tutorials/chart-vuejs
+//
 import ElevationChart from './ElevationChart.vue'
 
     export default {
@@ -91,15 +90,44 @@ import ElevationChart from './ElevationChart.vue'
         },
         data() {
             return {
-                loaded: false,
-                chartdata: null
+                elevationChartData: null
             }
         },
-        async mounted () {
-            this.loaded = false;
-            this.chartdata = this.elevation.data.geoPoints.map(
-                pt => [ pt.distanceFromOriginMeters, pt.elevation ] );
-            this.loaded = true;
+        watch: {
+           // à chaque fois que la question change, cette fonction s'exécutera
+          elevation: function (newElev, oldElev) {
+            this.elevationChartData = {
+              labels: ["Elev"],
+              datasets: [
+                {
+                  label: 'Elevation',
+                  backgroundColor: '#f87979',
+                  data: newElev.data.geoPoints.map(
+                    pt => {
+                      var rdata = {};
+                      rdata.x = pt.distanceFromOriginMeters / 1000.0;
+                      rdata.y = pt.elevation;
+                      return rdata;
+                    })
+                }
+              ]
+            }
+            
+          }
+        },
+        created() {
+          //this.fetchData()
+          //this.fillData();
+        },
+        mounted () {
+          this.fillData();            
+        },
+        methods: {
+          fillData () {
+            //this.elevationChartData = null;
+          },
+          fetchData () {
+          }
         }
     }
 </script>

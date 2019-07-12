@@ -64,7 +64,7 @@ export default new Vuex.Store({
       axios.post("/api/elevation/line/", {
           line: geoJson.geometry,
           dataSetName: dataset,
-          reduceResolution: 50
+          reduceResolution: 10
       })
       .then(result => commit('setLineElevationResult', result, payload));
     },
