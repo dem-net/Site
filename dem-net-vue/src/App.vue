@@ -40,7 +40,7 @@
                 </div>
                 <router-link to="/about" class="navbar-item">About</router-link>
                 <span class="navbar-item">
-                  <b-button size="is-medium" icon-left="github">
+                  <b-button size="is-medium" icon-pack="fab" icon-left="github">
                     <a href="https://github.com/dem-net/DEM.Net" target="_blank">View on GitHub</a>
                   </b-button>
                 </span>
