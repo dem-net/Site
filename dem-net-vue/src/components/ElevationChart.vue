@@ -11,17 +11,23 @@ export default {
         scales: {
           yAxes: [{
             ticks: {
-              beginAtZero: true
+              beginAtZero: false
             },
             gridLines: {
               display: true
             }
           }],
           xAxes: [ {
+            ticks: {
+              beginAtZero: false
+            },
             gridLines: {
               display: false
             }
           }]
+        },
+        tooltips: {
+            mode: 'nearest'
         },
         legend: {
           display: true

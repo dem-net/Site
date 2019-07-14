@@ -102,6 +102,10 @@ import ElevationChart from './ElevationChart.vue'
                 {
                   label: 'Elevation',
                   backgroundColor: '#f87979',
+                  pointStyle: 'cross',
+                  cubicInterpolationMode: 'default',
+                  lineTension: 0,//0.4,
+                  pointHitRadius: 50,
                   data: newElev.data.geoPoints.map(
                     pt => {
                       var rdata = {};

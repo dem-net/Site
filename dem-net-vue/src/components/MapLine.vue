@@ -4,8 +4,8 @@
       <div class="column">
       <div style="width: 100%;height: 100%; background-color:#eee; position:relative;">
         <l-map ref="map" id="map" :zoom="zoom"
-        :center="center"
-        :options='{ zoomControl: true }'>
+            :center="center"
+            :options='{ zoomControl: true }'>
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         </l-map>
       </div>
@@ -14,6 +14,10 @@
       <div class="column">
         <section class="is-large">
           <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>
+          <b-field>
+                <b-numberinput v-model="reduce" min="0" max="1000" step="10"></b-numberinput>
+            </b-field>
+ 
         </section>
         <div class="box">
         <section class="is-large">
@@ -72,8 +76,8 @@ export default {
         this.layers.push(layer);
 
 
-        var payload = { geoJson: this.newLine, dataset: this.$data.dataSet };
-        this.$store.commit('setLine', this.newLine);
+        var payload = { geoJson: this.newLine, dataset: this.$data.dataSet, reduce: this.$data.reduce };
+        this.$store.commit('setLine', payload);
         this.$store.dispatch('getLineElevation', payload); 
       });
 
@@ -89,7 +93,7 @@ export default {
             payload = { geoJson: nLine, dataset: dataSet };
          });
         
-         payload = { geoJson: nLine, dataset: dataSet };
+         payload = { geoJson: nLine, dataset: dataSet, reduce: this.$data.reduce };
          this.$store.commit('setLine', nLine);
          this.$store.dispatch('getLineElevation', payload); 
       });
@@ -111,6 +115,7 @@ export default {
       },
       dataSet: "SRTM_GL3",
       center: [45.75583, 3.61778],
+      reduce: 50,
       url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       // url: 'https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png',

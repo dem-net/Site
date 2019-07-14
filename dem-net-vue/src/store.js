@@ -14,7 +14,9 @@ export default new Vuex.Store({
 
     dataSets: null,
     initErrors: null,
-    clientBusy: false
+    clientBusy: false,
+    lineDataSet: null,
+    reduceFactor: 50,
   },
   mutations: {
     setSinglePointLocation(state, location) {
@@ -26,8 +28,10 @@ export default new Vuex.Store({
       state.clientBusy = false;
     },
 
-    setLine(state, line) {
-      state.line = line;
+    setLine(state, payload) {
+      state.lineDataSet = payload.dataset;
+      state.line = payload.geoJson;
+      state.reduceFactor = payload.reduce;
     },
     setLineElevationResult(state, result){
       state.lineElevationResult = result;
@@ -60,11 +64,12 @@ export default new Vuex.Store({
     getLineElevation({ commit }, payload){
       const geoJson = payload.geoJson;
       const dataset = payload.dataset;
+      const reduceFactor = payload.reduce;
       commit('isBusy', true);
       axios.post("/api/elevation/line/", {
           line: geoJson.geometry,
           dataSetName: dataset,
-          reduceResolution: 10
+          reduceResolution: reduceFactor
       })
       .then(result => commit('setLineElevationResult', result, payload));
     },
