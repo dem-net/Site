@@ -15,7 +15,7 @@
         <section class="is-large">
           <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>
           <b-field>
-                <b-numberinput v-model="reduce" min="0" max="1000" step="10"></b-numberinput>
+                <b-numberinput v-model="reduce" min="0" max="1000" step="10" @input="setReduce"></b-numberinput>
             </b-field>
  
         </section>
@@ -77,7 +77,7 @@ export default {
 
 
         var payload = { geoJson: this.newLine, dataset: this.$data.dataSet, reduce: this.$data.reduce };
-        this.$store.commit('lines/setLine', payload);
+        //this.$store.commit('lines/setLine', payload);
         this.$store.dispatch('lines/getLineElevation', payload); 
       });
 
@@ -94,7 +94,7 @@ export default {
          });
         
          payload = { geoJson: nLine, dataset: dataSet, reduce: this.$data.reduce };
-         this.$store.commit('lines/setLine', nLine);
+         //this.$store.commit('lines/setLine', nLine);
          this.$store.dispatch('lines/getLineElevation', payload); 
       });
 
@@ -127,6 +127,9 @@ export default {
     geojson(){ 
       return this.newLine; 
       },
+    hasCoords(){
+      return this.newLine.geometry.coordinates.length>0;
+    },
     selectedDataSet: function() {
       return this.dataSet;
     },
@@ -137,8 +140,20 @@ export default {
 
   methods: {
    onDatasetSelected(dstName) {
-        this.dataSet = dstName;
-    }
+      this.dataSet = dstName;
+      if (this.hasCoords)
+      {
+        var payload = { geoJson: this.newLine, dataset: this.dataSet, reduce: this.reduce };
+          this.$store.dispatch('lines/getLineElevation', payload); 
+      }
+    },
+   setReduce(value){
+     if (this.hasCoords)
+     {
+       var payload = { geoJson: this.newLine, dataset: this.dataSet, reduce: value };
+        this.$store.dispatch('lines/getLineElevation', payload); 
+     }
+   }
   },
 };
 

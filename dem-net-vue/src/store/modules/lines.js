@@ -9,14 +9,12 @@ export default {
     reduceFactor: 50,
   },
   mutations: {
-    setLine(state, payload) {
-      state.lineDataSet = payload.dataset;
-      state.line = payload.geoJson;
-      state.reduceFactor = payload.reduce;
-    },
     setLineElevationResult(state, result){
-      state.lineElevationResult = result;
+      state.lineElevationResult = result.result;
       state.clientBusy = false; 
+      state.lineDataSet = result.payload.dataset;
+      state.line = result.payload.geoJson;
+      state.reduceFactor = result.payload.reduce;
     },
     isBusy(state, value) {
       state.clientBusy = value;
@@ -33,7 +31,7 @@ export default {
           dataSetName: dataset,
           reduceResolution: reduceFactor
       })
-      .then(result => commit('setLineElevationResult', result, payload));
+      .then(result => commit('setLineElevationResult',  { result: result, payload: payload}));
     },
   }
 }
