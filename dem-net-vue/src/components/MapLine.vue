@@ -14,14 +14,33 @@
       <div class="column">
         <section class="is-large">
           <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>
-          <b-field>
+          <div class="columns">
+          <div class="column">
+          <b-field label="Line reduction">
                 <b-numberinput v-model="reduce" min="0" max="1000" step="10" @input="setReduce"></b-numberinput>
             </b-field>
- 
+          </div>
+            <div class="column">
+              <b-field label="Curve tension">
+                <b-numberinput v-model="tension" min="0" max="1" step="0.1" @input="setTension"></b-numberinput>
+            </b-field>
+            </div>
+          </div>
         </section>
         <div class="box">
         <section class="is-large">
-          <LineElevationResult :elevation="this.elevationResult"></LineElevationResult>
+          <b-loading :is-full-page="isLoaderFullPage" :active.sync="isBusy" :can-cancel="false">
+              <b-notification :closable="false">
+                
+                <section class="section has-text-centered">
+                <b-icon pack="fas" icon="spinner" size="is-large" custom-class="fa-spin"></b-icon>
+                </section>
+                <section class="section has-text-centered">
+                Server is calulating line elevation...
+                </section>
+              </b-notification>
+            </b-loading>
+          <LineElevationResult :elevation="this.elevationResult" :tension="tension"></LineElevationResult>
         </section>
         </div>
       </div>
@@ -106,6 +125,7 @@ export default {
       zoom: 6,
       editableLayers: null,
       drawControl: null,
+      isLoaderFullPage: true,
       layers: [],
       newLine: {
         geometry: {
@@ -116,6 +136,7 @@ export default {
       dataSet: "SRTM_GL3",
       center: [45.75583, 3.61778],
       reduce: 50,
+      tension: 0.4,
       url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
       attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       // url: 'https://maps.heigit.org/openmapsurfer/tiles/roads/webmercator/{z}/{x}/{y}.png',
@@ -136,6 +157,9 @@ export default {
     elevationResult() {
       return this.$store.state.lines.lineElevationResult;
     },
+    isBusy() {
+      return this.$store.state.lines.clientBusy;
+    }
   },
 
   methods: {
@@ -150,7 +174,14 @@ export default {
    setReduce(value){
      if (this.hasCoords)
      {
-       var payload = { geoJson: this.newLine, dataset: this.dataSet, reduce: value };
+       var payload =  { geoJson: this.newLine, dataset: this.dataSet, reduce: value };
+        this.$store.dispatch('lines/getLineElevation', payload); 
+     }
+   },
+   setTension(){
+     if (this.hasCoords)
+     {
+       var payload =  { geoJson: this.newLine, dataset: this.dataSet, reduce: this.reduce };
         this.$store.dispatch('lines/getLineElevation', payload); 
      }
    }

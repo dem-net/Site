@@ -79,7 +79,7 @@ import ElevationChart from './ElevationChart.vue'
     export default {
         name: "LineElevationResult",
         components: { ElevationChart },
-        props: ["elevation"],
+        props: ["elevation", "tension"],
         computed: {
             elevationData() {
                 return this.elevation.data;
@@ -94,8 +94,7 @@ import ElevationChart from './ElevationChart.vue'
             }
         },
         watch: {
-           // à chaque fois que la question change, cette fonction s'exécutera
-          elevation: function (newElev, oldElev) {
+          elevation: function(newElev) {
             this.elevationChartData = {
               labels: ["Elev"],
               datasets: [
@@ -104,7 +103,7 @@ import ElevationChart from './ElevationChart.vue'
                   backgroundColor: '#f87979',
                   pointStyle: 'cross',
                   cubicInterpolationMode: 'default',
-                  lineTension: 0,//0.4,
+                  lineTension: this.tension,// 0,//0.4,
                   pointHitRadius: 50,
                   data: newElev.data.geoPoints.map(
                     pt => {
@@ -116,7 +115,6 @@ import ElevationChart from './ElevationChart.vue'
                 }
               ]
             }
-            
           }
         },
         created() {

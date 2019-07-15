@@ -7,6 +7,7 @@ export default {
     line: null,
     lineDataSet: null,
     reduceFactor: 50,
+    clientBusy: false,
   },
   mutations: {
     setLineElevationResult(state, result){
