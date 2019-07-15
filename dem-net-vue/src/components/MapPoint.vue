@@ -65,40 +65,40 @@ export default {
   },
   methods: {
     mapClick(e) {
-      this.$store.commit("setSinglePointLocation", e.latlng);
+      this.$store.commit("points/setSinglePointLocation", e.latlng);
       this.marker = e.latlng;
 
       var payload = { location: e.latlng, dataset: this.selectedDataSet };
-      this.$store.dispatch("getSinglePointElevation", payload);
+      this.$store.dispatch("points/getSinglePointElevation", payload);
     },
     markerMoved(e) {
       this.marker = e.latlng;
     },
     markerMovedEnd() {
-      this.$store.commit("setSinglePointLocation", this.marker);
+      this.$store.commit("points/setSinglePointLocation", this.marker);
       var payload = { location: this.marker, dataset: this.selectedDataSet };
-      this.$store.dispatch("getSinglePointElevation", payload);
+      this.$store.dispatch("points/getSinglePointElevation", payload);
     },
     onDatasetSelected(dstName) {
       if (this.marker) {
         this.dataSet = dstName;
         var payload = { location: this.marker, dataset: this.selectedDataSet };
-        this.$store.dispatch("getSinglePointElevation", payload);
+        this.$store.dispatch("points/getSinglePointElevation", payload);
       }
     }
   },
   computed: {
     markerLocation() {
-      return this.$store.state.singlePointLocation;
+      return this.$store.state.points.singlePointLocation;
     },
     markerLocationResult() {
-      return this.$store.state.singlePointLocationElevationResult;
+      return this.$store.state.points.singlePointLocationElevationResult;
     },
     selectedDataSet: function() {
       return this.dataSet;
     },
     isBusy() {
-      return this.$store.state.clientBusy;
+      return this.$store.state.points.clientBusy;
     }
   },
   data() {

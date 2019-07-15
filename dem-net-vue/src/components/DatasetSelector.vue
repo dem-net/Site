@@ -21,10 +21,10 @@ export default {
   },
   computed: {
       availableDatasets() {
-          return this.$store.state.dataSets;
+          return this.$store.state.datasets.dataSets;
       },
       dataSetDesc() {
-        return this.$store.state.dataSets.find(d => d.name == this.selectedDataset).description;
+        return this.$store.state.datasets.dataSets.find(d => d.name == this.selectedDataset).description;
       }
   },
   data() {
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
       loadDatasets() {
-          this.$store.dispatch("getDatasets");
+          this.$store.dispatch("datasets/getDatasets");
       }
   }
 };

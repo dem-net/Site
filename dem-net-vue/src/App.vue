@@ -74,11 +74,11 @@
 export default {
   name: 'app',
   created() {
-    this.$store.dispatch('getDatasets');
+    this.$store.dispatch('datasets/getDatasets');
   },
   computed: {
     initErrors() {
-      if (this.$store.state.initErrors)
+      if (this.$store.state.datasets.initErrors)
       return true;
       else
       return false;

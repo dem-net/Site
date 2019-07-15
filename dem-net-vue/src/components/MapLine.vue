@@ -77,8 +77,8 @@ export default {
 
 
         var payload = { geoJson: this.newLine, dataset: this.$data.dataSet, reduce: this.$data.reduce };
-        this.$store.commit('setLine', payload);
-        this.$store.dispatch('getLineElevation', payload); 
+        this.$store.commit('lines/setLine', payload);
+        this.$store.dispatch('lines/getLineElevation', payload); 
       });
 
       map.on(window.L.Draw.Event.EDITED, (e) => {
@@ -94,8 +94,8 @@ export default {
          });
         
          payload = { geoJson: nLine, dataset: dataSet, reduce: this.$data.reduce };
-         this.$store.commit('setLine', nLine);
-         this.$store.dispatch('getLineElevation', payload); 
+         this.$store.commit('lines/setLine', nLine);
+         this.$store.dispatch('lines/getLineElevation', payload); 
       });
 
     });
@@ -131,7 +131,7 @@ export default {
       return this.dataSet;
     },
     elevationResult() {
-      return this.$store.state.lineElevationResult;
+      return this.$store.state.lines.lineElevationResult;
     },
   },
 
