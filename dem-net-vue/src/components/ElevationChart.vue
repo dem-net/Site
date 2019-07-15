@@ -15,22 +15,30 @@ export default {
             },
             gridLines: {
               display: true
-            }
+            },
+            scaleLabel: {
+							display: true,
+							labelString: 'Elevation (m)'
+						}
           }],
           xAxes: [ {
             ticks: {
-              beginAtZero: false
+              beginAtZero: true
             },
             gridLines: {
               display: false
-            }
+            },
+            scaleLabel: {
+							display: true,
+							labelString: 'Distance (km)'
+						}
           }]
         },
         tooltips: {
             mode: 'nearest'
         },
         legend: {
-          display: true
+          display: false
         },
         responsive: true,
         maintainAspectRatio: false,

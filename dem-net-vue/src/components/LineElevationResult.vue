@@ -61,7 +61,7 @@
         </div>
       </nav>
       <div>
-          Chart
+          Elevation profile
           <elevation-chart :chart-data="elevationChartData"></elevation-chart>
       </div>
     </div>
