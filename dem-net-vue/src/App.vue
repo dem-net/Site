@@ -30,7 +30,7 @@
                       Line elevation
                     </router-link>
                     <hr class="navbar-divider">
-                     <router-link to="/about" class="navbar-item">
+                     <router-link :to="{ name: 'Playground3dGpx'}" class="navbar-item">
                       GPX to 3D (glTF and GLB)
                     </router-link>
                     <router-link to="/about" class="navbar-item">

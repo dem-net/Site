@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import PlaygroundPoint from './views/PlaygroundPoint.vue'
 import PlaygroundLine from './views/PlaygroundLine.vue'
+import Playground3DGpx from './views/Playground3DGpx.vue'
 import EmptyMessage from './views/EmptyMessage.vue'
 
 Vue.use(Router)
@@ -24,6 +25,11 @@ export default new Router({
       path: '/playgroundline',
       name: 'PlaygroundLine',
       component: PlaygroundLine
+    },
+    {
+      path: '/playground_3dgpx',
+      name: 'Playground3dGpx',
+      component: Playground3DGpx
     },
     {
       path: '/about',
