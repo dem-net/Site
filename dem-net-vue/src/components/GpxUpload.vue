@@ -21,7 +21,7 @@ import axios from 'axios'
 
     export default {
         name: 'GpxUpload',
-        components: { axios },
+        components: {  },
         data() {
             return {
                 file: null
