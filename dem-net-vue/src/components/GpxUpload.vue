@@ -1,5 +1,14 @@
 <template>
     <section>
+        <b-notification v-show="demErrors"
+            type="is-warning"
+            has-icon
+            icon-pack="fas"
+            aria-close-label="Close notification"
+            role="alert">
+            Application cannot connect to back-end server. Please try again later.
+       {{ demErrors }}
+        </b-notification>
     <b-field class="file">
         <b-upload v-model="file">
             <a class="button is-primary">
@@ -24,7 +33,9 @@ import axios from 'axios'
         components: {  },
         data() {
             return {
-                file: null
+                file: null,
+                gpxElevation: null,
+                demErrors: null
             }
         },
         methods: {
@@ -38,12 +49,11 @@ import axios from 'axios'
                         'Content-Type': 'multipart/form-data'
                     }
                 }
-                ).then(function(){
-                console.log('SUCCESS!!');
+                ).then(result => {
+                    this.gpxElevation = result.data;
+                    this.$emit('gpxElevationReceived', result.data);
                 })
-                .catch(function(){
-                console.log('FAILURE!!');
-                });
+                .catch(err=> this.demErrors = err)
             }
         }
     }

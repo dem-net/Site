@@ -8,7 +8,10 @@
       </header>
       <div class="card-content">
         <div class="content">
-          <GpxUpload></GpxUpload>
+          <GpxUpload @gpxElevationReceived="handleElevation"></GpxUpload>
+       
+          <MapD3Elevation/>
+          
         </div>
       </div>
     </div>
@@ -19,10 +22,22 @@
 <script>
 
 import GpxUpload from '@/components/GpxUpload.vue'
+import MapD3Elevation from '@/components/MapD3Elevation.vue'
 
 export default {
   name: 'Playground3DGpx',
-  components: { GpxUpload }
+  components: { GpxUpload, MapD3Elevation },
+  data() {
+    return {
+      geoJson: null,
+    }
+  },
+  methods: 
+  {
+    handleElevation(result) {
+      this.geoJson = result;
+    }
+  }
 }
 </script>
 
