@@ -42,7 +42,7 @@ import axios from 'axios'
             upload(){
                 let formData = new FormData();
                 formData.append('file', this.file);
-                axios.post("/api/elevation/gpx/geojson",
+                axios.post("/api/elevation/gpx/geojson?dataset=AW3D30&reduceResolution=0",
                 formData,
                 {
                     headers: {

@@ -1,5 +1,6 @@
 <template>
   <div class="playground">
+    
     <div class="container is-fluild">
     <h1 class="title">GPX elevation and 3D viewer</h1>
     <div class="card">
@@ -10,17 +11,18 @@
         <div class="content">
           <GpxUpload @gpxElevationReceived="handleElevation"></GpxUpload>
        
-          <MapD3Elevation/>
           
         </div>
       </div>
     </div>
+    <section>
+      <MapD3Elevation :geoJson="geoJsonData"/>
+    </section>
   </div>
   </div>
 </template>
 
 <script>
-
 import GpxUpload from '@/components/GpxUpload.vue'
 import MapD3Elevation from '@/components/MapD3Elevation.vue'
 
@@ -30,6 +32,11 @@ export default {
   data() {
     return {
       geoJson: null,
+    }
+  },
+  computed: {
+    geoJsonData() {
+      return this.geoJson;
     }
   },
   methods: 

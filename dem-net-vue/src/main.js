@@ -34,9 +34,9 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 library.add(faGithub,faExclamationTriangle, faSpinner, faPlus, faMinus, faUpload);
 Vue.component('vue-fontawesome', FontAwesomeIcon);
 
+// Buefy
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.min.css'
-
 Vue.use(Buefy, {
   defaultIconPack: 'fas',
   defaultIconComponent: 'vue-fontawesome',
