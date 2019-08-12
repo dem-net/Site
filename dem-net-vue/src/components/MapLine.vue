@@ -17,7 +17,7 @@
           <div class="columns">
           <div class="column">
           <b-field label="Line reduction">
-                <b-numberinput v-model="reduce" min="0" max="1000" step="10" @input="setReduce"></b-numberinput>
+                <b-numberinput v-model="reduce" min="0" max="1000" step="1" @input="setReduce"></b-numberinput>
             </b-field>
           </div>
             <div class="column">

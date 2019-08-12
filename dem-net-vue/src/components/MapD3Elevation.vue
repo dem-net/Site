@@ -1,8 +1,8 @@
 <template>
     <div>
-    <div id="map" ref="map"></div>
+    <div ref="map" id="map" />
       <div id="elevation-div" class="leaflet-control elevation"></div>
-
+{{djson}}
       <div id="gpx-summary" class="gpx-summary">
         <span class="totlen">
           <span class="summarylabel">Total Length: </span>
@@ -23,19 +23,27 @@
 </template>
 
 <script>
+
+import * as d3 from 'd3'
+import { LMap, LTileLayer } from "vue2-leaflet";
+
+var controlElevation;
     export default {
         name: 'mapd3Elevation',
-        components: { 
+        components: { LMap, d3, LTileLayer
         },
+        data() {
+          return {
+            djson: {}
+          }
+        },    
         props: {
             geoJson: {type: Object, default: null}
         },
         watch: {
-            // à chaque fois que la question change, cette fonction s'exécutera
             geoJson: function (newData) {
-                var controlElevation = window.L.control.elevation(this.elevationControlOptions);
-                
-            controlElevation.loadData(newData);
+              this.djson = newData;
+              controlElevation.loadData(this.djson)
             }
         },
         methods: {
@@ -43,85 +51,72 @@
         },
         mounted() {
           this.$nextTick(() => {
-                //const map = this.$refs.map.mapObject;
-                //var map1 = new window.L.Map("map", opts.map);
 
-                var map = new window.L.Map("map", opts.map);
+                const map = this.$refs.map.mapObject;
+                
+                var opts = {
+                    map: {
+                      center: [41.4583, 12.7059],
+                      zoom: 5,
+                      markerZoomAnimation: false,
+                      zoomControl: false
+                    },
+                    zoomControl: {
+                      position: "topleft"
+                    },
+                    otmLayer: {
+                      url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+                      options: {
+                        attribution:
+                          'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+                        /*subdomains:"1234"*/
+                      }
+                    },
+                    elevationControl: {
+                      url: "",
+                      options: {
+                        theme: "lime-theme", //default: lime-theme
+                        useHeightIndicator: true, //if false a marker is drawn at map position
+                        interpolation: d3.curveLinear, //see https://github.com/d3/d3/wiki/
+                        collapsed: false, //collapsed mode, show chart on click or mouseover
+                        elevationDiv: "#elevation-div",
+                        detachedView: true
+                      }
+                    },
+                    layersControl: {
+                      options: {
+                        collapsed: false
+                      }
+                    }
+                }
 
-      var baseLayers = {};
-      baseLayers.OTM = new window.L.TileLayer(
-        opts.otmLayer.url,
-        opts.otmLayer.options
-      );
+                var baseLayers = {};
+                baseLayers.OTM = new window.L.TileLayer(
+                  opts.otmLayer.url,
+                  opts.otmLayer.options
+                );
 
-      var controlZoom = new window.L.Control.Zoom(opts.zoomControl);
-      var controlElevation = window.L.control.elevation(opts.elevationControl.options);
-      var controlLayer = window.L.control.layers(
-        baseLayers,
-        null,
-        opts.layersControl.options
-      );
+                var controlZoom = new window.L.Control.Zoom(opts.zoomControl);
+                controlElevation = L.control.elevation(opts.elevationControl.options);
+                var controlLayer = window.L.control.layers(
+                  baseLayers,
+                  null,
+                  opts.layersControl.options
+                );
 
-      controlZoom.addTo(map);
-      controlLayer.addTo(map);
+                controlZoom.addTo(map);
+                controlLayer.addTo(map);
 
-      controlElevation.loadChart(map);
-      controlElevation.loadData(opts.elevationControl.url);
+                controlElevation.loadChart(map);
+                controlElevation.loadData(opts.elevationControl.url);
 
-      map.addLayer(baseLayers.OTM);
+                map.addLayer(baseLayers.OTM);
 
-    //   map.on("eledata_loaded", function(e) {
-    //     var q = document.querySelector.bind(document);
-    //     var track = e.track_info;
-
-    //     controlLayer.addOverlay(e.layer, e.name);
-
-    //     q(".totlen .summaryvalue").innerHTML =
-    //       track.distance.toFixed(2) + " km";
-    //     q(".maxele .summaryvalue").innerHTML =
-    //       track.elevation_max.toFixed(2) + " m";
-    //     q(".minele .summaryvalue").innerHTML =
-    //       track.elevation_min.toFixed(2) + " m";
-    //   });
-          })
-        }
+                
+            })
+        },
     }
-
-    var opts = {
-        map: {
-          center: [41.4583, 12.7059],
-          zoom: 5,
-          markerZoomAnimation: false,
-          zoomControl: false
-        },
-        zoomControl: {
-          position: "topleft"
-        },
-        otmLayer: {
-          url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-          options: {
-            attribution:
-              'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-            /*subdomains:"1234"*/
-          }
-        },
-        elevationControl: {
-          url: "",
-          options: {
-            theme: "lime-theme", //default: lime-theme
-            useHeightIndicator: true, //if false a marker is drawn at map position
-            interpolation: d3.curveLinear, //see https://github.com/d3/d3/wiki/
-            collapsed: false, //collapsed mode, show chart on click or mouseover
-            elevationDiv: "#elevation-div",
-            detachedView: true
-          }
-        },
-        layersControl: {
-          options: {
-            collapsed: false
-          }
-        }
-      };
+    
 
       
 </script>

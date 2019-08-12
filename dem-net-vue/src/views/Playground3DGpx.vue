@@ -23,12 +23,14 @@
 </template>
 
 <script>
+
+import { LMap, LTileLayer } from "vue2-leaflet";
 import GpxUpload from '@/components/GpxUpload.vue'
 import MapD3Elevation from '@/components/MapD3Elevation.vue'
 
 export default {
   name: 'Playground3DGpx',
-  components: { GpxUpload, MapD3Elevation },
+  components: { GpxUpload, MapD3Elevation,LMap, LTileLayer },
   data() {
     return {
       geoJson: null,
