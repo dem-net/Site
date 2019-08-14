@@ -34,7 +34,8 @@
             <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
             <div class="glbcontent">
               <!-- <model-gltf :content="glbFile"></model-gltf> -->
-              <model-gltf src="../assets/terrain.glb"></model-gltf>
+              <model-gltf
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile" :rotation="rotation" @on-load="onLoad"></model-gltf>
             </div>
           </section>
         </div>
@@ -59,33 +60,46 @@ export default {
     return {
         gpxFile: null,
         glbFile: null,
-        demErrors: null
+        demErrors: null,
+        rotation: {
+                x: 0,
+                y: 0,
+                z: 0,
+            }
     }
   },
   methods: 
   {
-      upload(){
-        let formData = new FormData();
-        formData.append('file', this.gpxFile);
-        axios.post("/api/elevation/gpx/glb?dataset=SRTM_GL3&generateTIN=false&textured=true",
-        formData,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-        ).then(result => {
-            this.glbFile = result.data;
-        })
-        .catch(err=> this.demErrors = err)
-            }
+    onLoad () {
+        this.rotate();
+    },
+    rotate () {
+        this.rotation.y += 0.005;
+        requestAnimationFrame( this.rotate );
+    },
+    upload(){
+      let formData = new FormData();
+      formData.append('file', this.gpxFile);
+      //axios.post("/api/elevation/gpx/glb?dataset=SRTM_GL3&generateTIN=false&textured=false",
+      axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
+      formData,
+      {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+      }
+      ).then(result => {
+          this.glbFile = 'https://localhost:5001' + result.data;
+      })
+      .catch(err=> this.demErrors = err)
+          }
   }
 }
 </script>
 
 <style scoped>
 .glbcontent {
-    height: 500px;
-    width: 500px;
+    height: 100%;
+    width: 100%;
 }
 </style>
