@@ -5,7 +5,7 @@
     <h1 class="title">3D Terrain viewer</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Upload a GPX file to get its 3D model.</p>
+        <p class="card-header-title">Upload a GPX file and vizualise the 3D model.</p>
       </header>
       <div class="card-content">  
         <div class="content">
@@ -20,18 +20,22 @@
               {{ demErrors }}
                 </b-notification>
             <b-field class="file">
-                <b-upload v-model="file">
+                <b-upload v-model="gpxFile">
                     <a class="button is-primary">
                         <b-icon icon="upload"></b-icon>
                         <span>Click to upload</span>
                     </a>
                 </b-upload>
-                <span class="file-name" v-if="file">
-                    {{ file.name }}
+                <span class="file-name" v-if="gpxFile">
+                    {{ gpxFile.name }}
                 </span>
             </b-field>
             
-            <b-button @click="upload" :disabled="!file">Generate report</b-button>
+            <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
+            <div class="glbcontent">
+              <!-- <model-gltf :content="glbFile"></model-gltf> -->
+              <model-gltf src="../assets/terrain.glb"></model-gltf>
+            </div>
           </section>
         </div>
       </div>
@@ -46,13 +50,15 @@
 <script>
 import axios from 'axios'
 
-import { LMap, LTileLayer } from "vue2-leaflet";
+import { ModelGltf } from 'vue-3d-model'
 
 export default {
   name: 'Playground3D',
+  components: { ModelGltf },
   data() {
     return {
-        file: null,
+        gpxFile: null,
+        glbFile: null,
         demErrors: null
     }
   },
@@ -60,8 +66,8 @@ export default {
   {
       upload(){
         let formData = new FormData();
-        formData.append('file', this.file);
-        axios.post("/api/elevation/gpx/geojson?dataset=AW3D30&reduceResolution=0",
+        formData.append('file', this.gpxFile);
+        axios.post("/api/elevation/gpx/glb?dataset=SRTM_GL3&generateTIN=false&textured=true",
         formData,
         {
             headers: {
@@ -69,8 +75,7 @@ export default {
             }
         }
         ).then(result => {
-            this.gpxElevation = result.data;
-            this.$emit('gpxElevationReceived', result.data);
+            this.glbFile = result.data;
         })
         .catch(err=> this.demErrors = err)
             }
@@ -79,4 +84,8 @@ export default {
 </script>
 
 <style scoped>
+.glbcontent {
+    height: 500px;
+    width: 500px;
+}
 </style>
