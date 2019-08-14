@@ -33,9 +33,9 @@
                     <!-- <a href="/leaflet-elevation_geojson-data.html" class="navbar-item">
                      GPX to 3D (glTF and GLB)
                       </a> -->
-                     <router-link :to="{ name: 'Playground3dGpx'}" class="navbar-item">
+                     <!-- <router-link :to="{ name: 'Playground3dGpx'}" class="navbar-item">
                       GPX to 3D (glTF and GLB)
-                    </router-link>
+                    </router-link> -->
                     <router-link :to="{ name: 'Playground3D'}" class="navbar-item">
                       3D (glTF and GLB)
                     </router-link>

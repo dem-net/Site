@@ -5,7 +5,7 @@
     <h1 class="title">3D Terrain viewer</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Upload a GPX file to get its elevation info.</p>
+        <p class="card-header-title">Upload a GPX file to get its 3D model.</p>
       </header>
       <div class="card-content">  
         <div class="content">
