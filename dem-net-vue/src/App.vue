@@ -37,7 +37,7 @@
                       GPX to 3D (glTF and GLB)
                     </router-link> -->
                     <router-link :to="{ name: 'Playground3D'}" class="navbar-item">
-                      3D (glTF and GLB)
+                      GPX to 3D model
                     </router-link>
                   </div>
                 </div>

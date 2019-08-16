@@ -2,7 +2,7 @@
   <div class="playground">
     
     <div class="container is-fluild">
-    <h1 class="title">3D Terrain viewer</h1>
+    <h1 class="title">3D terrain generation</h1>
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">Upload a GPX file and vizualise the 3D model.</p>
@@ -74,14 +74,14 @@ export default {
         this.rotate();
     },
     rotate () {
-        this.rotation.y += 0.005;
+        this.rotation.y += 0.002;
         requestAnimationFrame( this.rotate );
     },
     upload(){
       let formData = new FormData();
       formData.append('file', this.gpxFile);
-      //axios.post("/api/elevation/gpx/glb?dataset=SRTM_GL3&generateTIN=false&textured=false",
-      axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
+      axios.post("/api/elevation/gpx/glb?dataset=SRTM_GL1&generateTIN=false&textured=true",
+      //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
       formData,
       {
           headers: {
@@ -89,7 +89,8 @@ export default {
           }
       }
       ).then(result => {
-          this.glbFile = 'https://localhost:5001' + result.data;
+          //this.glbFile = 'https://localhost:5001' + result.data;
+          this.glbFile = 'https://elevation.azurewebsites.net' + result.data;
       })
       .catch(err=> this.demErrors = err)
           }
