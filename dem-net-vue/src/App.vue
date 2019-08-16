@@ -78,10 +78,12 @@ export default {
   name: 'app',
   created() {
     this.$store.dispatch('datasets/getDatasets');
+    this.$store.dispatch('imagery/getProviders');
   },
   computed: {
     initErrors() {
-      if (this.$store.state.datasets.initErrors)
+      if (this.$store.state.datasets.initErrors
+        || this.$store.state.imagery.initErrors)
       return true;
       else
       return false;
