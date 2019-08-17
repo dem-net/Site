@@ -34,14 +34,24 @@
               <div class="column">
                 <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
               </div>
+              <!-- Export format -->
               <div class="column">
+                <label class="label">Model output format</label>
+                <b-field>
+                  <b-radio-button v-model="requestParams.format" native-value="glTF">glTF</b-radio-button>
+                  <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                  </b-field>
+              </div>
+              <!-- Texture -->
+              <div class="column" v-show="showTextureOptions">
                 <b-field label="Use imagery texture">
                     <b-switch v-model="requestParams.textured">
                         {{ requestParams.textured }}
                     </b-switch>
                 </b-field>
-                <ImagerySelector v-show="this.requestParams.textured" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
+                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
               </div>
+              <!-- rotate -->
               <div class="column">
                 <b-field label="Rotate model">
                     <b-switch v-model="enableRotation">
@@ -54,7 +64,9 @@
             <div class="glbcontent">
               <!-- <model-gltf :content="glbFile"></model-gltf> -->
               <model-gltf
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile" :rotation="rotation" @on-load="onLoad"></model-gltf>
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+            <model-stl
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
             </div>
           </section>
         </div>
@@ -69,13 +81,13 @@
 
 <script>
 import axios from 'axios'
-import { ModelGltf } from 'vue-3d-model'
+import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
 
 export default {
   name: 'Playground3D',
-  components: { ModelGltf,DatasetSelector,ImagerySelector },
+  components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
   data() {
     return {
         gpxFile: null,
@@ -91,8 +103,17 @@ export default {
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
-          minTilesPerImage: 4
+          minTilesPerImage: 4,
+          format: "glTF"
         }
+    }
+  },
+  computed: {
+    showTextureOptions() {
+      return (this.requestParams.format == "glTF");
+    },
+    showTextureOptionsProvider() {
+      return (this.requestParams.format == "glTF" && this.requestParams.textured);
     }
   },
   methods: 
@@ -115,11 +136,12 @@ export default {
     upload(){
       let formData = new FormData();
       formData.append('file', this.gpxFile);
-      axios.post("/api/elevation/gpx/glb?dataset=" + this.requestParams.dataSet 
+      axios.post("/api/elevation/gpx/3d?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=false"
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
-                                    + "&minTilesPerImage=" + this.requestParams.minTilesPerImage,
+                                    + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
+                                    + "&format=" + this.requestParams.format,
       //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
       formData,
       {
