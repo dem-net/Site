@@ -32,10 +32,15 @@
             </b-field>
             <div class="columns">
               <div class="column">
-                <DatasetSelector :dataSet="this.dataSet" @datasetSelected="onDatasetSelected"/>
+                <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
               </div>
               <div class="column">
-                  <ImagerySelector :provider="this.imageryProvider" @providerSelected="onProviderSelected"/>
+                <b-field label="Use imagery texture">
+                    <b-switch v-model="requestParams.textured">
+                        {{ requestParams.textured }}
+                    </b-switch>
+                </b-field>
+                <ImagerySelector v-show="this.requestParams.textured" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
               </div>
               <div class="column">
                 <b-field label="Rotate model">
@@ -81,9 +86,13 @@ export default {
                 y: 0,
                 z: 0,
             },
-        dataSet: "SRTM_GL3",
-        imageryProvider: "Esri.WorldImagery",
         enableRotation: true,
+        requestParams: {
+          dataSet: "SRTM_GL3",
+          textured: true,
+          imageryProvider: "Esri.WorldImagery",
+          minTilesPerImage: 4
+        }
     }
   },
   methods: 
@@ -98,15 +107,19 @@ export default {
         requestAnimationFrame( this.rotate );
     },
     onDatasetSelected(dstName) {
-      this.dataSet = dstName;
+      this.requestParams.dataSet = dstName;
     },
     onProviderSelected(providerName) {
-      this.imageryProvider = providerName;
+      this.requestParams.imageryProvider = providerName;
     },
     upload(){
       let formData = new FormData();
       formData.append('file', this.gpxFile);
-      axios.post("/api/elevation/gpx/glb?dataset=" + this.dataSet + "&generateTIN=false&textured=true&imageryProvider=" + this.imageryProvider + '&minTilesPerImage=4',
+      axios.post("/api/elevation/gpx/glb?dataset=" + this.requestParams.dataSet 
+                                    + "&generateTIN=false"
+                                    + "&textured=" + this.requestParams.textured
+                                    + "&imageryProvider=" + this.requestParams.imageryProvider 
+                                    + "&minTilesPerImage=" + this.requestParams.minTilesPerImage,
       //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
       formData,
       {
