@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 import PlaygroundPoint from './views/PlaygroundPoint.vue'
 import PlaygroundLine from './views/PlaygroundLine.vue'
 import Playground3DGpx from './views/Playground3DGpx.vue'
-import Playground3D from './views/Playground3D.vue'
+import Playground3DBbox from './views/Playground3DBbox.vue'
 import EmptyMessage from './views/EmptyMessage.vue'
 
 Vue.use(Router)
@@ -29,13 +29,13 @@ export default new Router({
     },
     {
       path: '/playground_3dgpx',
-      name: 'Playground3dGpx',
+      name: 'Playground3DGpx',
       component: Playground3DGpx
     },
     {
-      path: '/playground_3d',
-      name: 'Playground3D',
-      component: Playground3D
+      path: '/playground_3dbbox',
+      name: 'Playground3DBbox',
+      component: Playground3DBbox
     },
     {
       path: '/about',

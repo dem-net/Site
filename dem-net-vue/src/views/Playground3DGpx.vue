@@ -2,53 +2,167 @@
   <div class="playground">
     
     <div class="container is-fluild">
-    <h1 class="title">GPX elevation and 3D viewer</h1>
+    <h1 class="title">3D terrain generation</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Upload a GPX file to get its elevation info.</p>
+        <p class="card-header-title">Upload a GPX file and visualize the 3D model.</p>
       </header>
-      <div class="card-content">
+      <div class="card-content">  
         <div class="content">
-          <GpxUpload @gpxElevationReceived="handleElevation"></GpxUpload>
-       
-          
+          <section>
+            <b-notification v-show="demErrors"
+                    type="is-warning"
+                    has-icon
+                    icon-pack="fas"
+                    aria-close-label="Close notification"
+                    role="alert">
+                    An error occured while generating the model :
+              {{ demErrors }}
+                </b-notification>
+            <b-field class="file">
+                <b-upload v-model="gpxFile">
+                    <a class="button is-primary">
+                        <b-icon icon="upload"></b-icon>
+                        <span>Choose your GPX...</span>
+                    </a>
+                </b-upload>
+                <span class="file-name" v-if="gpxFile">
+                    {{ gpxFile.name }}
+                </span>
+            </b-field>
+            <div class="columns">
+              <div class="column">
+                <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
+              </div>
+              <!-- Export format -->
+              <div class="column">
+                <label class="label">Model output format</label>
+                <b-field>
+                  <b-radio-button v-model="requestParams.format" native-value="glTF">glTF</b-radio-button>
+                  <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                  </b-field>
+              </div>
+              <!-- Texture -->
+              <div class="column" v-show="showTextureOptions">
+                <b-field label="Use imagery texture">
+                    <b-switch v-model="requestParams.textured">
+                        {{ requestParams.textured }}
+                    </b-switch>
+                </b-field>
+                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
+              </div>
+              <!-- rotate -->
+              <div class="column">
+                <b-field label="Rotate model">
+                    <b-switch v-model="enableRotation">
+                        {{ enableRotation }}
+                    </b-switch>
+                </b-field>
+              </div>
+            </div>
+            <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
+            <div class="glbcontent">
+              <!-- <model-gltf :content="glbFile"></model-gltf> -->
+              <model-gltf
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+            <model-stl
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
+            </div>
+          </section>
         </div>
       </div>
     </div>
     <section>
-      <MapD3Elevation :geoJson="geoJsonData"/>
+      
     </section>
   </div>
   </div>
 </template>
 
 <script>
-
-import { LMap, LTileLayer } from "vue2-leaflet";
-import GpxUpload from '@/components/GpxUpload.vue'
-import MapD3Elevation from '@/components/MapD3Elevation.vue'
+import axios from 'axios'
+import { ModelGltf,ModelStl } from 'vue-3d-model'
+import DatasetSelector from '../components/DatasetSelector'
+import ImagerySelector from '../components/ImagerySelector'
 
 export default {
   name: 'Playground3DGpx',
-  components: { GpxUpload, MapD3Elevation,LMap, LTileLayer },
+  components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
   data() {
     return {
-      geoJson: null,
+        gpxFile: null,
+        glbFile: null,
+        demErrors: null,
+        rotation: {
+                x: 0,
+                y: 0,
+                z: 0,
+            },
+        enableRotation: true,
+        requestParams: {
+          dataSet: "SRTM_GL3",
+          textured: true,
+          imageryProvider: "Esri.WorldImagery",
+          minTilesPerImage: 4,
+          format: "glTF"
+        }
     }
   },
   computed: {
-    geoJsonData() {
-      return this.geoJson;
+    showTextureOptions() {
+      return (this.requestParams.format == "glTF");
+    },
+    showTextureOptionsProvider() {
+      return (this.requestParams.format == "glTF" && this.requestParams.textured);
     }
   },
   methods: 
   {
-    handleElevation(result) {
-      this.geoJson = result;
-    }
+    onLoad () {
+        this.rotate();
+    },
+    rotate () {
+      if (this.enableRotation) {
+        this.rotation.y += 0.002;
+        }
+        requestAnimationFrame( this.rotate );
+    },
+    onDatasetSelected(dstName) {
+      this.requestParams.dataSet = dstName;
+    },
+    onProviderSelected(providerName) {
+      this.requestParams.imageryProvider = providerName;
+    },
+    upload(){
+      let formData = new FormData();
+      formData.append('file', this.gpxFile);
+      axios.post("/api/elevation/gpx/3d?dataset=" + this.requestParams.dataSet 
+                                    + "&generateTIN=false"
+                                    + "&textured=" + this.requestParams.textured
+                                    + "&imageryProvider=" + this.requestParams.imageryProvider 
+                                    + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
+                                    + "&format=" + this.requestParams.format,
+      //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
+      formData,
+      {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+      }
+      ).then(result => {
+          this.glbFile = 'https://localhost:5001' + result.data;
+          //this.glbFile = 'https://elevation.azurewebsites.net' + result.data;
+          
+      })
+      .catch(err=> this.demErrors = err.response.data)
+          }
   }
-}
+} 
 </script>
 
 <style scoped>
+.glbcontent {
+    height: 100%;
+    width: 100%;
+}
 </style>

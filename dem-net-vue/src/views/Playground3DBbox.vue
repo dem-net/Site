@@ -2,10 +2,9 @@
   <div class="playground">
     
     <div class="container is-fluild">
-    <h1 class="title">3D terrain generation</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Upload a GPX file and vizualise the 3D model.</p>
+        <p class="card-header-title">Draw a rectangle and visualize the terrain in 3D.</p>
       </header>
       <div class="card-content">  
         <div class="content">
@@ -19,55 +18,52 @@
                     An error occured while generating the model :
               {{ demErrors }}
                 </b-notification>
-            <b-field class="file">
-                <b-upload v-model="gpxFile">
-                    <a class="button is-primary">
-                        <b-icon icon="upload"></b-icon>
-                        <span>Choose your GPX...</span>
-                    </a>
-                </b-upload>
-                <span class="file-name" v-if="gpxFile">
-                    {{ gpxFile.name }}
-                </span>
-            </b-field>
             <div class="columns">
               <div class="column">
-                <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
+                <MapRectangle @bboxSelected="generateModel"></MapRectangle>
               </div>
-              <!-- Export format -->
               <div class="column">
-                <label class="label">Model output format</label>
-                <b-field>
-                  <b-radio-button v-model="requestParams.format" native-value="glTF">glTF</b-radio-button>
-                  <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
-                  </b-field>
-              </div>
-              <!-- Texture -->
-              <div class="column" v-show="showTextureOptions">
-                <b-field label="Use imagery texture">
-                    <b-switch v-model="requestParams.textured">
-                        {{ requestParams.textured }}
-                    </b-switch>
-                </b-field>
-                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
-              </div>
-              <!-- rotate -->
-              <div class="column">
-                <b-field label="Rotate model">
-                    <b-switch v-model="enableRotation">
-                        {{ enableRotation }}
-                    </b-switch>
-                </b-field>
+                <div class="columns">
+                  <div class="column">
+                    <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
+                  </div>
+                  <!-- Export format -->
+                  <div class="column">
+                    <label class="label">Model output format</label>
+                    <b-field>
+                      <b-radio-button v-model="requestParams.format" native-value="glTF">glTF</b-radio-button>
+                      <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                      </b-field>
+                  </div>
+                  <!-- Texture -->
+                  <div class="column" v-show="showTextureOptions">
+                    <b-field label="Use imagery texture">
+                        <b-switch v-model="requestParams.textured">
+                            {{ requestParams.textured }}
+                        </b-switch>
+                    </b-field>
+                    <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
+                  </div>
+                  <!-- rotate -->
+                  <div class="column">
+                    <b-field label="Rotate model">
+                        <b-switch v-model="enableRotation">
+                            {{ enableRotation }}
+                        </b-switch>
+                    </b-field>
+                  </div>
+                </div>
               </div>
             </div>
-            <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
-            <div class="glbcontent">
-              <!-- <model-gltf :content="glbFile"></model-gltf> -->
-              <model-gltf
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
-            <model-stl
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
-            </div>
+              <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
+              <div class="glbcontent">
+                <!-- <model-gltf :content="glbFile"></model-gltf> -->
+                <model-gltf
+              background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+              <model-stl
+              background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
+              </div>
+            
           </section>
         </div>
       </div>
@@ -84,10 +80,11 @@ import axios from 'axios'
 import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
+import MapRectangle from '../components/MapRectangle'
 
 export default {
-  name: 'Playground3D',
-  components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
+  name: 'Playground3DBbox',
+  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
   data() {
     return {
         gpxFile: null,
@@ -132,6 +129,9 @@ export default {
     },
     onProviderSelected(providerName) {
       this.requestParams.imageryProvider = providerName;
+    },
+    generateModel(bbox) {
+      alert('generateModel '+bbox);
     },
     upload(){
       let formData = new FormData();
