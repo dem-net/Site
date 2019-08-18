@@ -20,7 +20,7 @@
                 </b-notification>
             <div class="columns">
               <div class="column">
-                <MapRectangle @bboxSelected="generateModel"></MapRectangle>
+                <MapRectangle @bboxSelected="setBbox"></MapRectangle>
               </div>
               <div class="column">
                 <div class="columns">
@@ -55,7 +55,7 @@
                 </div>
               </div>
             </div>
-              <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
+              <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
                 <model-gltf
@@ -87,7 +87,6 @@ export default {
   components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
   data() {
     return {
-        gpxFile: null,
         glbFile: null,
         demErrors: null,
         rotation: {
@@ -97,6 +96,7 @@ export default {
             },
         enableRotation: true,
         requestParams: {
+          bbox: null,
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
@@ -130,25 +130,17 @@ export default {
     onProviderSelected(providerName) {
       this.requestParams.imageryProvider = providerName;
     },
-    generateModel(bbox) {
-      alert('generateModel '+bbox);
+    setBbox(bbox) {
+      this.requestParams.bbox = bbox;
     },
-    upload(){
-      let formData = new FormData();
-      formData.append('file', this.gpxFile);
-      axios.post("/api/elevation/gpx/3d?dataset=" + this.requestParams.dataSet 
+    generateModel(){
+      axios.get("/api/elevation/bbox/3d/" + this.requestParams.bbox
+                                    + "?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=false"
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
-                                    + "&format=" + this.requestParams.format,
-      //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
-      formData,
-      {
-          headers: {
-              'Content-Type': 'multipart/form-data'
-          }
-      }
+                                    + "&format=" + this.requestParams.format
       ).then(result => {
           this.glbFile = 'https://localhost:5001' + result.data;
           //this.glbFile = 'https://elevation.azurewebsites.net' + result.data;

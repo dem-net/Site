@@ -60,9 +60,12 @@ export default {
         var bounds = null;
          layers.eachLayer(function (layer) {
             bounds = layer._bounds;
+            alert('layer');
          });
 
+        if (bounds != null){
          this.setBbox(bounds._northEast, bounds._southWest);
+         }
         
       });
 
