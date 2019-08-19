@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
+import axios from 'axios'
 
 // Leaflet
 import { LMap, LTileLayer, LMarker, LControl, LFeatureGroup } from 'vue2-leaflet';
@@ -37,12 +38,22 @@ Vue.component('vue-fontawesome', FontAwesomeIcon);
 // Buefy
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.min.css'
+import elevationHub from './elevation-hub';
 Vue.use(Buefy, {
   defaultIconPack: 'fas',
   defaultIconComponent: 'vue-fontawesome',
 })
 
 Vue.config.productionTip = false
+
+// Setup axios as the Vue default $http library
+axios.defaults.baseURL = 'https://localhost:5001' // same as the Url the server listens to
+//axios.defaults.baseURL = 'https://elevation.azurewebsites.net' // same as the Url the server listens to
+Vue.prototype.$http = axios
+
+// SignalR
+Vue.use(elevationHub)
+
 
 new Vue({
   router,

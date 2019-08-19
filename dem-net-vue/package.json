@@ -26,6 +26,7 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@aspnet/signalr": "^1.1.4",
     "@types/leaflet": "^1.4.6",
     "@vue/cli-plugin-babel": "^3.9.0",
     "@vue/cli-plugin-eslint": "^3.9.0",
