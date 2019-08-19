@@ -51,6 +51,12 @@
                 </b-field>
                 <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
               </div>
+              <!-- Z factor -->
+                  <div class="column">
+                    <b-field label="Z multiplier">
+                        <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="1"></b-numberinput>
+                    </b-field>
+                  </div>
               <!-- rotate -->
               <div class="column">
                 <b-field label="Rotate model">
@@ -104,7 +110,8 @@ export default {
           textured: true,
           imageryProvider: "Esri.WorldImagery",
           minTilesPerImage: 4,
-          format: "glTF"
+          format: "glTF",
+          zFactor: 1
         }
     }
   },
@@ -141,7 +148,8 @@ export default {
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
-                                    + "&format=" + this.requestParams.format,
+                                    + "&format=" + this.requestParams.format
+                                    + "&zFactor=" + this.requestParams.zFactor,
       //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
       formData,
       {

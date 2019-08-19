@@ -35,6 +35,8 @@
                       <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
                       </b-field>
                   </div>
+                </div>
+                <div class="columns">
                   <!-- Texture -->
                   <div class="column" v-show="showTextureOptions">
                     <b-field label="Use imagery texture">
@@ -43,6 +45,12 @@
                         </b-switch>
                     </b-field>
                     <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
+                  </div>
+                  <!-- Z factor -->
+                  <div class="column">
+                    <b-field label="Z multiplier">
+                        <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="1"></b-numberinput>
+                    </b-field>
                   </div>
                   <!-- rotate -->
                   <div class="column">
@@ -101,7 +109,8 @@ export default {
           textured: true,
           imageryProvider: "Esri.WorldImagery",
           minTilesPerImage: 4,
-          format: "glTF"
+          format: "glTF",
+          zFactor: 1
         }
     }
   },
@@ -141,6 +150,7 @@ export default {
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
                                     + "&format=" + this.requestParams.format
+                                    + "&zFactor=" + this.requestParams.zFactor
       ).then(result => {
           this.glbFile = 'https://localhost:5001' + result.data;
           //this.glbFile = 'https://elevation.azurewebsites.net' + result.data;
