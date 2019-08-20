@@ -24,6 +24,16 @@ export default {
         
         start()
 
+        // use new Vue instance as an event bus
+        const elevationHub = new Vue() 
+        // every component will use this.$elevationHub to access the event bus
+        Vue.prototype.$elevationHub = elevationHub
+        // Forward server side SignalR events through $elevationHub, where components will listen to them
+        connection.on('ReportProgress', (message, percent) => {
+            elevationHub.$emit('server-progress', { message, percent })
+        })
+
+
     }
 }
 
