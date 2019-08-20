@@ -8,7 +8,22 @@ export default {
         .configureLogging(LogLevel.Information)
         .build()
         
-        connection.start()
+        //connection.start()
+
+        let startedPromise = null
+        function start () {
+        startedPromise = connection.start().catch(err => {
+            // eslint-disable-next-line
+            console.error('Failed to connect with hub', err)
+            return new Promise((resolve, reject) => 
+            setTimeout(() => start().then(resolve).catch(reject), 5000))
+        })
+        return startedPromise
+        }
+        connection.onclose(() => start())
+        
+        start()
+
     }
 }
 
