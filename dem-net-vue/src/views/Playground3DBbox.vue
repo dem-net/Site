@@ -109,7 +109,7 @@ export default {
   },
   beforeDestroy() {
     this.$elevationHub.$off('server-progress', this.onServerProgress);
-    this.$elevationHub.generatorOpened()
+    this.$elevationHub.generatorClosed()
   },
   data() {
     return {
