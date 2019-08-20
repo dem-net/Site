@@ -67,6 +67,15 @@
               </div>
             </div>
             <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
+            <b-notification v-show="serverProgress"
+                    type="is-info"
+                    has-icon
+                    icon-pack="fas"
+                    aria-close-label="Close notification"
+                    role="alert">
+                    <span>Please wait while we're generating your model...</span>
+              {{ serverProgress }}
+                </b-notification>
             <div class="glbcontent">
               <!-- <model-gltf :content="glbFile"></model-gltf> -->
               <model-gltf
@@ -94,11 +103,19 @@ import ImagerySelector from '../components/ImagerySelector'
 export default {
   name: 'Playground3DGpx',
   components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
+  created() {
+    // Listen to server side progress events
+    this.$elevationHub.$on('server-progress', this.onServerProgress)
+  },
+  beforeDestroy() {
+    this.$elevationHub.$off('server-progress', this.onServerProgress)
+  },
   data() {
     return {
         gpxFile: null,
         glbFile: null,
         demErrors: null,
+        serverProgress: null,
         rotation: {
                 x: 0,
                 y: 0,
@@ -163,7 +180,10 @@ export default {
           
       })
       .catch(err=> this.demErrors = err.response.data)
-          }
+    },
+    onServerProgress({message, percent}) {
+      this.serverProgress = message;
+    }
   }
 } 
 </script>

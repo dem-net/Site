@@ -9,7 +9,7 @@
               <router-link to="/" class="navbar-item">
                 <img src="./assets/DEMnet_logo_long.png" alt="Logo" width="64" />
               </router-link>
-              <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+              <a role="button" class="navbar-burger" data-target="navMenu" id="navMenu" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>

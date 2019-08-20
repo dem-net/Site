@@ -18,15 +18,6 @@
                     An error occured while generating the model :
               {{ demErrors }}
                 </b-notification>
-            <b-notification v-show="serverProgress"
-                    type="is-info"
-                    has-icon
-                    icon-pack="fas"
-                    aria-close-label="Close notification"
-                    role="alert">
-                    <span>Please wait while we're generating your model...</span>
-              {{ serverProgress }}
-                </b-notification>
             <div class="columns">
               <div class="column">
                 <MapRectangle @bboxSelected="setBbox"></MapRectangle>
@@ -73,6 +64,15 @@
               </div>
             </div>
               <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
+              <b-notification v-show="serverProgress"
+                    type="is-info"
+                    has-icon
+                    icon-pack="fas"
+                    aria-close-label="Close notification"
+                    role="alert">
+                    <span>Please wait while we're generating your model...</span>
+              {{ serverProgress }}
+                </b-notification>
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
                 <model-gltf

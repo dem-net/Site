@@ -1,6 +1,6 @@
 <template>
 <section>          
-      <div style="width: 100%;height: 100%; background-color:#eee; position:relative;">
+      <div style="width: 90%;height: 100%; background-color:#eee; position:relative;">
         <l-map ref="map" id="map" :zoom="zoom"
             :center="center"
             :options='{ zoomControl: true }'>
@@ -97,7 +97,7 @@ export default {
 
 #map {
   width: 100%;
-  height: 500px;
+  height: 450px;
   margin: 0;
 }
 </style>
