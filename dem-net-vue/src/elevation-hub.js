@@ -12,11 +12,20 @@ export default {
 
         let startedPromise = null
         function start () {
-        startedPromise = connection.start().catch(err => {
+        startedPromise = connection.start()
+        .catch(err => {
             // eslint-disable-next-line
             console.error('Failed to connect with hub', err)
             return new Promise((resolve, reject) => 
             setTimeout(() => start().then(resolve).catch(reject), 5000))
+        })
+        .then(function(){
+            connection.invoke('getConnectionId')
+            .then(function (connectionId) {
+                // eslint-disable-next-line
+                console.log("connectionId: " + connectionId);
+                Vue.prototype.$connectionId = connectionId
+            })
         })
         return startedPromise
         }
@@ -32,6 +41,20 @@ export default {
         connection.on('ReportProgress', (message, percent) => {
             elevationHub.$emit('server-progress', { message, percent })
         })
+
+        elevationHub.generatorOpened = () => {
+            return startedPromise
+              .then(() => connection.invoke('JoinGeneratorGroup'))
+              // eslint-disable-next-line
+              .catch(console.error)
+          }
+          elevationHub.generatorClosed = () => {
+            return startedPromise
+              .then(() => connection.invoke('LeaveGeneratorGroup'))
+              // eslint-disable-next-line
+              .catch(console.error)
+          }
+          
 
 
     }

@@ -104,10 +104,12 @@ export default {
   components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
   created() {
     // Listen to server side progress events
-    this.$elevationHub.$on('server-progress', this.onServerProgress)
+    this.$elevationHub.$on('server-progress', this.onServerProgress);
+    this.$elevationHub.generatorOpened()
   },
   beforeDestroy() {
-    this.$elevationHub.$off('server-progress', this.onServerProgress)
+    this.$elevationHub.$off('server-progress', this.onServerProgress);
+    this.$elevationHub.generatorOpened()
   },
   data() {
     return {
@@ -168,6 +170,7 @@ export default {
                                     + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
+                                    + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
           this.glbFile = 'https://localhost:5001' + result.data;
           //this.glbFile = 'https://elevation.azurewebsites.net' + result.data;

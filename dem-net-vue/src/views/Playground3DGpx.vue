@@ -105,10 +105,12 @@ export default {
   components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
   created() {
     // Listen to server side progress events
-    this.$elevationHub.$on('server-progress', this.onServerProgress)
+    this.$elevationHub.$on('server-progress', this.onServerProgress);
+    this.$elevationHub.generatorOpened()
   },
   beforeDestroy() {
-    this.$elevationHub.$off('server-progress', this.onServerProgress)
+    this.$elevationHub.$off('server-progress', this.onServerProgress);
+    this.$elevationHub.generatorClosed()
   },
   data() {
     return {
@@ -166,7 +168,8 @@ export default {
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
                                     + "&format=" + this.requestParams.format
-                                    + "&zFactor=" + this.requestParams.zFactor,
+                                    + "&zFactor=" + this.requestParams.zFactor
+                                    + "&clientConnectionId=" + this.$connectionId,
       //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
       formData,
       {
