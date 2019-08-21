@@ -52,6 +52,14 @@
                         <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="1"></b-numberinput>
                     </b-field>
                   </div>
+                  <!-- Z factor -->
+                  <div class="column">
+                    <b-field label="Generate TIN">
+                        <b-switch v-model="requestParams.generateTIN">
+                            {{ requestParams.generateTIN }}
+                        </b-switch>
+                    </b-field>
+                  </div>
                   <!-- rotate -->
                   <div class="column">
                     <b-field label="Rotate model">
@@ -129,7 +137,8 @@ export default {
           imageryProvider: "Esri.WorldImagery",
           minTilesPerImage: 4,
           format: "glTF",
-          zFactor: 1
+          zFactor: 1,
+          generateTIN: false
         }
     }
   },
@@ -164,7 +173,7 @@ export default {
     generateModel(){
       axios.get("/api/elevation/bbox/3d/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
-                                    + "&generateTIN=false"
+                                    + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
