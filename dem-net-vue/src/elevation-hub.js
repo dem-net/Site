@@ -4,7 +4,7 @@ export default {
     // eslint-disable-next-line
     install (Vue) {
         const connection = new HubConnectionBuilder()
-        .withUrl('https://localhost:5001/elevation-hub')
+        .withUrl(process.env.VUE_APP_API_BASEURL + '/elevation-hub')
         .configureLogging(LogLevel.Information)
         .build()
         

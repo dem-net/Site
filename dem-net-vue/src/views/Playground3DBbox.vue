@@ -135,7 +135,7 @@ export default {
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
-          minTilesPerImage: 4,
+          minTilesPerImage: 8,
           format: "glTF",
           zFactor: 1,
           generateTIN: false
@@ -171,6 +171,9 @@ export default {
       this.requestParams.bbox = bbox;
     },
     generateModel(){
+      this.demErrors = null;
+      this.serverProgress = "Sending request...";  
+      const baseUrl = process.env.VUE_APP_API_BASEURL
       axios.get("/api/elevation/bbox/3d/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=" + this.requestParams.generateTIN
@@ -181,13 +184,12 @@ export default {
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
-          this.glbFile = 'https://localhost:5001' + result.data;
-          //this.glbFile = 'https://elevation.azurewebsites.net' + result.data;
+          this.glbFile = baseUrl + result.data;
           
       })
       .catch(err=> this.demErrors = err.response.data)
     },
-    onServerProgress({message, percent}) {
+    onServerProgress({message}) {
       this.serverProgress = message;
     }
   }

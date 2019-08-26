@@ -160,6 +160,9 @@ export default {
       this.requestParams.imageryProvider = providerName;
     },
     upload(){
+      this.demErrors = null;
+      this.serverProgress = "Sending request...";
+      const baseUrl = process.env.VUE_APP_API_BASEURL
       let formData = new FormData();
       formData.append('file', this.gpxFile);
       axios.post("/api/elevation/gpx/3d?dataset=" + this.requestParams.dataSet 
@@ -178,13 +181,12 @@ export default {
           }
       }
       ).then(result => {
-          this.glbFile = 'https://localhost:5001' + result.data;
-          //this.glbFile = 'https://elevation.azurewebsites.net' + result.data;
+          this.glbFile = baseUrl + result.data;
           
       })
       .catch(err=> this.demErrors = err.response.data)
     },
-    onServerProgress({message, percent}) {
+    onServerProgress({message}) {
       this.serverProgress = message;
     }
   }
