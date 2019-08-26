@@ -110,7 +110,7 @@ import MapRectangle from '../components/MapRectangle'
 export default {
   name: 'Playground3DBbox',
   components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
-  created() {
+  mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
     this.$elevationHub.generatorOpened()

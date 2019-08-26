@@ -54,7 +54,7 @@
               <!-- Z factor -->
                   <div class="column">
                     <b-field label="Z multiplier">
-                        <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="1"></b-numberinput>
+                        <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="0.5"></b-numberinput>
                     </b-field>
                   </div>
               <!-- rotate -->
@@ -103,7 +103,7 @@ import ImagerySelector from '../components/ImagerySelector'
 export default {
   name: 'Playground3DGpx',
   components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
-  created() {
+  mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
     this.$elevationHub.generatorOpened()
