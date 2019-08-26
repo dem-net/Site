@@ -9,7 +9,7 @@
       <div class="card-content">  
         <div class="content">
           <section>
-            <b-notification v-show="demErrors"
+            <b-notification v-show="demErrors" :active.sync="demErrors"
                     type="is-warning"
                     has-icon
                     icon-pack="fas"
@@ -72,7 +72,7 @@
               </div>
             </div>
               <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
-              <b-notification v-show="serverProgress"
+              <b-notification v-show="serverProgress" :active.sync="serverProgress"
                     type="is-info"
                     has-icon
                     icon-pack="fas"

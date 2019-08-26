@@ -1,6 +1,6 @@
 <template>
     <section>
-        <b-notification v-show="demErrors"
+        <b-notification v-show="demErrors" :active.sync="demErrors"
             type="is-warning"
             has-icon
             icon-pack="fas"

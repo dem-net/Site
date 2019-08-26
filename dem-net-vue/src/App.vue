@@ -60,7 +60,7 @@
       <div class="hero-body">
         
         <div class="container has-text-centered">
-          <b-notification v-if="initErrors"
+          <b-notification v-if="initErrors" :active.sync="initErrors"
             type="is-warning"
             has-icon
             icon-pack="fas"
