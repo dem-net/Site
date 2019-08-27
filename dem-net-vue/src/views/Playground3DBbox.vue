@@ -72,8 +72,8 @@
               </div>
             </div>
               <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
-              <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-primary" show-value>
-                  {{ serverProgress }}
+              <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
+                  <span style="color: black">{{ serverProgress }}</span>
               </b-progress>
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
