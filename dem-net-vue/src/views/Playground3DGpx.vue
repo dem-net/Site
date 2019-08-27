@@ -10,7 +10,7 @@
       <div class="card-content">  
         <div class="content">
           <section>
-            <b-notification v-show="demErrors" :active.sync="demErrors"
+            <b-notification v-show="demErrors" :active.sync="demErrorsActive"
                     type="is-warning"
                     has-icon
                     icon-pack="fas"
@@ -67,15 +67,9 @@
               </div>
             </div>
             <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
-            <b-notification v-show="serverProgress" :active.sync="serverProgress"
-                    type="is-info"
-                    has-icon
-                    icon-pack="fas"
-                    aria-close-label="Close notification"
-                    role="alert">
-                    <span>Please wait while we're generating your model...</span>
-              {{ serverProgress }}
-                </b-notification>
+              <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-primary" show-value>
+                  {{ serverProgress }}
+              </b-progress>
             <div class="glbcontent">
               <!-- <model-gltf :content="glbFile"></model-gltf> -->
               <model-gltf
@@ -116,8 +110,8 @@ export default {
     return {
         gpxFile: null,
         glbFile: null,
-        demErrors: null,
-        serverProgress: null,
+        demErrors: null,   demErrorsActive: false,
+        serverProgress: null, serverProgressPercent: 0,
         rotation: {
                 x: 0,
                 y: 0,
@@ -177,17 +171,21 @@ export default {
       formData,
       {
           headers: {
-              'Content-Type': 'multipart/form-data'
+              'Content-Type': 'multipart/form-data',
+              'Content-Encoding': 'gzip'
           }
       }
       ).then(result => {
           this.glbFile = baseUrl + result.data;
-          
       })
-      .catch(err=> this.demErrors = err.response.data)
+      .catch(err=> {
+          this.demErrors = err.response.data;
+          this.demErrorsActive = true;
+      })
     },
-    onServerProgress({message}) {
+    onServerProgress({message, percent}) {
       this.serverProgress = message;
+      this.serverProgressPercent = percent;
     }
   }
 } 

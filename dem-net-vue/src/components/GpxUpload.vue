@@ -1,6 +1,6 @@
 <template>
     <section>
-        <b-notification v-show="demErrors" :active.sync="demErrors"
+        <b-notification v-show="demErrors" :active.sync="demErrors != null"
             type="is-warning"
             has-icon
             icon-pack="fas"
@@ -46,7 +46,8 @@ import axios from 'axios'
                 formData,
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Content-Encoding': 'gzip'
                     }
                 }
                 ).then(result => {
