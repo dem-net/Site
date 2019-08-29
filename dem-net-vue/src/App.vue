@@ -1,60 +1,41 @@
 <template>
   <div id="app">
-    <section class="hero is-light is-fullheight">
-      <!-- Hero head: will stick at the top -->
-      <div class="hero-head">
-        <header class="navbar">
-          <div class="container">
-            <div class="navbar-brand">
-              <router-link to="/" class="navbar-item">
-                <img src="./assets/DEMnet_logo_long.png" alt="Logo" width="64" />
-              </router-link>
-              <a role="button" class="navbar-burger" data-target="navMenu" id="navMenu" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </a>
-            </div>
-            <div id="navbarMenuHeroC" class="navbar-menu">
-              <div class="navbar-end">
-                <router-link to="/" class="navbar-item">Home</router-link>
-                <div class="navbar-item has-dropdown is-hoverable">
-                   <router-link :to="{ name: 'PlaygroundPoint'}" class="navbar-link">
-                    Playground
+        <b-navbar>
+          <template slot="brand">
+              <b-navbar-item href="/">
+                  <router-link to="/">
+                    <img src="./assets/DEMnet_logo_long.png" alt="Logo" width="64" />
+                  </router-link>
+              </b-navbar-item>
+          </template>
+          <template slot="start">
+            <b-navbar-item>
+                  <router-link :to="{ name: 'home'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                      Home
+                    </router-link>
+              </b-navbar-item>
+              <b-navbar-item>
+                  <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                      GPX to 3D
+                    </router-link>
+              </b-navbar-item>
+              <b-navbar-item>
+                  <router-link :to="{ name: 'Playground3DBbox'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                    Map to 3D
                    </router-link>
-                  <div class="navbar-dropdown">
-                    <router-link :to="{ name: 'PlaygroundPoint'}" class="navbar-item">
-                      Single point elevation
-                    </router-link>
-                    <router-link :to="{ name: 'PlaygroundLine'}" class="navbar-item">
-                      Line elevation
-                    </router-link>
-                    <hr class="navbar-divider">
-                    <!-- <a href="/leaflet-elevation_geojson-data.html" class="navbar-item">
-                     GPX to 3D (glTF and GLB)
-                      </a> -->
-                     <!-- <router-link :to="{ name: 'Playground3dGpx'}" class="navbar-item">
-                      GPX to 3D (glTF and GLB)
-                    </router-link> -->
-                    <router-link :to="{ name: 'Playground3DGpx'}" class="navbar-item">
-                      GPX to 3D model
-                    </router-link>
-                    <router-link :to="{ name: 'Playground3DBbox'}" class="navbar-item">
-                      Map to 3D model
-                    </router-link>
+              </b-navbar-item>
+          </template>
+
+          <template slot="end">
+              <b-navbar-item tag="div">
+                  <div class="buttons">
+                    <b-button size="is-medium" icon-pack="fab" icon-left="github">
+                      <a href="https://github.com/dem-net/DEM.Net" target="_blank">View on GitHub</a>
+                    </b-button>
                   </div>
-                </div>
-                <router-link to="/about" class="navbar-item">About</router-link>
-                <span class="navbar-item">
-                  <b-button size="is-medium" icon-pack="fab" icon-left="github">
-                    <a href="https://github.com/dem-net/DEM.Net" target="_blank">View on GitHub</a>
-                  </b-button>
-                </span>
-              </div>
-            </div>
-          </div>
-        </header>
-      </div>
+              </b-navbar-item>
+          </template>
+        </b-navbar>
 
       <!-- Hero content: will be in the middle -->
       <div class="hero-body">
@@ -72,7 +53,6 @@
         </div>
       </div>
 
-    </section>
   </div>
 </template>
 
@@ -98,7 +78,10 @@ export default {
 
 
 <style>
-.router-link-active {
-  color: red;
+.dem-nav-inactive {
+  color: #4a4a4a;
+}
+a.dem-nav-active {
+  color: #896bda;
 }
 </style>
