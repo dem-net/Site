@@ -10,15 +10,7 @@
       <div class="card-content">  
         <div class="content">
           <section>
-            <b-notification v-show="demErrors" :active.sync="demErrorsActive"
-                    type="is-warning"
-                    has-icon
-                    icon-pack="fas"
-                    aria-close-label="Close notification"
-                    role="alert">
-                    An error occured while generating the model :
-              {{ demErrors }}
-                </b-notification>
+            
             <b-field class="file">
                 <b-upload v-model="gpxFile">
                     <a class="button is-primary">
@@ -54,7 +46,7 @@
               <!-- Z factor -->
                   <div class="column">
                     <b-field label="Z multiplier">
-                        <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="0.5"></b-numberinput>
+                        <b-numberinput v-model="requestParams.zFactor" min="1" max="10" step="0.5"></b-numberinput>
                     </b-field>
                   </div>
               <!-- rotate -->
@@ -66,10 +58,25 @@
                 </b-field>
               </div>
             </div>
-            <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
-              <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
+            <b-notification v-show="demErrors" :active.sync="demErrorsActive"
+                    type="is-warning"
+                    has-icon
+                    icon-pack="fas"
+                    aria-close-label="Close notification"
+                    role="alert">
+                    An error occured while generating the model :
+              {{ demErrors }}
+            </b-notification>
+            <p>
+              <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
+              
+              <a class="button" :disabled="!this.glbFile" :href="this.glbFile">Download model</a>
+            </p>
+            <p>
+                  <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
                   <span style="color: black">{{ serverProgress }}</span>
               </b-progress>
+            </p>
             <div class="glbcontent">
               <!-- <model-gltf :content="glbFile"></model-gltf> -->
               <model-gltf

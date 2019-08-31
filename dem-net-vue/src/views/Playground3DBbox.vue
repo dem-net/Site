@@ -9,15 +9,6 @@
       <div class="card-content">  
         <div class="content">
           <section>
-            <b-notification v-show="demErrors" :active.sync="demErrorsActive"
-                    type="is-warning"
-                    has-icon
-                    icon-pack="fas"
-                    aria-close-label="Close notification"
-                    role="alert">
-                    An error occured while generating the model :
-              {{ demErrors }}
-                </b-notification>
             <div class="columns">
               <div class="column">
                 <MapRectangle @bboxSelected="setBbox"></MapRectangle>
@@ -49,7 +40,7 @@
                   <!-- Z factor -->
                   <div class="column">
                     <b-field label="Z multiplier">
-                        <b-numberinput v-model="requestParams.zFactor" min="1" max="5" step="1"></b-numberinput>
+                        <b-numberinput v-model="requestParams.zFactor" min="1" max="10" step="0.5"></b-numberinput>
                     </b-field>
                   </div>
                   <!-- Z factor -->
@@ -71,10 +62,24 @@
                 </div>
               </div>
             </div>
-              <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
-              <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
-                  <span style="color: black">{{ serverProgress }}</span>
-              </b-progress>
+            <b-notification v-show="demErrors" :active.sync="demErrorsActive"
+                    type="is-warning"
+                    has-icon
+                    icon-pack="fas"
+                    aria-close-label="Close notification"
+                    role="alert">
+                    An error occured while generating the model :
+              {{ demErrors }}
+              </b-notification>
+              <p>
+                <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
+                <a class="button" :disabled="!this.glbFile" :href="this.glbFile">Download model</a>
+              </p>
+              <p>
+                <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
+                    <span style="color: black">{{ serverProgress }}</span>
+                </b-progress>
+              </p>
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
                 <model-gltf
