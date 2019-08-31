@@ -55,13 +55,9 @@ export default {
 
       });
 
-      map.on(window.L.Draw.Event.EDITED, (e) => {
-        var layers = e.layers;
-        var bounds = null;
-         layers.eachLayer(function (layer) {
-            bounds = layer._bounds;
-         });
-
+      map.on('draw:editresize', (e) => {
+        var layer = e.layer;
+        var bounds = layer._bounds;
         if (bounds != null){
          this.setBbox(bounds._northEast, bounds._southWest);
          }
