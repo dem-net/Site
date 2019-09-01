@@ -73,7 +73,7 @@
               </b-notification>
               <p>
                 <b-button @click="generateModel" :disabled="!requestParams.bbox">Generate 3D model</b-button>
-                <a class="button" :disabled="!this.glbFile" :href="this.glbFile">Download model</a>
+                <a class="button" :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload" >Download model</a>
               </p>
               <p>
                 <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
@@ -170,6 +170,11 @@ export default {
       this.requestParams.bbox = bbox;
     },
     generateModel(){
+      this.$ga.event({
+        eventCategory: 'model',
+        eventAction: 'generate',
+        eventLabel: 'bbox-' + this.requestParams.format
+      })
       this.demErrors = null;
       this.serverProgress = "Sending request...";  
       const baseUrl = process.env.VUE_APP_API_BASEURL
@@ -187,6 +192,13 @@ export default {
           this.demErrors = null; this.demErrorsActive = false;
       })
       .catch(err=> { this.demErrors = err.response.data; this.demErrorsActive = true;})
+    },
+    modelDownload(){
+      this.$ga.event({
+            eventCategory: 'model',
+            eventAction: 'download',
+            eventLabel: 'bbox'
+          })
     },
     onServerProgress({message, percent}) {
       this.serverProgress = message;
