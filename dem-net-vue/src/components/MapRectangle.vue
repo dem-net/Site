@@ -56,12 +56,16 @@ export default {
       });
 
       map.on('draw:editresize', (e) => {
-        var layer = e.layer;
-        var bounds = layer._bounds;
+        var bounds = e.layer._bounds;
         if (bounds != null){
          this.setBbox(bounds._northEast, bounds._southWest);
-         }
-        
+        }
+      });
+      map.on('draw:editmove', (e) => {
+        var bounds = e.layer._bounds;
+        if (bounds != null){
+         this.setBbox(bounds._northEast, bounds._southWest);
+        }
       });
 
     });
