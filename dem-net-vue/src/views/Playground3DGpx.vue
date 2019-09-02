@@ -84,6 +84,8 @@
             <model-stl
             background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
             </div>
+            <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+            
           </section>
         </div>
       </div>
@@ -115,6 +117,8 @@ export default {
   },
   data() {
     return {
+        isLoading: false,
+        isLoadingFullPage: false,
         gpxFile: null,
         glbFile: null,
         demErrors: null,   demErrorsActive: false,
@@ -146,6 +150,7 @@ export default {
   methods: 
   {
     onLoad () {
+        this.isLoading = false;
         this.rotate();
     },
     rotate () {
@@ -161,6 +166,7 @@ export default {
       this.requestParams.imageryProvider = providerName;
     },
     upload(){
+      this.isLoading = true;
       this.$ga.event({
         eventCategory: 'model',
         eventAction: 'generate',
@@ -193,6 +199,7 @@ export default {
       .catch(err=> {
           this.demErrors = err.response.data;
           this.demErrorsActive = true;
+          this.isLoading = false;
       })
     },
     modelDownload(){

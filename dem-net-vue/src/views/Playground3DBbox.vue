@@ -83,11 +83,12 @@
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
                 <model-gltf
-              background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
               <model-stl
-              background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
               </div>
-            
+            <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+              
           </section>
         </div>
       </div>
@@ -120,6 +121,8 @@ export default {
   },
   data() {
     return {
+        isLoading: false,
+        isLoadingFullPage: false,
         glbFile: null,
         demErrors: null, demErrorsActive: true,
         serverProgress: null, serverProgressPercent: 0,
@@ -152,6 +155,7 @@ export default {
   methods: 
   {
     onLoad () {
+        this.isLoading = false;
         this.rotate();
     },
     rotate () {
@@ -170,6 +174,7 @@ export default {
       this.requestParams.bbox = bbox;
     },
     generateModel(){
+      this.isLoading = true;
       this.$ga.event({
         eventCategory: 'model',
         eventAction: 'generate',
@@ -191,7 +196,11 @@ export default {
           this.glbFile = baseUrl + result.data;
           this.demErrors = null; this.demErrorsActive = false;
       })
-      .catch(err=> { this.demErrors = err.response.data; this.demErrorsActive = true;})
+      .catch(err=> { 
+          this.demErrors = err.response.data; 
+          this.demErrorsActive = true;
+          this.isLoading = false;
+          })
     },
     modelDownload(){
       this.$ga.event({
