@@ -67,13 +67,31 @@
                     An error occured while generating the model :
               {{ demErrors }}
             </b-notification>
+
+            <!-- Buttons -->
+              <nav class="level is-mobile">
+                <div class="level-item has-text-centered">
+                  <div>
+                    <b-button @click="upload" :disabled="!gpxFile">
+                      Generate 3D model
+                    </b-button>              
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div>
+
+                    <b-button icon-left="download" :disabled="!this.glbFile">
+                      <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
+                        Download model
+                      </a>
+                    </b-button>
+                    
+                  </div>
+                </div>
+              </nav>
+
             <p>
-              <b-button @click="upload" :disabled="!gpxFile">Generate 3D model</b-button>
-              
-              <a class="button" :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">Download model</a>
-            </p>
-            <p>
-                  <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" type="is-warning" show-value>
+                  <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
                   <span style="color: black">{{ serverProgress }}</span>
               </b-progress>
             </p>
@@ -128,7 +146,7 @@ export default {
                 y: 0,
                 z: 0,
             },
-        enableRotation: true,
+        enableRotation: false,
         requestParams: {
           dataSet: "SRTM_GL3",
           textured: true,
@@ -145,6 +163,9 @@ export default {
     },
     showTextureOptionsProvider() {
       return (this.requestParams.format == "glTF" && this.requestParams.textured);
+    },
+    progressType() {
+        return (this.demErrors == null) ? "is-warning" : "is-danger";
     }
   },
   methods: 
@@ -197,6 +218,7 @@ export default {
           this.glbFile = baseUrl + result.data;
       })
       .catch(err=> {
+          this.serverProgress = "Request aborted"; 
           this.demErrors = err.response.data;
           this.demErrorsActive = true;
           this.isLoading = false;
