@@ -20,7 +20,7 @@
                   </div>
                   <!-- Export format -->
                   <div class="column">
-                    <label class="label">Model output format</label>
+                    <label class="label">Output format</label>
                     <b-field>
                       <b-radio-button v-model="requestParams.format" native-value="glTF">glTF</b-radio-button>
                       <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
@@ -40,7 +40,7 @@
                   <!-- Z factor -->
                   <div class="column">
                     <b-field label="Z multiplier">
-                        <b-numberinput v-model="requestParams.zFactor" min="1" max="10" step="0.5"></b-numberinput>
+                      <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
                     </b-field>
                   </div>
                   <!-- Z factor -->
@@ -87,7 +87,6 @@
                       <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
                         Download model
                       </a>
-
                     </b-button>
                     </div>
                 </div>
@@ -155,7 +154,7 @@ export default {
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
-          minTilesPerImage: 8,
+          minTilesPerImage: 10,
           format: "glTF",
           zFactor: 1,
           generateTIN: false

@@ -2,16 +2,14 @@
   <section v-if="availableDatasets">
     <div class="field has-text-left">
       <label class="label">Digital Elevation Model</label>
-      <div class="block is-size-6">
-        <b-field>
-        <b-radio-button v-for="(dst, index) in availableDatasets" :key="index" v-model="selectedDataset" :native-value="dst.name" @input="$emit('datasetSelected',selectedDataset)">{{ dst.name }}</b-radio-button>
-        </b-field>
+      <div>
+          <section v-for="(dst, index) in availableDatasets" :key="index">
+        <div  class="field">
+        <b-radio v-model="selectedDataset" :native-value="dst.name" @input="$emit('datasetSelected',selectedDataset)">{{ dst.name }}</b-radio>
+        </div>
+          </section>
          <span class="is-size-7">
            {{ dataSetDesc }}
-         </span>
-      </div>
-      <div class="field has-text-left">
-        <span class="is-size-7">
          </span>
       </div>
     </div>

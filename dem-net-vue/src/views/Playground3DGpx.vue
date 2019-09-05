@@ -46,7 +46,7 @@
               <!-- Z factor -->
                   <div class="column">
                     <b-field label="Z multiplier">
-                        <b-numberinput v-model="requestParams.zFactor" min="1" max="10" step="0.5"></b-numberinput>
+                      <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
                     </b-field>
                   </div>
               <!-- rotate -->
