@@ -4,7 +4,7 @@
           <template slot="brand">
               <b-navbar-item href="/">
                   <router-link to="/">
-                    <img src="./assets/DEMnet_logo_long.png" alt="Logo" width="64" />
+                    <img src="./assets/DEMnet_logo_long.png" alt="Logo" width="60" />
                   </router-link>
               </b-navbar-item>
           </template>
