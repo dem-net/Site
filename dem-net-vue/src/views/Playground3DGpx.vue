@@ -14,7 +14,7 @@
             <b-field class="file">
                 <b-upload v-model="gpxFile">
                     <a class="button is-primary">
-                        <b-icon icon="upload"></b-icon>
+                        <b-icon pack="fas" icon="file-upload"></b-icon>
                         <span>Choose your GPX...</span>
                     </a>
                 </b-upload>
@@ -30,7 +30,7 @@
               <div class="column">
                 <label class="label">Model output format</label>
                 <b-field>
-                  <b-radio-button v-model="requestParams.format" native-value="glTF">glTF</b-radio-button>
+                  <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
                   <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
                   </b-field>
               </div>
@@ -72,7 +72,7 @@
               <nav class="level is-mobile">
                 <div class="level-item has-text-centered">
                   <div>
-                    <b-button @click="upload" :disabled="!gpxFile">
+                    <b-button @click="upload" :disabled="!gpxFile" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Generate 3D model
                     </b-button>              
                   </div>
@@ -80,7 +80,7 @@
                 <div class="level-item has-text-centered">
                   <div>
 
-                    <b-button icon-left="download" :disabled="!this.glbFile">
+                    <b-button icon-pack="fas" icon-left="fas fa-download"  :disabled="!this.glbFile">
                       <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
                         Download model
                       </a>
@@ -218,10 +218,10 @@ export default {
           this.glbFile = baseUrl + result.data;
       })
       .catch(err=> {
+          this.isLoading = false;
           this.serverProgress = "Request aborted"; 
           this.demErrors = err.response.data;
           this.demErrorsActive = true;
-          this.isLoading = false;
       })
     },
     modelDownload(){

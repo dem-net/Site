@@ -24,26 +24,12 @@ Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
-// Font awesome
-//
-import { library } from '@fortawesome/fontawesome-svg-core';
-// internal icons
-import { faExclamationTriangle, faSpinner, faPlus, faMinus, faUpload, faGlobeEurope, faDownload} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-
-library.add(faGithub,faExclamationTriangle, faSpinner, faPlus, faMinus, faUpload,
-  faGlobeEurope, faDownload);
-Vue.component('vue-fontawesome', FontAwesomeIcon);
 
 // Buefy
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.min.css'
 import elevationHub from './elevation-hub';
-Vue.use(Buefy, {
-  defaultIconPack: 'fas',
-  defaultIconComponent: 'vue-fontawesome',
-})
+Vue.use(Buefy)
 
 Vue.config.productionTip = false
 

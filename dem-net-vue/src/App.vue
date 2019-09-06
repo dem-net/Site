@@ -29,9 +29,11 @@
           <template slot="end">
               <b-navbar-item tag="div">
                   <div class="buttons">
-                    <b-button size="is-medium" icon-pack="fab" icon-left="github">
-                      <a href="https://github.com/dem-net/DEM.Net" target="_blank">View on GitHub</a>
-                    </b-button>
+                    <a class="button" href="https://github.com/dem-net/DEM.Net" target="_blank">
+                      <span class="icon is-small">
+                        <i class="fab fa-github"></i>
+                      </span>
+                    </a>
                   </div>
               </b-navbar-item>
           </template>
