@@ -154,7 +154,7 @@ export default {
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
-          minTilesPerImage: 10,
+          minTilesPerImage: 8,
           format: "glTF",
           zFactor: 1,
           generateTIN: false
