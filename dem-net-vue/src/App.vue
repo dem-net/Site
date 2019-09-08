@@ -34,6 +34,11 @@
                         <i class="fab fa-github"></i>
                       </span>
                     </a>
+                    <a class="button" href="https://twitter.com/elevationapi" target="_blank">
+                      <span class="icon is-small">
+                        <i class="fab fa-twitter"></i>
+                      </span>
+                    </a>
                   </div>
               </b-navbar-item>
           </template>

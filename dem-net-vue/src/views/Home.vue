@@ -18,7 +18,8 @@
         </h2>
         </section>
         <section>
-
+        <h2>
+          <br>
         <div class="columns">
           <div class="column">
             <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8F428QPSP9W5E&source=url">
@@ -36,6 +37,7 @@
             <gh-btns-star slug="dem-net/DEM.Net" show-count></gh-btns-star>
           </div>    
         </div>
+        </h2>
         </section>
         </div>
       </div>
