@@ -4,6 +4,11 @@ import router from './router'
 import store from './store/store'
 import axios from 'axios'
 
+// GitHub buttons
+import VueGitHubButtons from 'vue-github-buttons'
+import 'vue-github-buttons/dist/vue-github-buttons.css';
+Vue.use(VueGitHubButtons);
+
 // Leaflet
 import { LMap, LTileLayer, LMarker, LControl, LFeatureGroup } from 'vue2-leaflet';
 import { Icon } from 'leaflet'

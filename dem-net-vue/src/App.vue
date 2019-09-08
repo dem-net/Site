@@ -55,15 +55,46 @@
         </div>
       </div>
 
+      <footer class="footer">
+  <div class="content has-text-centered">
+    <p>
+      <strong>DEM-Net Elevation API</strong> by <a href="https://twitter.com/XavierFischer">Xavier Fischer</a>. The source code is licensed
+      <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+      
+    </p>
+    <div class="columns">
+      <div class="column">
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8F428QPSP9W5E&source=url">
+          <img src="https://raw.githubusercontent.com/dem-net/Resources/master/images/ext/paypal-donate.png" alt="Donate with PayPal button" width="150">
+        </a>
+      </div>
+
+      <div class="column">
+        <a href="https://www.patreon.com/bePatron?u=24134737">
+          <img src="https://raw.githubusercontent.com/dem-net/Resources/master/images/ext/become_a_patron_button@2x.png" alt="Become a Patron" width="150">
+        </a>
+      </div>
+      <div class="column">
+        <!-- Place this tag where you want the button to render. -->
+        <gh-btns-star slug="dem-net/DEM.Net" show-count></gh-btns-star>
+      </div>    
+    </div>
+  </div>
+</footer>
   </div>
 </template>
-
 <script>
+
+
 export default {
   name: 'app',
   created() {
     this.$store.dispatch('datasets/getDatasets');
     this.$store.dispatch('imagery/getProviders');
+    let patreonScript = document.createElement('script');
+    patreonScript.setAttribute('async', null);
+    patreonScript.setAttribute('src',"https://c6.patreon.com/becomePatronButton.bundle.js");
+    document.body.appendChild(patreonScript);
   },
   computed: {
     initErrors() {
