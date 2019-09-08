@@ -2,8 +2,7 @@ module.exports = {
     devServer: {
         proxy: {
             '^/api': {
-              target: 'https://localhost:5001',
-              //target: 'https://elevation.azurewebsites.net',
+              target: process.env.VUE_APP_API_BASEURL,
               ws: true,
               changeOrigin: true
             }
