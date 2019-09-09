@@ -22,7 +22,7 @@
           <br>
         <div class="columns">
           <div class="column">
-            <b-button>
+              <b-button icon-pack="fas" icon-left="fas fa-map-marked-alt">
                   <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active">
                       GPX to 3D
                     </router-link>
@@ -31,7 +31,7 @@
 
           <div class="column">
             
-            <b-button>
+            <b-button icon-pack="fas" icon-left="fas fa-vector-square">
                  <router-link :to="{ name: 'Playground3DBbox'}" class="dem-nav-inactive" active-class="dem-nav-active">
                     Map to 3D
                    </router-link>
