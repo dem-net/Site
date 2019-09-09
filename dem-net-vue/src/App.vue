@@ -15,7 +15,7 @@
                     </router-link>
               </b-navbar-item>
               <b-navbar-item>
-                  <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                  <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active" icon-pack="fas" icon-left="fas fa-globe-americas">
                       GPX to 3D
                     </router-link>
               </b-navbar-item>

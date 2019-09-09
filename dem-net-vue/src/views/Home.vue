@@ -22,20 +22,21 @@
           <br>
         <div class="columns">
           <div class="column">
-            <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8F428QPSP9W5E&source=url">
-              <img src="https://raw.githubusercontent.com/dem-net/Resources/master/images/ext/paypal-donate.png" alt="Donate with PayPal button" width="150">
-            </a>
+            <b-button>
+                  <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                      GPX to 3D
+                    </router-link>
+            </b-button>
           </div>
 
           <div class="column">
-            <a href="https://www.patreon.com/bePatron?u=24134737">
-              <img src="https://raw.githubusercontent.com/dem-net/Resources/master/images/ext/become_a_patron_button@2x.png" alt="Become a Patron" width="150">
-            </a>
-          </div>
-          <div class="column">
-            <!-- Place this tag where you want the button to render. -->
-            <gh-btns-star slug="dem-net/DEM.Net" show-count></gh-btns-star>
-          </div>    
+            
+            <b-button>
+                 <router-link :to="{ name: 'Playground3DBbox'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                    Map to 3D
+                   </router-link>
+            </b-button>
+          </div> 
         </div>
         </h2>
         </section>
