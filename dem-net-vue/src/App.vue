@@ -35,6 +35,11 @@
                         <i class="fab fa-github"></i>
                       </span>
                     </a>
+                    <a class="button" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI" target="_blank">
+                      <span class="icon is-small">
+                        <i class="fab fa-slack"></i>
+                      </span>
+                    </a>
                     <a class="button" href="https://twitter.com/elevationapi" target="_blank">
                       <span class="icon is-small">
                         <i class="fab fa-twitter"></i>
