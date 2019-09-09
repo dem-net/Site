@@ -4,13 +4,14 @@
       <label class="label">Digital Elevation Model</label>
       <div>
           <section v-for="(dst, index) in availableDatasets" :key="index">
-        <div  class="field">
-        <b-radio v-model="selectedDataset" :native-value="dst.name" @input="$emit('datasetSelected',selectedDataset)">{{ dst.name }}</b-radio>
-        </div>
+            <div class="field">
+            <b-tooltip :label="dst.description"
+                position="is-bottom" type="is-light"
+                animated multilined>
+                <b-radio v-model="selectedDataset" :native-value="dst.name" @input="$emit('datasetSelected',selectedDataset)">{{ dst.name }}</b-radio>
+            </b-tooltip>
+            </div>
           </section>
-         <span class="is-size-7">
-           {{ dataSetDesc }}
-         </span>
       </div>
     </div>
   </section>

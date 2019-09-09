@@ -2,10 +2,10 @@
   <div class="playground">
     
     <div class="container is-fluild">
-    <h1 class="title">3D terrain generation</h1>
+    <h1 class="title">3D terrain model from GPX</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Upload a GPX file and visualize the 3D model.</p>
+        <p class="card-header-title">Upload a GPX file&nbsp;>&nbsp;Choose your options&nbsp;>&nbsp;Generate and see the 3D model.</p>
       </header>
       <div class="card-content">  
         <div class="content">
@@ -30,8 +30,9 @@
               <div class="column">
                 <label class="label">Model output format</label>
                 <b-field>
-                  <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
-                  <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                  
+                    <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
+                    <b-radio-button v-model="requestParams.format" native-value="STL">STL (3D printer)</b-radio-button>
                   </b-field>
               </div>
               <!-- Texture -->
@@ -41,7 +42,9 @@
                         {{ requestParams.textured }}
                     </b-switch>
                 </b-field>
-                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
+                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
+                  @providerSelected="onProviderSelected"
+                  @qualitySelected="onQualitySelected"/>
               </div>
               <!-- Z factor -->
                   <div class="column">
@@ -151,7 +154,7 @@ export default {
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
-          minTilesPerImage: 8,
+          textureQuality: 2,
           format: "glTF",
           zFactor: 1
         }
@@ -186,6 +189,9 @@ export default {
     onProviderSelected(providerName) {
       this.requestParams.imageryProvider = providerName;
     },
+    onQualitySelected(quality) {
+      this.requestParams.textureQuality = quality;
+    },
     upload(){
       this.isLoading = true;
       this.$ga.event({
@@ -202,7 +208,7 @@ export default {
                                     + "&generateTIN=false"
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
-                                    + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
+                                    + "&textureQuality=" + this.requestParams.textureQuality
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId,

@@ -2,9 +2,10 @@
   <div class="playground">
     
     <div class="container is-fluild">
+    <h1 class="title">3D terrain model from a map</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Draw a rectangle and visualize the terrain in 3D.</p>
+        <p class="card-header-title">Draw a rectangle using the tool&nbsp;>&nbsp;Choose your options&nbsp;>&nbsp;Generate and see the 3D model.</p>
       </header>
       <div class="card-content">  
         <div class="content">
@@ -35,7 +36,9 @@
                             {{ requestParams.textured }}
                         </b-switch>
                     </b-field>
-                    <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" @providerSelected="onProviderSelected"/>
+                    <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
+                      @providerSelected="onProviderSelected"
+                      @qualitySelected="onQualitySelected"/>
                   </div>
                   <!-- Z factor -->
                   <div class="column">
@@ -154,7 +157,7 @@ export default {
           dataSet: "SRTM_GL3",
           textured: true,
           imageryProvider: "Esri.WorldImagery",
-          minTilesPerImage: 8,
+          textureQuality: 2,
           format: "glTF",
           zFactor: 1,
           generateTIN: false
@@ -187,6 +190,9 @@ export default {
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
     },
+    onQualitySelected(quality) {
+      this.requestParams.textureQuality = quality;
+    },
     onProviderSelected(providerName) {
       this.requestParams.imageryProvider = providerName;
     },
@@ -208,7 +214,7 @@ export default {
                                     + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
-                                    + "&minTilesPerImage=" + this.requestParams.minTilesPerImage
+                                    + "&textureQuality=" + this.requestParams.textureQuality
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId

@@ -13,8 +13,17 @@
                 </option>
             </b-select>
         </b-field>
+        
+        <b-field label="Quality">
+            <b-slider v-model="quality" :min="1" :max="3" aria-label="Quality" :tooltip="false" @change="setQuality">
+                <b-slider-tick :value="1">Low</b-slider-tick>
+                <b-slider-tick :value="2">Medium</b-slider-tick>
+                <b-slider-tick :value="3">High</b-slider-tick>
+            </b-slider>
+        </b-field>
+          
          <span class="is-size-7">
-           {{ providerDesc }}
+           Attribution:<br>{{ providerDesc }}
          </span>
       </div>
       <div class="field has-text-left">
@@ -43,12 +52,17 @@ export default {
   },
   data() {
     return {
-      selectedProvider: this.provider
+      selectedProvider: this.provider,
+      quality: 2,
     }
   },
   methods: {
       loadProviders() {
           this.$store.dispatch("imagery/getProviders");
+      },
+      setQuality(newQuality) {
+        this.quality = newQuality;
+        this.$emit('qualitySelected', newQuality);
       }
   }
 };
