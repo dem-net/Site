@@ -25,6 +25,16 @@
                     Map to 3D
                    </router-link>
               </b-navbar-item>
+              <b-navbar-item>
+                  <router-link :to="{ name: 'FAQ'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                    FAQ
+                   </router-link>
+              </b-navbar-item>
+              <b-navbar-item>
+                  <router-link :to="{ name: 'About'}" class="dem-nav-inactive" active-class="dem-nav-active">
+                    About
+                   </router-link>
+              </b-navbar-item>
           </template>
 
           <template slot="end">

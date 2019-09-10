@@ -34,11 +34,6 @@ export default {
     return {
       selectedDataset: this.dataSet
     }
-  },
-  methods: {
-      loadDatasets() {
-          this.$store.dispatch("datasets/getDatasets");
-      }
   }
 };
 </script>

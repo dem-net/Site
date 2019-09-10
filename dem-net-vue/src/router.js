@@ -5,6 +5,8 @@ import PlaygroundPoint from './views/PlaygroundPoint.vue'
 import PlaygroundLine from './views/PlaygroundLine.vue'
 import Playground3DGpx from './views/Playground3DGpx.vue'
 import Playground3DBbox from './views/Playground3DBbox.vue'
+import About from './views/About.vue'
+import FAQ from './views/FAQ.vue'
 import EmptyMessage from './views/EmptyMessage.vue'
 
 Vue.use(Router)
@@ -40,8 +42,13 @@ export default new Router({
     },
     {
       path: '/about',
-      name: 'about',
-      component: EmptyMessage
+      name: 'About',
+      component: About
+    },
+    {
+      path: '/faq',
+      name: 'FAQ',
+      component: FAQ
     }
   ]
 })
