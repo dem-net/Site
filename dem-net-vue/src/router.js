@@ -7,7 +7,6 @@ import Playground3DGpx from './views/Playground3DGpx.vue'
 import Playground3DBbox from './views/Playground3DBbox.vue'
 import About from './views/About.vue'
 import FAQ from './views/FAQ.vue'
-import EmptyMessage from './views/EmptyMessage.vue'
 
 Vue.use(Router)
 

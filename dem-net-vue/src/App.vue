@@ -112,10 +112,6 @@ export default {
   created() {
     this.$store.dispatch('datasets/getDatasets');
     this.$store.dispatch('imagery/getProviders');
-    let patreonScript = document.createElement('script');
-    patreonScript.setAttribute('async', null);
-    patreonScript.setAttribute('src',"https://c6.patreon.com/becomePatronButton.bundle.js");
-    document.body.appendChild(patreonScript);
   },
   computed: {
     initErrors() {

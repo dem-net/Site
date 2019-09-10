@@ -4,54 +4,25 @@
       <div class="docs-main-container">
           <header class="docs-header">
             <h1 class="title">FAQ</h1>
-            <h2 class="subtitle">You'll find here some answers to common questions. If you need more info, we're on Twitter and Slack.</h2>
+            <h2 class="subtitle">You'll find here some answers to common questions. 
+              If you need more info, we're on <a href="https://twitter.com/ElevationApi" target="_blank">Twitter</a> and 
+              <a target="_blank" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI">Slack</a>.</h2>
         </header>
 
 
         <hr class="is-medium">
 
-        <h1>Datasets information</h1>
+        <!-- Datasets -->
+        <h1 class="title">Datasets information</h1>
         <article class="content">
-          <b-table
-            ref="table"
-            :data="this.datasets"
-            :bordered="isBordered"
-            :striped="isStriped"
-            :narrowed="isNarrowed"
-            :hoverable="isHoverable"
-            :loading="isLoading"
-            :focusable="isFocusable"
-            :mobile-cards="hasMobileCards">
-              <template slot-scope="props">
-                <b-table-column field="name" label="Name" width="40">
-                    {{ props.row.name }}
-                </b-table-column>
+          
+        </article>
 
-                <b-table-column field="description" label="Description">
-                    {{ props.row.description }}
-                </b-table-column>
+        <hr class="is-medium">
 
-                <b-table-column field="resolutionMeters" label="Resolution (m)" numeric>
-                    {{ props.row.resolutionMeters }}
-                </b-table-column>
-                
-                <b-table-column field="source" label="Source">
-                    <a :href="props.row.attribution.url">{{ props.row.attribution.text }}</a>
-                </b-table-column>
-
-                <b-table-column label="">
-                    <span>
-                      <b-tooltip :label="props.row.attribution.acknowledgement"
-                position="is-bottom" type="is-light"
-                animated multilined>
-                    <b-icon pack="fas"
-                            icon="fas fa-info-circle">
-                        </b-icon>
-                    </b-tooltip>
-                    </span>
-                </b-table-column>
-            </template>
-        </b-table>
+       
+        
+        <div class="content">
           <p>
               Buefy (pronounced /ˈbyo͞oˌfī/, like <b>beau-fy</b>) is a user interface component library made on top
               of two <em>fresh</em> but very well known frameworks, them being
@@ -78,7 +49,7 @@
               Now that you know what Buefy is, get on to the next step and
               <router-link to="/documentation/start">install it</router-link>!
           </p>
-      </article>
+      </div>
       </div>
   </div>
 </template>
@@ -89,9 +60,24 @@ export default {
   components: {
     
   },
+  created() {
+    if (!this.$store.state.datasets.dataSets)
+      this.$store.dispatch('datasets/getDatasets');
+    if (!this.$store.state.imagery.providers)
+      this.$store.dispatch('imagery/getProviders');
+  },
   computed: {
+    availableDatasets() {
+          return this.$store.state && this.$store.state.datasets && this.$store.state.datasets.dataSets;
+      },
     datasets() {
       return this.$store.state.datasets.dataSets;
+    },
+    availableImagery() {
+          return this.$store.state && this.$store.state.imagery && this.$store.state.imagery.providers;
+      },
+    imageryProviders() {
+      return this.$store.state.imagery.providers;
     }
   }, 
   data() {
