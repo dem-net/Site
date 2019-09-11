@@ -9,31 +9,20 @@
               </b-navbar-item>
           </template>
           <template slot="start">
-            <b-navbar-item>
-                  <router-link :to="{ name: 'home'}" class="dem-nav-inactive" active-class="dem-nav-active">
+            <b-navbar-item tag="router-link" :to="{ name: 'home' }">
                       Home
-                    </router-link>
               </b-navbar-item>
-              <b-navbar-item>
-                
-                  <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active">
+              <b-navbar-item tag="router-link" :to="{ name: 'Playground3DGpx' }">
                       GPX to 3D
-                    </router-link>
               </b-navbar-item>
-              <b-navbar-item>
-                  <router-link :to="{ name: 'Playground3DBbox'}" class="dem-nav-inactive" active-class="dem-nav-active">
+              <b-navbar-item tag="router-link" :to="{ name: 'Playground3DBbox' }">
                     Map to 3D
-                   </router-link>
               </b-navbar-item>
-              <b-navbar-item>
-                  <router-link :to="{ name: 'FAQ'}" class="dem-nav-inactive" active-class="dem-nav-active">
+              <b-navbar-item tag="router-link" :to="{ name: 'FAQ' }">
                     FAQ
-                   </router-link>
               </b-navbar-item>
-              <b-navbar-item>
-                  <router-link :to="{ name: 'About'}" class="dem-nav-inactive" active-class="dem-nav-active">
-                    About
-                   </router-link>
+              <b-navbar-item tag="router-link" :to="{ name: 'About' }">
+                  About
               </b-navbar-item>
           </template>
 
