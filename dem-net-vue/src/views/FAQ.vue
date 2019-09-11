@@ -12,16 +12,10 @@
 
         <hr class="is-medium">
 
-        <!-- Datasets -->
-        <h1 class="title">Datasets information</h1>
-        <article class="content">
-          
-        </article>
-
-        <hr class="is-medium">
+      
 
        
-        
+        <!--
         <div class="content">
           <p>
               Buefy (pronounced /ˈbyo͞oˌfī/, like <b>beau-fy</b>) is a user interface component library made on top
@@ -50,6 +44,7 @@
               <router-link to="/documentation/start">install it</router-link>!
           </p>
       </div>
+      -->
       </div>
   </div>
 </template>
