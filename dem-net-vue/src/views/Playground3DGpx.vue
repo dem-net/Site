@@ -10,8 +10,8 @@
       <div class="card-content">  
         <div class="content">
           <section>
-            
-            <b-field class="file">
+            <nav class="level">
+            <b-field class="file level-item">
                 <b-upload v-model="gpxFile">
                     <a class="button is-primary">
                         <b-icon pack="fas" icon="file-upload"></b-icon>
@@ -22,6 +22,33 @@
                     {{ gpxFile.name }}
                 </span>
             </b-field>
+            <!-- <b-field label="Or choose one of the demo files..." class="level-item">
+            <b-select v-model="demoGpxFile" placeholder="Demo GPX files" icon-pack="fas" icon="folder-open" class="title" @input="loadDemoFile">
+                <optgroup label="Europe">
+                    <option value="./assets/gpx/BikeRide.gpx">Bike Ride, Aubagne</option>
+                    <option value="silver">Silver</option>
+                    <option value="vane">Vane</option>
+                    <option value="billy">Billy</option>
+                    <option value="jack">Jack</option>
+                </optgroup>
+
+                <optgroup label="Breaking Bad">
+                    <option value="heisenberg">Heisenberg</option>
+                    <option value="jesse">Jesse</option>
+                    <option value="saul">Saul</option>
+                    <option value="mike">Mike</option>
+                </optgroup>
+
+                <optgroup label="Game of Thrones">
+                    <option value="tyrion-lannister">Tyrion Lannister</option>
+                    <option value="jamie-lannister">Jamie Lannister</option>
+                    <option value="daenerys-targaryen">Daenerys Targaryen</option>
+                    <option value="jon-snow">Jon Snow</option>
+                </optgroup>
+            </b-select>
+        </b-field> -->
+            </nav>
+
             <div class="columns">
               <div class="column">
                 <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
@@ -142,6 +169,7 @@ export default {
         isLoadingFullPage: false,
         gpxFile: null,
         glbFile: null,
+        demoGpxFile: null,
         demErrors: null,   demErrorsActive: false,
         serverProgress: null, serverProgressPercent: 0,
         rotation: {
@@ -191,6 +219,10 @@ export default {
     },
     onQualitySelected(quality) {
       this.requestParams.textureQuality = quality;
+    },
+    loadDemoFile() {
+      this.gpxFile = this.demoGpxFile;
+      //upload();
     },
     upload(){
       this.isLoading = true;

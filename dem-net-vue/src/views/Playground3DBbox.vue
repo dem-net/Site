@@ -86,11 +86,9 @@
                 </div>
                 <div class="level-item has-text-centered">
                   <div>
-                    <b-button icon-pack="fas" icon-left="fas fa-download" :disabled="!this.glbFile">
-                      <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
+                    <b-button icon-pack="fas" icon-left="fas fa-download" :disabled="!this.glbFile" tag="a" :href="this.glbFile" @click="modelDownload">
                         Download model
-                      </a>
-                    </b-button>
+                      </b-button>
                     </div>
                 </div>
               </nav>

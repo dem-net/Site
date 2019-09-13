@@ -8,7 +8,7 @@
         <h1 class="title">Model formats</h1>
         <div class="content">
           <p>
-              Model are available in the following formats:
+              Models are available in the following formats:
               <ul>
               <li>Binary packed glTF (GLB files) : 3D open format for model exchange and transfer. Supported by major software and viewers.</li>
               </ul>
@@ -28,14 +28,15 @@
               Hi! I'm Xavier Fischer a developer from France. DEM-Net was created in 2018. I wanted to get elevation profiles using my stack: Microsoft .Net.
           </p>
           <p>
-              It rapidly became a great opportunity to explore Digital Elevation Models. DEM-Net is called Elevation API because if offer elevation request endpoints, but the best part was generating 3D models from real data.
+              It rapidly became a great opportunity to explore Digital Elevation Models and build an Open API for elevation requests, and it led me to 3D quite fast: generating 3D models from real data.
           </p>
           <p>
-              Then, with enthusiasm contagion I called for help Frederic Aubin, who helped me with TIN (Triangle Irregular Networks) generation, and he loved the API for geomorphology purposes.
+              Then, with enthusiasm contagion I called for help Frederic Aubin, who helped me with Triangle Irregular Networks (TIN)) generation, and added this great brick to DEM-Net for geomorphology purposes.
           </p>
           
         <h2 class="subtitle">Contributing</h2>
-        <p>All contributions welcome! We're on GitHub. For the moment, only the core library and samples are open source. Server and front end technology are not public yet.</p>
+        <p>All contributions welcome! We're on GitHub. For the moment, only the core library and samples are open source.
+          <br/>Server and front end projects are not public yet.</p>
       </div>
 
 

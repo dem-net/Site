@@ -22,19 +22,15 @@
           <br>
         <div class="columns">
           <div class="column">
-              <b-button icon-pack="fas" icon-left="fas fa-map-marked-alt">
-                  <router-link :to="{ name: 'Playground3DGpx'}" class="dem-nav-inactive" active-class="dem-nav-active">
+              <b-button icon-pack="fas" icon-left="fas fa-map-marked-alt" tag="router-link" :to="{ name: 'Playground3DGpx' }">
                       GPX to 3D
-                    </router-link>
             </b-button>
           </div>
 
           <div class="column">
             
-            <b-button icon-pack="fas" icon-left="fas fa-vector-square">
-                 <router-link :to="{ name: 'Playground3DBbox'}" class="dem-nav-inactive" active-class="dem-nav-active">
+            <b-button icon-pack="fas" icon-left="fas fa-vector-square" tag="router-link" :to="{ name: 'Playground3DBbox' }">
                     Map to 3D
-                   </router-link>
             </b-button>
           </div> 
         </div>
