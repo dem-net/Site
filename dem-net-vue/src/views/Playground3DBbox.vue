@@ -46,8 +46,8 @@
                       <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
                     </b-field>
                   </div>
-                  <!-- Z factor -->
-                  <div class="column">
+                  <!-- TIN-->
+                  <div class="column" v-show="false">
                     <b-field label="Generate TIN">
                         <b-switch v-model="requestParams.generateTIN">
                             {{ requestParams.generateTIN }}

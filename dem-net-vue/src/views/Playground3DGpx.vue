@@ -79,6 +79,14 @@
                       <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
                     </b-field>
                   </div>
+              <!-- TIN -->
+              <div class="column" v-show="false">
+                <b-field label="Generate TIN" v-if="this.requestParams.format == 'glTF'">
+                    <b-switch v-model="requestParams.generateTIN">
+                        {{ requestParams.generateTIN }}
+                    </b-switch>
+                </b-field>
+              </div>
               <!-- rotate -->
               <div class="column">
                 <b-field label="Rotate model">
@@ -181,6 +189,7 @@ export default {
         requestParams: {
           dataSet: "SRTM_GL3",
           textured: true,
+          generateTIN: false,
           imageryProvider: "Esri.WorldImagery",
           textureQuality: 2,
           format: "glTF",
@@ -237,7 +246,7 @@ export default {
       let formData = new FormData();
       formData.append('file', this.gpxFile);
       axios.post("/api/elevation/gpx/3d?dataset=" + this.requestParams.dataSet 
-                                    + "&generateTIN=false"
+                                    + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&textureQuality=" + this.requestParams.textureQuality
