@@ -5,8 +5,8 @@
           <header class="docs-header">
             <h1 class="title">FAQ</h1>
             <h2 class="subtitle">You'll find here some answers to common questions. 
-              If you need more info, we're on <a href="https://twitter.com/ElevationApi" target="_blank">Twitter</a> and 
-              <a target="_blank" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI">Slack</a>.</h2>
+              If you need more info, we're on <a href="https://twitter.com/ElevationApi" target="_blank" rel="noopener noreferrer">Twitter</a> and 
+              <a target="_blank" rel="noopener noreferrer" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI">Slack</a>.</h2>
         </header>
 
 
@@ -20,7 +20,7 @@
           <p>
               Buefy (pronounced /ˈbyo͞oˌfī/, like <b>beau-fy</b>) is a user interface component library made on top
               of two <em>fresh</em> but very well known frameworks, them being
-              <a href="https://vuejs.org" target="_blank">Vue.js</a> and <a href="https://bulma.io/">Bulma</a>.
+              <a href="https://vuejs.org" target="_blank" rel="noopener noreferrer">Vue.js</a> and <a href="https://bulma.io/">Bulma</a>.
               Buefy has two core principles: 1. keep stuff simple and 2. be lightweight.
           </p>
 
@@ -29,14 +29,14 @@
               a sophisticated Single-Page Application.
               You can import it completely or single components on a ordinary webpage and use Vue.js as a replacement for jQuery —
               as you can see in this
-              <a href="https://codepen.io/anon/pen/RBWMXE?editors=1010" target="_blank">Codepen</a>
+              <a href="https://codepen.io/anon/pen/RBWMXE?editors=1010" target="_blank" rel="noopener noreferrer">Codepen</a>
               or any other example over the documentation.
           </p>
 
           <blockquote>
               This documentation assumes you know the basics of Vue.js, if you're not comfortable with it yet,
               it's probably not the best idea to learn from here as your first step — learn the basics then come back.
-              <a href="https://vuejs.org/v2/guide" target="_blank">Vue.js</a> website is the best source for you to start with.
+              <a href="https://vuejs.org/v2/guide" target="_blank" rel="noopener noreferrer">Vue.js</a> website is the best source for you to start with.
           </blockquote>
 
           <p>

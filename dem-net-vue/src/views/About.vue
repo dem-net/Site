@@ -47,9 +47,9 @@
         <h1 class="title">Datasets information</h1>
         <article class="content">
           <p><strong>Access to data provided by the OpenTopography Facility with support from the National Science Foundation under NSF Award Numbers 1833703, 1833643, and 1833632.
-          </strong><a href="https://opentopography.org/" target="_blank">opentopography.org</a></p>
+          </strong><a href="https://opentopography.org/" target="_blank" rel="noopener noreferrer">opentopography.org</a></p>
           <p><strong>ETOPO1 data: Amante, C. and B.W. Eakins, 2009. ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24. National Geophysical Data Center, NOAA. doi:10.7289/V5C8276M [2019].
-            </strong><a href="https://www.ngdc.noaa.gov/mgg/global/" target="_blank">www.ngdc.noaa.gov</a></p>
+            </strong><a href="https://www.ngdc.noaa.gov/mgg/global/" target="_blank" rel="noopener noreferrer">www.ngdc.noaa.gov</a></p>
           <b-table
             ref="tableDatasets"
             :data="this.availableDatasets ? this.datasets : []"
