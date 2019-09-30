@@ -15,27 +15,35 @@
         <div class="content">
           <ul>
             <li>
-                <h3>What is the data coverage ?</h3>
+                <h3>Where the elevation data comes from and what is the coverage area?</h3>
             </li>
 
             <p>
-                We like to think that Buefy is the javascript layer for your Bulma interface, since it doesn't require for it to be
-                a sophisticated Single-Page Application.
-                You can import it completely or single components on a ordinary webpage and use Vue.js as a replacement for jQuery —
-                as you can see in this
-                <a href="https://codepen.io/anon/pen/RBWMXE?editors=1010" target="_blank" rel="noopener noreferrer">Codepen</a>
-                or any other example over the documentation.
+              DEM Net uses publicly available DEMs from <a href="https://opentopography.org/" target="_blank" rel="noopener noreferrer">OpenTopography</a> 
+              and <a href="https://www.ngdc.noaa.gov/mgg/global/"  target="_blank" rel="noopener noreferrer">NOOA</a>.
+                <ul>
+                  <li><strong>ETOPO1</strong> has global coverage, including oceans. Resolution: approx 2km.<br/>
+                        This dataset is best for large areas and bathymetry. It offers a great simplification of elevations.
+                  </li>
+                  <li><strong>ALOS World 3D (AW3D30)</strong> dataset coverage is within approx. 82 deg. of N/S latitudes. Resolution: 30m.
+                    <br/>
+                        This dataset has the better detail, but contains a lot of void areas with no data.
+                        In those cases, use SRTM_GL1 as a backup plan.
+                  </li>
+                  <li><strong>SRTM</strong> dataset coverage is within approx. 60 deg. of N/S latitudes. Resolution: 30m for SRTM_GL1 and 90m SRTM_GL3.
+                    <br/>
+                        This dataset has no or very few voids. It appears more smoothed than the ALOS World 3D.
+                    
+                  </li>
+                </ul>
             </p>
-
-            <blockquote>
-                This documentation assumes you know the basics of Vue.js, if you're not comfortable with it yet,
-                it's probably not the best idea to learn from here as your first step — learn the basics then come back.
-                <a href="https://vuejs.org/v2/guide" target="_blank" rel="noopener noreferrer">Vue.js</a> website is the best source for you to start with.
-            </blockquote>
+            
+            <li>
+                <h3>Can I use another imagery service ?</h3>
+            </li>
 
             <p>
-                Now that you know what Buefy is, get on to the next step and
-                <router-link to="/documentation/start">install it</router-link>!
+              It is possible if the provider is a tile ZXY provider (no WMS), is public (ie: public facing URL), and if it can be freely usable. Please contact us via contact@elevationapi.com. 
             </p>
           </ul>
       </div>
