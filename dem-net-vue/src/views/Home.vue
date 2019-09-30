@@ -6,7 +6,7 @@
       <div class="columns">
         <div class="column">
           <figure class="image is-6by3">
-          <img alt="Vue logo" src="../assets/DEMNet-cover.jpg">
+          <img alt="DEM Net Elevation API" src="../assets/DEMNet-cover.jpg">
           </figure>
         </div>
         
@@ -14,7 +14,7 @@
         <section>
 
         <h2 class="subtitle">
-          <br>A simple open source API providing <strong>global elevation data</strong>.
+          <br>A simple open source API providing <strong>global elevation data</strong> and fast content pipeline, enabling <strong>live 3D textured terrain generation</strong> in both STL and glTF.
         </h2>
         </section>
         <section>

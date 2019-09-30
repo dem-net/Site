@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-        <b-navbar fixed-top type="is-light" transparent>
+        <b-navbar>
           <template slot="brand">
               <b-navbar-item href="/">
                   <router-link to="/">
-                    <img src="./assets/DEMnet_logo_long.png" alt="Logo" width="60" />
+                    <img src="./assets/DEMnet_logo_long.png" alt="DEM Net Elevation API" width="60" />
                   </router-link>
               </b-navbar-item>
           </template>
