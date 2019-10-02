@@ -20,7 +20,7 @@
 
             <p>
               DEM Net uses publicly available DEMs from <a href="https://opentopography.org/" target="_blank" rel="noopener noreferrer">OpenTopography</a> 
-              and <a href="https://www.ngdc.noaa.gov/mgg/global/"  target="_blank" rel="noopener noreferrer">NOOA</a>.
+              and <a href="https://www.ngdc.noaa.gov/mgg/global/" target="_blank" rel="noopener noreferrer">NOOA</a>.
                 <ul>
                   <li><strong>ETOPO1</strong> has global coverage, including oceans. Resolution: approx 2km.<br/>
                         This dataset is best for large areas and bathymetry. It offers a great simplification of elevations.
@@ -38,6 +38,7 @@
                 </ul>
             </p>
             
+            <!-- NEXT FAQ ITEM -->
             <li>
                 <h3>Can I use another imagery service ?</h3>
             </li>
@@ -45,50 +46,56 @@
             <p>
               It is possible if the provider is a tile ZXY provider (no WMS), is public (ie: public facing URL), and if it can be freely usable. Please contact us via contact@elevationapi.com. 
             </p>
+
+
+            <!-- NEXT FAQ ITEM -->
+            <li>
+                <h3>How can I see my model once downloaded ?</h3>
+            </li>
+
+            <p>
+              - Windows 10+ users can natively open GLB and STL files using the 3D viewer app.<br/>
+              - Mac and Linux users can visualize their models via a viewer app. I use <a href="https://gltf-viewer.donmccurdy.com/" target="_blank" rel="noopener noreferrer">glTF Viewer</a> from Don McCurdy.
+            </p>
           </ul>
       </div>
       
       </div>
+
+      <vue-markdown>{{ compiledMarkdown }}</vue-markdown>
   </div>
 </template>
 
 <script>
+import VueMarkdown from 'vue-markdown'
+import axios from 'axios'
+
+
 export default {
   name: 'FAQ',
-  components: {
-    
-  },
-  created() {
-    if (!this.$store.state.datasets.dataSets)
-      this.$store.dispatch('datasets/getDatasets');
-    if (!this.$store.state.imagery.providers)
-      this.$store.dispatch('imagery/getProviders');
+  components: { VueMarkdown },
+  created(){
+    // Fetch Data
+    this.fetchData();
   },
   computed: {
-    availableDatasets() {
-          return this.$store.state && this.$store.state.datasets && this.$store.state.datasets.dataSets;
-      },
-    datasets() {
-      return this.$store.state.datasets.dataSets;
-    },
-    availableImagery() {
-          return this.$store.state && this.$store.state.imagery && this.$store.state.imagery.providers;
-      },
-    imageryProviders() {
-      return this.$store.state.imagery.providers;
+    compiledMarkdown: function () {
+      return marked(this.faqMarkdown, { sanitize: true })
     }
   }, 
+  methods: {
+  fetchData(){
+     axios.get('http://localhost:8080/faq.md').then(response => {
+       // eslint-disable-next-line 
+        console.log(response);
+        this.faqMarkdown = response.data;
+     })
+  }
+  },
   data() {
         return {
-          isEmpty: false,
-          isBordered: false,
-          isStriped: true,
-          isNarrowed: true,
-          isHoverable: false,
-          isFocusable: false,
-          isLoading: false,
-          hasMobileCards: true,
-            
+          baseUrl: process.env.BASE_URL,
+          faqMarkdown: "",
       }
     }
 }
