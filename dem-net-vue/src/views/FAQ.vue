@@ -35,3 +35,6 @@ export default {
     }
 }
 </script>
+<style scoped>
+a { text-decoration: unset; text-decoration: underline; }
+</style>
