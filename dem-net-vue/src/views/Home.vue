@@ -34,6 +34,10 @@
             </b-button>
           </div> 
         </div>
+        <b-message title="News" type="is-info" size="is-small" 
+            icon-pack="fas" has-icon>
+            Oct 6th 2019: FAQ has been updated
+        </b-message>
         </h2>
         </section>
         </div>

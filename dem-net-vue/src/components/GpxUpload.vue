@@ -6,7 +6,7 @@
             icon-pack="fas"
             aria-close-label="Close notification"
             role="alert">
-            Application cannot connect to back-end server. Please try again later.
+            Application cannot connect to back-end server. Please try again later by refreshing this page.
        {{ demErrors }}
         </b-notification>
     <b-field class="file">
