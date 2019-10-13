@@ -36,6 +36,8 @@
         </div>
         <b-message title="News" type="is-info" size="is-small" 
             icon-pack="fas" has-icon>
+            Oct 13th 2019: <router-link :to="{ name: 'Playground3DGpx' }">3D GPX track option added</router-link>
+            <br/>
             Oct 6th 2019: <router-link :to="{ name: 'FAQ' }">FAQ has been updated</router-link>
         </b-message>
         </h2>

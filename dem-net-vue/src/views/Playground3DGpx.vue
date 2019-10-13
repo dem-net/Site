@@ -22,31 +22,6 @@
                     {{ gpxFile.name }}
                 </span>
             </b-field>
-            <!-- <b-field label="Or choose one of the demo files..." class="level-item">
-            <b-select v-model="demoGpxFile" placeholder="Demo GPX files" icon-pack="fas" icon="folder-open" class="title" @input="loadDemoFile">
-                <optgroup label="Europe">
-                    <option value="./assets/gpx/BikeRide.gpx">Bike Ride, Aubagne</option>
-                    <option value="silver">Silver</option>
-                    <option value="vane">Vane</option>
-                    <option value="billy">Billy</option>
-                    <option value="jack">Jack</option>
-                </optgroup>
-
-                <optgroup label="Breaking Bad">
-                    <option value="heisenberg">Heisenberg</option>
-                    <option value="jesse">Jesse</option>
-                    <option value="saul">Saul</option>
-                    <option value="mike">Mike</option>
-                </optgroup>
-
-                <optgroup label="Game of Thrones">
-                    <option value="tyrion-lannister">Tyrion Lannister</option>
-                    <option value="jamie-lannister">Jamie Lannister</option>
-                    <option value="daenerys-targaryen">Daenerys Targaryen</option>
-                    <option value="jon-snow">Jon Snow</option>
-                </optgroup>
-            </b-select>
-        </b-field> -->
             </nav>
 
             <div class="columns">
@@ -66,7 +41,6 @@
               <div class="column" v-show="showTextureOptions">
                 <b-field label="Use imagery texture">
                     <b-switch v-model="requestParams.textured">
-                        {{ requestParams.textured }}
                     </b-switch>
                 </b-field>
                 <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
@@ -83,15 +57,24 @@
               <div class="column" v-show="false">
                 <b-field label="Generate TIN" v-if="this.requestParams.format == 'glTF'">
                     <b-switch v-model="requestParams.generateTIN">
-                        {{ requestParams.generateTIN }}
                     </b-switch>
+                </b-field>
+              </div>
+              <!-- 3D track -->
+              <div class="column">
+                <b-field label="3D track">
+                    <b-tooltip :label="track3Ddescription"
+                        position="is-bottom" type="is-light"
+                        animated multilined>
+                        <b-switch v-model="requestParams.track3D">
+                    </b-switch>
+                    </b-tooltip>
                 </b-field>
               </div>
               <!-- rotate -->
               <div class="column">
                 <b-field label="Rotate model">
                     <b-switch v-model="enableRotation">
-                        {{ enableRotation }}
                     </b-switch>
                 </b-field>
               </div>
@@ -127,7 +110,6 @@
                   </div>
                 </div>
               </nav>
-
             <p>
                   <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
                   <span style="color: black">{{ serverProgress }}</span>
@@ -193,7 +175,8 @@ export default {
           imageryProvider: "Esri.WorldImagery",
           textureQuality: 2,
           format: "glTF",
-          zFactor: 1
+          zFactor: 1,
+          track3D: true
         }
     }
   },
@@ -206,6 +189,9 @@ export default {
     },
     progressType() {
         return (this.demErrors == null) ? "is-warning" : "is-danger";
+    },
+    track3Ddescription() {
+      return "If activated, GPX will we translated to a plane mesh, otherwise GPX track will be drawn on texture.";
     }
   },
   methods: 
@@ -250,6 +236,7 @@ export default {
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&textureQuality=" + this.requestParams.textureQuality
+                                    + "&track3D=" + this.requestParams.track3D
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId,
@@ -267,7 +254,7 @@ export default {
       .catch(err=> {
           this.isLoading = false;
           this.serverProgress = "Request aborted"; 
-          this.demErrors = err.response.data;
+          this.demErrors = err.response ? err.response.data : err.message;
           this.demErrorsActive = true;
       })
     },

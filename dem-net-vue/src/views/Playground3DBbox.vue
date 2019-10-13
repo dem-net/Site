@@ -33,7 +33,6 @@
                   <div class="column" v-show="showTextureOptions">
                     <b-field label="Use imagery texture">
                         <b-switch v-model="requestParams.textured">
-                            {{ requestParams.textured }}
                         </b-switch>
                     </b-field>
                     <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
@@ -50,7 +49,6 @@
                   <div class="column" v-show="false">
                     <b-field label="Generate TIN">
                         <b-switch v-model="requestParams.generateTIN">
-                            {{ requestParams.generateTIN }}
                         </b-switch>
                     </b-field>
                   </div>
@@ -58,7 +56,6 @@
                   <div class="column">
                     <b-field label="Rotate model">
                         <b-switch v-model="enableRotation">
-                            {{ enableRotation }}
                         </b-switch>
                     </b-field>
                   </div>
