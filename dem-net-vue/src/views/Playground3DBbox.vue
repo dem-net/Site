@@ -204,7 +204,7 @@ export default {
       this.demErrors = null;
       this.serverProgress = "Sending request...";  
       const baseUrl = process.env.VUE_APP_API_BASEURL
-      axios.get("/api/elevation/bbox/3d/" + this.requestParams.bbox
+      axios.get("/api/model/3d/bbox/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured

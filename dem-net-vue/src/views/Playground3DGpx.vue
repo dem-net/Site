@@ -231,7 +231,7 @@ export default {
       const baseUrl = process.env.VUE_APP_API_BASEURL
       let formData = new FormData();
       formData.append('file', this.gpxFile);
-      axios.post("/api/elevation/gpx/3d?dataset=" + this.requestParams.dataSet 
+      axios.post("/api/model/3d/bbox?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
