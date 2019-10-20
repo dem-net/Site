@@ -204,7 +204,7 @@ export default {
       this.demErrors = null;
       this.serverProgress = "Sending request...";  
       const baseUrl = process.env.VUE_APP_API_BASEURL
-      axios.get("/api/elevation/bbox/3d/" + this.requestParams.bbox
+      axios.get("/api/model/3d/bbox/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
@@ -214,7 +214,7 @@ export default {
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
-          this.glbFile = baseUrl + result.data;
+          this.glbFile = baseUrl + result.data.assetInfo.modelFile;
           this.demErrors = null; this.demErrorsActive = false;
       })
       .catch(err=> { 
