@@ -214,7 +214,7 @@ export default {
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
-          this.glbFile = baseUrl + result.data;
+          this.glbFile = baseUrl + result.data.assetInfo.modelFile;
           this.demErrors = null; this.demErrorsActive = false;
       })
       .catch(err=> { 
