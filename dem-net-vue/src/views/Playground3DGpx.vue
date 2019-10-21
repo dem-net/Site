@@ -91,6 +91,8 @@
 
             <!-- Buttons -->
               <nav class="level is-mobile">
+
+                <!-- Generation -->
                 <div class="level-item has-text-centered">
                   <div>
                     <b-button @click="upload" :disabled="!gpxFile" icon-pack="fas" icon-left="fas fa-globe-americas">
@@ -98,9 +100,36 @@
                     </b-button>              
                   </div>
                 </div>
+                <!-- Textures -->
+                <div class="level-item has-text-centered">
+                  <b-dropdown hoverable aria-role="list" :disabled="!this.glbFile">
+                            <button class="button" slot="trigger">
+                                <b-icon pack="fas" icon="images"></b-icon>
+                                <span>Download textures</span>
+                            </button>
+                            <b-dropdown-item has-link aria-role="menuitem" v-if="this.textureFiles.heightMap">
+                                <a :href="this.textureFiles.heightMap" target="_blank" rel="noopener noreferrer">
+                                    <b-icon pack="fas" icon="image"></b-icon>
+                                    Height map
+                                </a>
+                            </b-dropdown-item>
+                            <b-dropdown-item has-link aria-role="menuitem" v-if="this.textureFiles.normalMap">
+                                <a :href="this.textureFiles.normalMap" target="_blank" rel="noopener noreferrer">
+                                    <b-icon pack="fas" icon="image"></b-icon>
+                                    Normal map
+                                </a>
+                            </b-dropdown-item>
+                             <b-dropdown-item has-link aria-role="menuitem" v-if="this.textureFiles.albedo">
+                                <a :href="this.textureFiles.albedo" target="_blank" rel="noopener noreferrer">
+                                    <b-icon pack="fas" icon="image"></b-icon>
+                                    Albedo (imagery)
+                                </a>
+                            </b-dropdown-item>
+                        </b-dropdown>
+                </div>
+                <!-- Download -->
                 <div class="level-item has-text-centered">
                   <div>
-
                     <b-button icon-pack="fas" icon-left="fas fa-download"  :disabled="!this.glbFile">
                       <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
                         Download model
@@ -177,6 +206,11 @@ export default {
           format: "glTF",
           zFactor: 1,
           track3D: true
+        },
+        textureFiles: {
+          heightMap: null,
+          normalMap: null,
+          albedo: null
         }
     }
   },
@@ -249,8 +283,13 @@ export default {
           }
       }
       ).then(result => {
-          this.glbFile = baseUrl + result.data.assetInfo.modelFile;
-      })
+          var assetInfo = result.data.assetInfo;
+          this.glbFile = baseUrl + assetInfo.modelFile;
+          this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
+          this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
+          this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
+          this.demErrors = null; this.demErrorsActive = false;
+     })
       .catch(err=> {
           this.isLoading = false;
           this.serverProgress = "Request aborted"; 
