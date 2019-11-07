@@ -190,7 +190,8 @@ export default {
           heightMap: null,
           normalMap: null,
           albedo: null
-        }
+        },
+        attributions: []
     }
   },
   computed: {
@@ -253,6 +254,7 @@ export default {
           this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
           this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
+          this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
       })
       .catch(err=> { 
