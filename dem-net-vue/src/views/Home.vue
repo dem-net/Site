@@ -35,6 +35,8 @@
           </div> 
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Nov 28 2019: - FAQ updated and Expo page
+            <br/>
             Nov 18 2019: - Grid registered GeoTIFF properly handled (could return bad elevations), normal maps as PNG
             <br/>
             Nov 07 2019: New ASTER GDEM v3 dataset added (30m resolution, better coverage, no voids)

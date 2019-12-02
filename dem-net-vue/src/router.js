@@ -7,6 +7,7 @@ import Playground3DGpx from './views/Playground3DGpx.vue'
 import Playground3DBbox from './views/Playground3DBbox.vue'
 import About from './views/About.vue'
 import FAQ from './views/FAQ.vue'
+import Expo from './views/Expo.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/faq',
       name: 'FAQ',
       component: FAQ
+    },
+    {
+      path: '/expo',
+      name: 'Expo',
+      component: Expo
     }
   ]
 })

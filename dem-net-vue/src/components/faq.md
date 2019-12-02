@@ -30,12 +30,11 @@ __You'll find in the [About page](/about#imagery) all needed information to cred
 
 - Models coordinates are projected to Web Mercator (3857). Units are in meters.
 
-- __One important note__: after projection, model are centered on (0,0,0).
-We plan to update this, for easier model integration with real-world data.
-
 ## How can I share my model?
 
 - The best way (for now) is to upload it to [SketchFab](https://sketchfab.com), where you can setup the camera and 3D post processing effects, and share your model. See [DEM Net Elevation API gallery](https://sketchfab.com/xfischer).
+
+- We plan to integrate Skectfab direct upload in future releases.
 
 ## Can I run _simple_ elevation data requests?
 
@@ -64,7 +63,9 @@ Yes, there's a rate limit on API endpoints to encourage respectful usage and res
 ## Will other datasets be added in the future?
 
 Yes! We plan to add other global datasets:
-- ASTER GDEM V3
+
+- GEBCO_2019 for bathymetry
+- EU-DEM for Europe elevations at higher latitudes
 - MapBox Elevation Tiles
 
 ## What are the forthcoming features?
@@ -84,7 +85,7 @@ Yes! We plan to add other global datasets:
 
 ## Where the elevation data comes from and what is the coverage area?
 
-DEM Net uses publicly available DEMs from [OpenTopography](https://opentopography.org/) and [NOOA](https://www.ngdc.noaa.gov/mgg/global).
+DEM Net uses publicly available DEMs from [OpenTopography](https://opentopography.org/), [NOOA](https://www.ngdc.noaa.gov/mgg/global) and [NASA](https://earthdata.nasa.gov/)
 
 * __ETOPO1__ has global coverage, including oceans. Resolution: approx 2km.
 <br/>*This dataset is best for large areas and bathymetry. It offers a great simplification of elevations*.
@@ -92,6 +93,8 @@ DEM Net uses publicly available DEMs from [OpenTopography](https://opentopograph
 * **ALOS World 3D (AW3D30)** dataset coverage is within approx. 82 deg. of N/S latitudes. Resolution: 30m.<br/>*This dataset has the better detail, but contains a lot of void areas with no data. In those cases, use SRTM_GL1 as a backup plan.*
 
 * **SRTM** dataset coverage is within approx. 60 deg. of N/S latitudes. Resolution: 30m for SRTM_GL1 and 90m SRTM_GL3.<br/>*This dataset has no or very few voids. But it appears more smoothed than the ALOS World 3D.*
+
+* **ASTER GDEM v3** dataset coverage is within approx. 83 deg. of N/S latitudes. Resolution: 30m.<br/>*This dataset has is the most accurate for mountains.*
 
 ## Can I use another imagery service ?
 
