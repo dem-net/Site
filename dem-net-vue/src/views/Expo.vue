@@ -131,13 +131,13 @@
                             <div class="media-left">
                             </div>
                             <div class="media-content">
-                              <p class="title is-4">Javier Jimenez Shaw</p>
+                              <p class="title is-4">Multimaps</p>
                               <p class="subtitle is-6"><a href="http://javier.jimenezshaw.com/mapas" target="_blank" rel="noopener noreferrer">javier.jimenezshaw.com/mapas</a></p>
                             </div>
                           </div>
 
                           <div class="content">
-                            Javier as recently tested DEM Net Elevation API integration for elevation profiles requests. He has also helped to point out several bugs that were fixed. Check out his site, very helpful!
+                            Javier Jimenez Shaw as recently tested DEM Net Elevation API integration for elevation profiles requests. He has also helped to point out several bugs that were fixed. Check out his site, very helpful!
                             <br>
                             <time datetime="2019-10-17">Nov 2019</time>
                           </div>
@@ -146,50 +146,6 @@
                   </div>
               </div>
               <!-- -->
-              <!-- coming soon -->
-              <div class="tile">
-                  <div class="tile is-parent is-4">
-                      <div class="card">
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">Javier Jimenez Shaw</p>
-                              <p class="subtitle is-6"><a href="http://javier.jimenezshaw.com/mapas" target="_blank" rel="noopener noreferrer">javier.jimenezshaw.com/mapas</a></p>
-                            </div>
-                          </div>
-
-                          <div class="content">
-                            Javier as recently tested DEM Net Elevation API integration for elevation profiles requests. He has also helped to point out several bugs that were fixed. Check out his site, very helpful!
-                            <br>
-                            <time datetime="2019-10-17">Nov 2019</time>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-              </div><div class="tile">
-                  <div class="tile is-parent is-4">
-                      <div class="card">
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">Javier Jimenez Shaw</p>
-                              <p class="subtitle is-6"><a href="http://javier.jimenezshaw.com/mapas" target="_blank" rel="noopener noreferrer">javier.jimenezshaw.com/mapas</a></p>
-                            </div>
-                          </div>
-
-                          <div class="content">
-                            Javier as recently tested DEM Net Elevation API integration for elevation profiles requests. He has also helped to point out several bugs that were fixed. Check out his site, very helpful!
-                            <br>
-                            <time datetime="2019-10-17">Nov 2019</time>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
               <!-- -->
           </div>
 
