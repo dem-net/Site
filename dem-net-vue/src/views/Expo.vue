@@ -72,7 +72,7 @@
 
                           <div class="content">
                             Patricio is a mapping a Chilean region, helping in climate analysis from fossil trees leaved by local indians on ceremonials. 
-                            The API was used to map custom satellite imagery textures from onto 3D models.
+                            The API was used to map custom satellite imagery textures onto 3D models.
                             <br>
                             <time datetime="2019-10-17">17 Oct 2019</time>
                           </div>
@@ -104,7 +104,7 @@
                           </div>
 
                           <div class="content">
-                            Roy Rodenhaeuser used the API to generate a 3D base map giving context in a AR setup for a archeology piece.
+                            Roy Rodenhaeuser used the API to generate a 3D base map giving context in an AR setup for an archeology piece.
                             <br>
                             <time datetime="2019-10-17">Oct 2019</time>
                           </div>
