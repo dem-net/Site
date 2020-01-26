@@ -35,17 +35,7 @@
           </div> 
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
-            Nov 28 2019: - FAQ updated and Expo page
-            <br/>
-            Nov 18 2019: - Grid registered GeoTIFF properly handled (could return bad elevations), normal maps as PNG
-            <br/>
-            Nov 07 2019: New ASTER GDEM v3 dataset added (30m resolution, better coverage, no voids)
-            <br/>
-            Oct 21 2019: Texture download available (albedo, heightmap, normalmap)
-            <br/>
-            Oct 13 2019: <router-link :to="{ name: 'Playground3DGpx' }">3D GPX track option added</router-link>
-            <br/>
-            Oct 6 2019: <router-link :to="{ name: 'FAQ' }">FAQ has been updated</router-link>
+            Jan 26 2020: - GEBCO 2019 dataset added (global bathymetry 240 m)
         </b-message>
         </h2>
         </section>
