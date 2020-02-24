@@ -1,10 +1,14 @@
 <template>
-<section>          
+<section> 
+      <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@2.6.0/assets/css/leaflet.css">         
       <div style="width: 90%;height: 100%; background-color:#eee; position:relative;">
         <l-map ref="map" id="map" :zoom="zoom"
             :center="center"
             :options='{ zoomControl: true }'>
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+          <!-- IMPORTANT PART HERE -->
+          <v-geosearch :options="geosearchOptions" ></v-geosearch>
+          <!-- /IMPORTANT PART HERE -->
         </l-map>
       </div>
     </section>
@@ -14,11 +18,13 @@
 <script>
 import { LMap, LTileLayer } from "vue2-leaflet";
 import 'leaflet-draw';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
+import VGeosearch from 'vue2-leaflet-geosearch';
 
 export default {
   name: 'MapLine',
   components: {
-    LMap, LTileLayer
+    LMap, LTileLayer, VGeosearch
   },
 
   mounted() {
@@ -73,6 +79,11 @@ export default {
 
   data(){
     return {
+      geosearchOptions: { // Important part Here
+        provider: new OpenStreetMapProvider(),
+        autoClose: true,
+        style: 'bar'
+      },
       zoom: 6,
       editableLayers: null,
       drawControl: null,
