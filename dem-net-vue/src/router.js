@@ -5,8 +5,10 @@ import PlaygroundPoint from './views/PlaygroundPoint.vue'
 import PlaygroundLine from './views/PlaygroundLine.vue'
 import Playground3DGpx from './views/Playground3DGpx.vue'
 import Playground3DBbox from './views/Playground3DBbox.vue'
+import Playground3DOsm from './views/Playground3DOsm.vue'
 import About from './views/About.vue'
 import FAQ from './views/FAQ.vue'
+import Expo from './views/Expo.vue'
 
 Vue.use(Router)
 
@@ -40,6 +42,11 @@ export default new Router({
       component: Playground3DBbox
     },
     {
+      path: '/playground_3dosm',
+      name: 'Playground3DOsm',
+      component: Playground3DOsm
+    },
+    {
       path: '/about',
       name: 'About',
       component: About
@@ -48,6 +55,11 @@ export default new Router({
       path: '/faq',
       name: 'FAQ',
       component: FAQ
+    },
+    {
+      path: '/expo',
+      name: 'Expo',
+      component: Expo
     }
   ]
 })

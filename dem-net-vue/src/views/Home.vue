@@ -32,13 +32,18 @@
             <b-button icon-pack="fas" icon-left="fas fa-vector-square" tag="router-link" :to="{ name: 'Playground3DBbox' }">
                     Map to 3D
             </b-button>
+          </div>
+          <div class="column">
+            
+            <b-button icon-pack="fas" icon-left="fas fa-globe" tag="router-link" :to="{ name: 'Playground3DOsm' }">
+                    Map + OSM to 3D
+            </b-button>
           </div> 
         </div>
-        <b-message title="News" type="is-info" size="is-small" 
-            icon-pack="fas" has-icon>
-            Oct 13th 2019: <router-link :to="{ name: 'Playground3DGpx' }">3D GPX track option added</router-link>
+        <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Feb 22 2020: - OSM buildings and ski resorts added (experimental)
             <br/>
-            Oct 6th 2019: <router-link :to="{ name: 'FAQ' }">FAQ has been updated</router-link>
+            Jan 26 2020: - GEBCO 2019 dataset added (global bathymetry 240 m)
         </b-message>
         </h2>
         </section>

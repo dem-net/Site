@@ -90,7 +90,7 @@
               <div class="media-content">
                   <div class="content">
                       <p>
-                          <small>@{{ props.row.attribution.acknowledgement}}</small>
+                          <small>{{ props.row.attribution.acknowledgement}}</small>
                           </p>
                   </div>
               </div>
@@ -149,7 +149,7 @@
               <div class="media-content">
                   <div class="content">
                       <p>
-                          <small>@{{ props.row.attribution.text}}</small>
+                          <small>{{ props.row.attribution.text}}</small>
                           </p>
                   </div>
               </div>

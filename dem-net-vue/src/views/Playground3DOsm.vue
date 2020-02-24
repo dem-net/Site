@@ -2,7 +2,8 @@
   <div class="playground">
     
     <div class="container is-fluild">
-    <h1 class="title">3D terrain model from a map</h1>
+    <h1 class="title">3D model with OSM data</h1>
+    <h1 class="subtitle">Experimental - buildings and ski resorts</h1>
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">Draw a rectangle using the tool&nbsp;>&nbsp;Choose your options&nbsp;>&nbsp;Generate and see the 3D model.</p>
@@ -15,51 +16,98 @@
                 <MapRectangle @bboxSelected="setBbox"></MapRectangle>
               </div>
               <div class="column">
-                <div class="columns">
-                  <div class="column">
-                    <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
-                  </div>
-                  <!-- Export format -->
-                  <div class="column">
-                    <label class="label">Output format</label>
-                    <b-field>
-                      <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
-                      <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
-                      </b-field>
-                  </div>
-                </div>
-                <div class="columns">
-                  <!-- Texture -->
-                  <div class="column" v-show="showTextureOptions">
-                    <b-field label="Use imagery texture">
-                        <b-switch v-model="requestParams.textured">
+                <b-tabs type="is-toggle" expanded>
+                  <b-tab-item label="3D settings" icon-pack="fa" icon="cube">
+
+
+                    <div class="columns">
+                      <div class="column">
+                        <DatasetSelector :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
+                      </div>
+                      <!-- Export format -->
+                      <div class="column">
+                        <label class="label">Output format</label>
+                        <b-field>
+                          <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
+                          <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                          </b-field>
+                      </div>
+                    </div>
+                    <div class="columns">
+                      <!-- Texture -->
+                      <div class="column" v-show="showTextureOptions">
+                        <b-field label="Use imagery texture">
+                            <b-switch v-model="requestParams.textured">
+                            </b-switch>
+                        </b-field>
+                        <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
+                          @providerSelected="onProviderSelected"
+                          @qualitySelected="onQualitySelected"/>
+                      </div>
+                      <!-- Z factor -->
+                      <div class="column">
+                        <b-field label="Z multiplier">
+                          <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
+                        </b-field>
+                      </div>
+                      <!-- TIN-->
+                      <div class="column" v-show="false">
+                        <b-field label="Generate TIN">
+                            <b-switch v-model="requestParams.generateTIN">
+                            </b-switch>
+                        </b-field>
+                      </div>
+                      <!-- rotate -->
+                      <div class="column">
+                        <b-field label="Rotate model">
+                            <b-switch v-model="enableRotation">
+                            </b-switch>
+                        </b-field>
+                      </div>
+                    </div>
+
+                  </b-tab-item>
+
+                <!-- OSM tab ----------------->
+                  <b-tab-item label="OSM settings" icon-pack="fas" icon="building">
+
+                      <!-- building options -->
+                      <div class="columns">
+                        <div class="column">
+                            <b-field label="Load buildings">
+                              <b-switch v-model="requestParams.osmBuildings">
+                            </b-switch>
+                            </b-field>
+                        </div>
+                        <div class="column">
+                            <b-field label="Use OSM buildings colors" v-if="requestParams.osmBuildings">
+                              <b-switch v-model="requestParams.useOsmBuildingsColor">
+                            </b-switch>
+                            </b-field>
+                        </div>
+                        <div class="column">
+                          <b-field label="Custom building color" v-if="!requestParams.useOsmBuildingsColor && requestParams.osmBuildings">
+                            <swatches v-model="requestParams.buildingsColor" colors="text-advanced" popover-to="left"></swatches>
+                          </b-field>
+                        </div>
+                      </div>
+
+                     
+                    <!-- ski resorts options -->
+                    <div class="columns">
+                        <div class="column">
+                    <b-field label="Load ski pistes">
+                        <b-switch v-model="requestParams.osmPistesSki">
                         </b-switch>
-                    </b-field>
-                    <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
-                      @providerSelected="onProviderSelected"
-                      @qualitySelected="onQualitySelected"/>
-                  </div>
-                  <!-- Z factor -->
-                  <div class="column">
-                    <b-field label="Z multiplier">
-                      <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
-                    </b-field>
-                  </div>
-                  <!-- TIN-->
-                  <div class="column" v-show="false">
-                    <b-field label="Generate TIN">
-                        <b-switch v-model="requestParams.generateTIN">
-                        </b-switch>
-                    </b-field>
-                  </div>
-                  <!-- rotate -->
-                  <div class="column">
-                    <b-field label="Rotate model">
-                        <b-switch v-model="enableRotation">
-                        </b-switch>
-                    </b-field>
-                  </div>
-                </div>
+                    </b-field>  
+                        </div>
+                        <div class="column"></div><div class="column"></div>
+                      </div>                 
+
+                  </b-tab-item>
+                </b-tabs>
+
+               
               </div>
             </div>
             <b-notification v-show="demErrors" :active.sync="demErrorsActive"
@@ -150,10 +198,13 @@ import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
 import MapRectangle from '../components/MapRectangle'
+import Swatches from 'vue-swatches'
+// Import the styles too, globally
+import "vue-swatches/dist/vue-swatches.min.css"
 
 export default {
-  name: 'Playground3DBbox',
-  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
+  name: 'Playground3DOsm',
+  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector, Swatches },
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
@@ -184,7 +235,11 @@ export default {
           textureQuality: 2,
           format: "glTF",
           zFactor: 1,
-          generateTIN: false
+          generateTIN: false,
+          osmBuildings: true,
+          useOsmBuildingsColor: false,
+          osmPistesSki: false,
+          buildingsColor: '#945200'
         },
         textureFiles: {
           heightMap: null,
@@ -234,12 +289,12 @@ export default {
       this.$ga.event({
         eventCategory: 'model',
         eventAction: 'generate',
-        eventLabel: 'bbox-' + this.requestParams.format
+        eventLabel: 'bbox-osm-' + this.requestParams.format
       })
       this.demErrors = null;
       this.serverProgress = "Sending request...";  
       const baseUrl = process.env.VUE_APP_API_BASEURL
-      axios.get("/api/model/3d/bbox/" + this.requestParams.bbox
+      axios.get("/api/model/3d/bbox/osm/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
                                     + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
@@ -247,6 +302,10 @@ export default {
                                     + "&textureQuality=" + this.requestParams.textureQuality
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
+                                    + "&withBuildings=" + this.requestParams.osmBuildings
+                                    + "&withBuildingsColors=" + this.requestParams.useOsmBuildingsColor
+                                    + "&buildingsColor=" + encodeURIComponent(this.requestParams.buildingsColor)
+                                    + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
           var assetInfo = result.data.assetInfo;
