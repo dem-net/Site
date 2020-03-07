@@ -29,7 +29,7 @@
                         <label class="label">Output format</label>
                         <b-field>
                           <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
-                          <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                          <!--<b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>-->
                           </b-field>
                       </div>
                     </div>
@@ -287,7 +287,7 @@ export default {
     generateModel(){
       this.isLoading = true;
       this.$ga.event({
-        eventCategory: 'model',
+        eventCategory: 'model-osm',
         eventAction: 'generate',
         eventLabel: 'bbox-osm-' + this.requestParams.format
       })
@@ -325,7 +325,7 @@ export default {
     },
     modelDownload(){
       this.$ga.event({
-            eventCategory: 'model',
+            eventCategory: 'model-osm',
             eventAction: 'download',
             eventLabel: 'bbox'
           })

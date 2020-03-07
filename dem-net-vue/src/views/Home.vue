@@ -41,6 +41,8 @@
           </div> 
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Mar 07 2020: - OSM models / NASADEM dataset / search available in map
+            <br/>
             Feb 22 2020: - OSM buildings and ski resorts added (experimental)
             <br/>
             Jan 26 2020: - GEBCO 2019 dataset added (global bathymetry 240 m)
