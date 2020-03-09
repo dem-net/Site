@@ -131,8 +131,13 @@
               <model-stl
                   background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
               </div>
-            <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+
+              <Attributions :attributions="this.attributions"></Attributions>
               
+
+            <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+            
+
           </section>
         </div>
       </div>
@@ -149,11 +154,12 @@ import axios from 'axios'
 import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
+import Attributions from '../components/Attributions'
 import MapRectangle from '../components/MapRectangle'
 
 export default {
   name: 'Playground3DBbox',
-  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
+  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector,Attributions },
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);

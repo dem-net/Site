@@ -22,9 +22,6 @@
             </b-slider>
         </b-field>
           
-         <span class="is-size-7">
-           Attribution:<br>{{ providerDesc }}
-         </span>
       </div>
       <div class="field has-text-left">
         <span class="is-size-7">
@@ -42,9 +39,6 @@ export default {
   computed: {
       availableProviders() {
           return this.$store.state.imagery.providers;
-      },
-      providerDesc() {
-        return this.$store.state.imagery.providers.find(d => d.name == this.selectedProvider).attribution.text;
       },
       curProvider() {
         return this.provider;
