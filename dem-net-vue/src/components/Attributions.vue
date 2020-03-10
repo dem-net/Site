@@ -3,32 +3,54 @@
       <label class="label">Attributions</label>
       <span class="is-size-7">
         Attribution is NOT optional: please append the following information alongside with the model to credit the contributors.
-      </span><b-button @click.stop.prevent="copyTestingCode">
-              Copy
-            </b-button>
-      <div>
+      </span>
+     <b-field>
+            <b-radio v-model="shortText"
+                size="is-small"
+                :native-value=true>
+                Short attribution text
+            </b-radio>
+            <b-radio v-model="shortText"
+                size="is-small"
+                :native-value=false>
+                Full attribution text
+            </b-radio>
+     </b-field>
+     <b-field>
+      <b-button @click.stop.prevent="copyTestingCode">
+        Copy
+      </b-button>
+       
+     </b-field>
          <b-field>
-            <b-input size="is-small" type="textarea" id="attributions-text" :value="this.attributionsText"></b-input>
+            <b-input size="is-small" type="textarea" readonly id="attributions-text" :value="this.attributionsText"></b-input>
         </b-field>
-      </div>
   </section>
 </template>
 
 <script>
 export default {
   props: {
-    attributions: {type: Array, default: null}
+    attributions: {type: Array, default: null},
   },
   computed: {
-      attributionsText() {
+      shortAttributionsText() {
+          return this.attributions.map(function(attr){
+              return attr.subject + ": " + attr.text + " / " + attr.url; // + "\n" + attr.acknowledgement;
+            }).join("\n --------------- \n");
+      }, 
+      fullAttributionsText() {
           return this.attributions.map(function(attr){
               return attr.subject + ": " + attr.text + " / " + attr.url + "\n" + attr.acknowledgement;
             }).join("\n --------------- \n");
       },
+      attributionsText() {
+        return this.shortText ? this.shortAttributionsText : this.fullAttributionsText;
+      }
   },
   data() {
     return {
-      
+     shortText: true,
     }
   },
    methods: {
@@ -37,11 +59,16 @@ export default {
           textArea.select();
 
           try {
-            var successful = document.execCommand("copy");
-            var msg = successful ? 'successful' : 'unsuccessful';
-            alert('Testing code was copied ' + msg);
+            document.execCommand("copy");
+            this.$buefy.toast.open({
+                    message: 'Attributions copied in clipboard!',
+                    type: 'is-success'
+                });
           } catch (err) {
-            alert('Oops, unable to copy');
+            this.$buefy.toast.open({
+                    message: 'Cannot copy attributions !',
+                    type: 'is-warning'
+                });
           }
 
           /* unselect the range */
