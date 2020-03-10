@@ -36,12 +36,12 @@ export default {
   computed: {
       shortAttributionsText() {
           return this.attributions.map(function(attr){
-              return attr.subject + ": " + attr.text + " / " + attr.url; // + "\n" + attr.acknowledgement;
-            }).join("\n --------------- \n");
+              return attr.subject + ": " + attr.text + " - " + attr.url; // + "\n" + attr.acknowledgement;
+            }).join("\n");
       }, 
       fullAttributionsText() {
           return this.attributions.map(function(attr){
-              return attr.subject + ": " + attr.text + " / " + attr.url + "\n" + attr.acknowledgement;
+              return attr.subject + ": " + attr.text + " - " + attr.url + "\n" + attr.acknowledgement;
             }).join("\n --------------- \n");
       },
       attributionsText() {

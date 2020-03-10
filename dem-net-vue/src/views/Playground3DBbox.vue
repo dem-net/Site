@@ -263,6 +263,7 @@ export default {
           this.serverProgress = "Request aborted";  
           this.demErrors = err.response.data; 
           this.demErrorsActive = true;
+          this.attributions = [];
           })
     },
     modelDownload(){

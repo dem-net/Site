@@ -90,18 +90,14 @@
             </b-notification>
 
             <!-- Buttons -->
-              <nav class="level is-mobile">
+              <div class="buttons is-centered">
 
                 <!-- Generation -->
-                <div class="level-item has-text-centered">
-                  <div>
                     <b-button @click="upload" :disabled="!gpxFile" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Generate 3D model
-                    </b-button>              
-                  </div>
-                </div>
+                    </b-button>     
                 <!-- Textures -->
-                <div class="level-item has-text-centered">
+               
                   <b-dropdown hoverable aria-role="list" :disabled="!this.glbFile">
                             <button class="button" slot="trigger">
                                 <b-icon pack="fas" icon="images"></b-icon>
@@ -126,19 +122,19 @@
                                 </a>
                             </b-dropdown-item>
                         </b-dropdown>
-                </div>
                 <!-- Download -->
-                <div class="level-item has-text-centered">
-                  <div>
                     <b-button icon-pack="fas" icon-left="fas fa-download"  :disabled="!this.glbFile">
                       <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
                         Download model
                       </a>
                     </b-button>
                     
-                  </div>
-                </div>
-              </nav>
+
+                <!-- Attributions -->
+                    <b-button icon-pack="fas" icon-left="fas fa-copyright" :disabled="!this.glbFile" tag="a" href="#attributions">
+                        Attributions
+                      </b-button>
+              </div>
             <p>
                   <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
                   <span style="color: black">{{ serverProgress }}</span>
@@ -151,6 +147,10 @@
             <model-stl
             background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
             </div>
+
+
+              <Attributions id="attributions" :attributions="this.attributions"></Attributions>
+              
             <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
             
           </section>
@@ -169,10 +169,11 @@ import axios from 'axios'
 import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
+import Attributions from '../components/Attributions'
 
 export default {
   name: 'Playground3DGpx',
-  components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector },
+  components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector,Attributions },
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
@@ -211,7 +212,8 @@ export default {
           heightMap: null,
           normalMap: null,
           albedo: null
-        }
+        },
+        attributions: []
     }
   },
   computed: {
@@ -289,12 +291,14 @@ export default {
           this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
           this.demErrors = null; this.demErrorsActive = false;
+          this.attributions = assetInfo.attributions; 
      })
       .catch(err=> {
           this.isLoading = false;
           this.serverProgress = "Request aborted"; 
           this.demErrors = err.response ? err.response.data : err.message;
           this.demErrorsActive = true;
+          this.attributions = []; 
       })
     },
     modelDownload(){
