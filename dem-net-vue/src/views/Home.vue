@@ -41,6 +41,8 @@
           </div> 
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Mar 10 2020: - Attributions and Thunderforest imagery
+            <br/>
             Mar 07 2020: - OSM models / NASADEM dataset / search available in map
             <br/>
             Feb 22 2020: - OSM buildings and ski resorts added (experimental)
