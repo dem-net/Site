@@ -76,7 +76,7 @@
   <div class="content has-text-centered">
     <p>
       <strong>DEM-Net Elevation API</strong> by <a href="https://twitter.com/XavierFischer">Xavier Fischer</a>. The source code is licensed
-      <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+      <a href="https://github.com/dem-net/DEM.Net/blob/master/LICENSE.md">MIT</a>.
       
     </p>
     <div class="columns">

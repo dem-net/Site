@@ -73,17 +73,12 @@
               </b-notification>
               
               <!-- Buttons -->
-              <nav class="level is-mobile">
+               <div class="buttons is-centered">
                 <!-- Generation -->
-                <div class="level-item has-text-centered">
-                  <div>
                     <b-button @click="generateModel" :disabled="!requestParams.bbox" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Generate 3D model
                     </b-button>
-                  </div>
-                </div>
                 <!-- Textures -->
-                <div class="level-item has-text-centered">
                   <b-dropdown hoverable aria-role="list" :disabled="!this.glbFile">
                             <button class="button" slot="trigger">
                                 <b-icon pack="fas" icon="images"></b-icon>
@@ -108,16 +103,16 @@
                                 </a>
                             </b-dropdown-item>
                         </b-dropdown>
-                </div>
                 <!-- Download -->
-                <div class="level-item has-text-centered">
-                  <div>
                     <b-button icon-pack="fas" icon-left="fas fa-download" :disabled="!this.glbFile" tag="a" :href="this.glbFile" @click="modelDownload">
                         Download model
                       </b-button>
-                  </div>
-                </div>
-              </nav>
+
+                <!-- Attributions -->
+                    <b-button icon-pack="fas" icon-left="fas fa-copyright" :disabled="!this.glbFile" tag="a" href="#attributions">
+                        Attributions
+                      </b-button>
+              </div>
 
               <p>
                 <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType" show-value>
@@ -131,8 +126,13 @@
               <model-stl
                   background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
               </div>
-            <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+
+              <Attributions id="attributions" :attributions="this.attributions"></Attributions>
               
+
+            <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
+            
+
           </section>
         </div>
       </div>
@@ -149,11 +149,12 @@ import axios from 'axios'
 import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
+import Attributions from '../components/Attributions'
 import MapRectangle from '../components/MapRectangle'
 
 export default {
   name: 'Playground3DBbox',
-  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector },
+  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector,Attributions },
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
@@ -262,6 +263,7 @@ export default {
           this.serverProgress = "Request aborted";  
           this.demErrors = err.response.data; 
           this.demErrorsActive = true;
+          this.attributions = [];
           })
     },
     modelDownload(){
