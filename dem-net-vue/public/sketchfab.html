@@ -142,7 +142,7 @@ var sitePosition = [2578556.817354348,4499336.592950092,117.15160369873047];
 var siteId = "C1062";
 var cameraHeightAboveMeters = 300;
 // From CSV file ("other_sites_3857" column)
-var other_sites = "C1050:[2579194.7893560845,4499751.690345243,138.96719360351562]|C1076:[2578379.7080444954,4499840.431635153,126.33160400390625]|C1086:[2579106.7356388667,4498828.9936294295,279.9407958984375]";
+var other_sites = null;//"C1050:[2579194.7893560845,4499751.690345243,138.96719360351562]|C1076:[2578379.7080444954,4499840.431635153,126.33160400390625]|C1086:[2579106.7356388667,4498828.9936294295,279.9407958984375]";
 
 var uid = '9519530a0a8248b38ed6d00f06cca13a';
 //-
@@ -184,7 +184,7 @@ var success = function(api) {
         
         function addAnnotations() {
            
-           var other_sites_arr = other_sites.split("|");
+           var other_sites_arr = other_sites === null ? [] : other_sites.split("|");
 
            api.getCameraLookAt(function(err, camera) {
                 console.log(camera.position);
