@@ -6,6 +6,7 @@ import PlaygroundLine from './views/PlaygroundLine.vue'
 import Playground3DGpx from './views/Playground3DGpx.vue'
 import Playground3DBbox from './views/Playground3DBbox.vue'
 import Playground3DOsm from './views/Playground3DOsm.vue'
+import SFTest from './views/SFTest.vue'
 import About from './views/About.vue'
 import FAQ from './views/FAQ.vue'
 import Expo from './views/Expo.vue'
@@ -60,6 +61,11 @@ export default new Router({
       path: '/expo',
       name: 'Expo',
       component: Expo
-    }
+    },
+    {
+      path: '/sftest',
+      name: 'SFTest',
+      component: SFTest
+    },
   ]
 })

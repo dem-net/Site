@@ -2,7 +2,7 @@
   <div class="playground">
     
     <div class="container is-fluild">
-    <h1 class="title">3D terrain model from a map</h1>
+    <h1 class="title">TEST SKETCHFAB UPLOAD</h1>
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">Draw a rectangle using the tool&nbsp;>&nbsp;Choose your options&nbsp;>&nbsp;Generate and see the 3D model.</p>
@@ -12,7 +12,7 @@
           <section>
             <div class="columns">
               <div class="column">
-                <MapRectangle @bboxSelected="setBbox"></MapRectangle>
+                <MapRectangle @bboxSelected="setBbox" v-show="!this.isComponentModalActive" ></MapRectangle>
               </div>
               <div class="column">
                 <div class="columns">
@@ -113,9 +113,11 @@
                         Attributions
                       </b-button>
 
-                    <b-button icon-pack="fas" icon-left="fas fa-export" :disabled="!this.glbFile" tag="a" href="https://sketchfab.com/oauth2/authorize/?response_type=code&client_id=SKa6zTHsHdgbs7RE7oug69QQq9TMDPv8gtqAZUuj&redirect_uri=https://elevationapi.com/sketchfab_oauth2">
-                        Attributions
-                      </b-button>
+                    <button class="button is-default" 
+                          @click="isComponentModalActive = true">
+                          SketchFab export... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <img src="../assets/sketchfablogo.png" width="24" height="24"/>
+                      </button>
                       
               </div>
 
@@ -131,6 +133,14 @@
               <model-stl
                   background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
               </div>
+              
+              <b-modal :active.sync="isComponentModalActive"
+                 has-modal-card
+                 trap-focus
+                 aria-role="dialog"
+                 aria-modal>
+                  <sketch-fab-export :modelId="this.modelId"></sketch-fab-export>>
+              </b-modal>
 
               <Attributions id="attributions" :attributions="this.attributions"></Attributions>
               
@@ -156,10 +166,11 @@ import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
 import Attributions from '../components/Attributions'
 import MapRectangle from '../components/MapRectangle'
+import SketchFabExport from '../components/SketchFabExport'
 
 export default {
-  name: 'Playground3DBbox',
-  components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector,Attributions },
+  name: 'SFTest',
+  components: { SketchFabExport, ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector,Attributions },
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
@@ -197,7 +208,9 @@ export default {
           normalMap: null,
           albedo: null
         },
-        attributions: []
+        attributions: [],
+        isComponentModalActive: false,
+        modelId: "test",
     }
   },
   computed: {
@@ -209,7 +222,7 @@ export default {
     },
     progressType() {
         return (this.demErrors == null) ? "is-warning" : "is-danger";
-    }
+    },
   },
   methods: 
   {
@@ -262,6 +275,9 @@ export default {
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
           this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
+          this.modelId = assetInfo.modelFile
+                        .split('/')[3] // /gltf/date/[modelId.glb]
+                        .split('.')[0]; // [modelId].glb
       })
       .catch(err=> { 
           this.isLoading = false;
@@ -269,6 +285,7 @@ export default {
           this.demErrors = err.response.data; 
           this.demErrorsActive = true;
           this.attributions = [];
+          this.modelId = null;
           })
     },
     modelDownload(){
