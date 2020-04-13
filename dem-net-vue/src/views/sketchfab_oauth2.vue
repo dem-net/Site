@@ -1,6 +1,8 @@
 <template>
   <div class="playground">
-    
+    <!--
+        URL https://elevationapi.com/sketchfab_oauth2#state=0HLUV3DM5IDQR-00000002&expires_in=2592000&token_type=Bearer&access_token=nnZJIrgzBF7jzzyhTG11NZFxMl62z7&scope=read+write
+        -->
     <div class="container is-fluild">
     <h1 class="title">TEST SKETCHFAB UPLOAD</h1>
     <div class="card">
