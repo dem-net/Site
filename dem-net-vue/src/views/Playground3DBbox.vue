@@ -112,11 +112,7 @@
                     <b-button icon-pack="fas" icon-left="fas fa-copyright" :disabled="!this.glbFile" tag="a" href="#attributions">
                         Attributions
                       </b-button>
-
-                    <b-button icon-pack="fas" icon-left="fas fa-export" :disabled="!this.glbFile" tag="a" href="https://sketchfab.com/oauth2/authorize/?response_type=code&client_id=SKa6zTHsHdgbs7RE7oug69QQq9TMDPv8gtqAZUuj&redirect_uri=https://elevationapi.com/sketchfab_oauth2">
-                        Attributions
-                      </b-button>
-                      
+                     
               </div>
 
               <p>

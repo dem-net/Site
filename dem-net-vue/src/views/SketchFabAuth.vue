@@ -4,10 +4,12 @@
         URL https://elevationapi.com/sketchfab_oauth2#state=0HLUV3DM5IDQR-00000002&expires_in=2592000&token_type=Bearer&access_token=nnZJIrgzBF7jzzyhTG11NZFxMl62z7&scope=read+write
         -->
     <div class="container is-fluild">
-    <h1 class="title">TEST SKETCHFAB UPLOAD</h1>
+      <img src="../assets/sketchfablogo.png"/>
+    <h1 class="title">SketchFab export</h1>
+    <h1 class="subtitle">Model description and export options</h1>
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title">Draw a rectangle using the tool&nbsp;>&nbsp;Choose your options&nbsp;>&nbsp;Generate and see the 3D model.</p>
+        <p class="card-header-title">Please fill the required information. Elevation API adds attributions automatically.</p>
       </header>
       <div class="card-content">  
         <div class="content">
@@ -170,7 +172,7 @@ import Attributions from '../components/Attributions'
 import MapRectangle from '../components/MapRectangle'
 
 export default {
-  name: 'SFTest',
+  name: 'SketchFabAuth',
   components: { ModelGltf,ModelStl,MapRectangle,DatasetSelector,ImagerySelector,Attributions },
   mounted() {
     // Listen to server side progress events
@@ -278,9 +280,7 @@ export default {
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
           this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
-          this.modelId = assetInfo.modelFile
-                        .split('/')[3] // /gltf/date/[modelId.glb]
-                        .split('.')[0]; // [modelId].glb
+          this.modelId = assetInfo.requestId;
       })
       .catch(err=> { 
           this.isLoading = false;

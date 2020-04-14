@@ -10,6 +10,7 @@ import SFTest from './views/SFTest.vue'
 import About from './views/About.vue'
 import FAQ from './views/FAQ.vue'
 import Expo from './views/Expo.vue'
+import SketchFabAuth from './views/SketchFabAuth.vue'
 
 Vue.use(Router)
 
@@ -66,6 +67,11 @@ export default new Router({
       path: '/sftest',
       name: 'SFTest',
       component: SFTest
+    },
+    {
+      path: '/sketchfab_oauth2',
+      name: 'SketchFabAuth',
+      component: SketchFabAuth
     },
   ]
 })

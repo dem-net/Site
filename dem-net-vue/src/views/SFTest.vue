@@ -222,7 +222,7 @@ export default {
         return (this.demErrors == null) ? "is-warning" : "is-danger";
     },
     SketchFabLoginUrl() {
-      return this.modelId ? "https://sketchfab.com/oauth2/authorize/?state=" + this.modelId + "&response_type=token&client_id=SKa6zTHsHdgbs7RE7oug69QQq9TMDPv8gtqAZUuj" : "#";
+      return this.modelId ? "https://sketchfab.com/oauth2/authorize/?state=" + this.modelId + "&response_type=token&client_id=SKa6zTHsHdgbs7RE7oug69QQq9TMDPv8gtqAZUuj&approval_prompt=auto" : "#";
     }
   },
   methods: 
@@ -269,6 +269,7 @@ export default {
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
+          this.$assetInfo = result.data.assetInfo;
           var assetInfo = result.data.assetInfo;
           this.glbFile = baseUrl + assetInfo.modelFile;
           this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
@@ -276,9 +277,7 @@ export default {
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
           this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
-          this.modelId = assetInfo.modelFile
-                        .split('/')[3] // /gltf/date/[modelId.glb]
-                        .split('.')[0]; // [modelId].glb
+          this.modelId = assetInfo.requestId;
       })
       .catch(err=> { 
           this.isLoading = false;
