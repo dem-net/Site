@@ -179,7 +179,7 @@ export default {
       return this.$route.hash == "" ? [] : this.$route.hash.split('&');
     },
     userToken() {
-      return this.queryParams["access_token"] //this.$route.hash;
+      return this.queryParams["#access_token"] //this.$route.hash;
     },
     queryParams() {
       const hashes = this.$route.hash.split('&');
