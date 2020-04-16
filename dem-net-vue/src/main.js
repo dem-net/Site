@@ -36,13 +36,14 @@ import 'buefy/dist/buefy.min.css'
 import elevationHub from './elevation-hub';
 Vue.use(Buefy)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production';
+Vue.prototype.$isElevationPROD = isProd;
 
 // Setup axios as the Vue default $http library
-axios.defaults.baseURL = process.env.VUE_APP_API_BASEURL
-Vue.prototype.$http = axios
+axios.defaults.baseURL = process.env.VUE_APP_API_BASEURL;
+Vue.prototype.$http = axios;
 
 // SignalR
 Vue.use(elevationHub)
