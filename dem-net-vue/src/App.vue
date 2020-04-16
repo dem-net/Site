@@ -69,7 +69,7 @@
             has-icon
             closable
             auto-close
-            duration="10000"
+            :duration="10000"
             icon-pack="fas">
             BabylonJS/VueJS ninja ? ElevationAPI needs your talent to integrate a simple BabylonJS viewer to replace the current one which has some artifacts.
             Interested ? Please mail us contact [at] elevationapi.com
