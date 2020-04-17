@@ -43,8 +43,7 @@
               <br/>
               <!-- options sliders -->
               <b-field grouped>
-                
-                    
+                                    
                     <b-checkbox v-model="requestParams.isInspectable">
                       <b-tooltip label="Allows users to view textures" animated multilined>
                         Inspectable
@@ -95,12 +94,39 @@
                     icon-pack="fas"
                     aria-close-label="Close notification"
                     role="alert">
-                    An error occured while generating the model :
+                    An error occured while uploading the model :
               {{ uploadErrors }}
               </b-notification>
 
+          <b-modal :active.sync="this.viewerUrl"
+              has-modal-card
+              trap-focus
+              aria-role="dialog"
+              aria-modal>
+              <div class="modal-card" style="width: auto">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Upload success!</p>
+                    </header>
+                    <section class="modal-card-body">
+                    <section>
+                        <b>Click the link below to view your model on SketchFab</b>
+                        </section>
+                        
+                        <br/>
+                        <a :href="this.viewerUrl">
+                          <img src="../assets/sketchfablogo.png"/>
+                          <br/>
+                          {{this.viewerUrl}}
+                        </a>
+                    </section>
+                    <footer class="modal-card-foot">
+                        <button class="button" type="button" @click="$parent.close()">Close</button>
+                    </footer>
+                </div>
+        </b-modal>
+
           <b-field label="SketchFab token" label-position="inside" v-show="!this.$isElevationPROD">
-            <b-input :placeholder="this.userToken" disabled></b-input>
+            <b-input :placeholder="this.requestParams.userToken" disabled></b-input>
           </b-field>
           
           <b-progress :value="serverProgressPercent" size="is-large" :type="progressType" show-value>
@@ -140,37 +166,22 @@ export default {
   components: { },
   mounted() {
     // Listen to server side progress events
-    this.$elevationHub.$on('server-progress', this.onServerProgress);
-    this.$elevationHub.generatorOpened()
+    this.$elevationHub.$on('server-export-progress', this.onServerProgress);
+    this.$elevationHub.exporterOpened();
+
+    this.requestParams.userToken = this.userTokenFromUrl;
+    this.requestParams.modelId = this.modelIdFromUrl;
   },
   beforeDestroy() {
-    this.$elevationHub.$off('server-progress', this.onServerProgress);
-    this.$elevationHub.generatorClosed()
-  },
-  data() {
-    return {
-        isLoading: false,
-        isLoadingFullPage: false,
-        serverProgress: "Not uploaded yet", serverProgressPercent: 0,
-        uploadErrors: null ,uploadErrorsActive: false,
-        requestParams: {
-          modelId: null,
-          modelName: "",
-          description: "",
-          password: "",
-          tags: [],
-          isPrivate: false,
-          isInspectable: true,
-          isPublished: false,
-        },
-    }
+    this.$elevationHub.$off('server-export-progress', this.onServerProgress);
+    this.$elevationHub.exporterClosed()
   },
   computed: {
     isFormValid() {
       return this.requestParams.modelName != null && this.requestParams.modelName != "";
     },
     authSuccess() {
-      return this.userToken != null;
+      return this.userTokenFromUrl != null;
     },
     progressType() {
         return (this.uploadErrors == null) ? "is-warning" : "is-danger";
@@ -178,20 +189,48 @@ export default {
     successQueryString() {
       return this.$route.hash == "" ? [] : this.$route.hash.split('&');
     },
-    userToken() {
-      return this.queryParams["#access_token"] //this.$route.hash;
+    userTokenFromUrl() {
+      return this.queryParams["access_token"] //this.$route.hash;
+    },
+    modelIdFromUrl() {
+      return this.queryParams["state"];
     },
     queryParams() {
       const hashes = this.$route.hash.split('&');
       const params = {}
       hashes.map(hash => {
-          const [key, val] = hash.split('=')
+          var [key, val] = hash.split('=');
+          if (key.startsWith('#'))
+          {
+            key = key.substring(1, key.length);
+          }
           params[key] = decodeURIComponent(val)
       })
       return params
     },
     showPassword() {
       return this.requestParams.isPrivate;
+    }
+  },
+  data() {
+    return {
+        isLoading: false,
+        isLoadingFullPage: false,
+        serverProgress: "Not uploaded yet", serverProgressPercent: 0,
+        uploadErrors: null ,uploadErrorsActive: false,
+        viewerUrl: null, // Model URL on SkecthFab
+        requestParams: {
+          modelId: null,
+          modelName: "Model name",
+          description: "Model desc\nline 2",
+          password: "",
+          tags: [],
+          isPrivate: false,
+          isInspectable: true,
+          isPublished: false,
+          userToken: "",
+          clientConnectionId: null
+        },
     }
   },
   methods: 
@@ -208,46 +247,24 @@ export default {
       this.isLoading = true;
       this.$ga.event({
         eventCategory: 'model',
-        eventAction: 'generate',
-        eventLabel: 'gpx-' + this.requestParams.format
+        eventAction: 'export',
+        eventLabel: 'sketchfab'
       })
       this.uploadErrors = null;
       this.serverProgress = "Sending request...";
-      const baseUrl = process.env.VUE_APP_API_BASEURL
-      let formData = new FormData();
-      formData.append('file', this.gpxFile);
-      axios.post("/api/model/3d/gpx?dataset=" + this.requestParams.dataSet 
-                                    + "&generateTIN=" + this.requestParams.generateTIN
-                                    + "&textured=" + this.requestParams.textured
-                                    + "&imageryProvider=" + this.requestParams.imageryProvider 
-                                    + "&textureQuality=" + this.requestParams.textureQuality
-                                    + "&track3D=" + this.requestParams.track3D
-                                    + "&format=" + this.requestParams.format
-                                    + "&zFactor=" + this.requestParams.zFactor
-                                    + "&clientConnectionId=" + this.$connectionId,
-      //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
-      formData,
-      {
-          headers: {
-              'Content-Type': 'multipart/form-data',
-              'Content-Encoding': 'gzip'
-          }
-      }
-      ).then(result => {
-          var assetInfo = result.data.assetInfo;
-          this.glbFile = baseUrl + assetInfo.modelFile;
-          this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
-          this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
-          this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
-          this.uploadErrors = null; this.uploadErrorsActive = false;
-          this.attributions = assetInfo.attributions; 
+      this.requestParams.clientConnectionId = this.$connectionId;
+      axios.post("/api/model/export/sketchfab", this.requestParams)
+      .then(result => {
+        this.isLoading = false;
+        this.serverProgress = "Upload finished";
+        this.viewerUrl = result.viewModelUrl;
+        this.uploadErrors = null;
      })
       .catch(err=> {
+          this.serverProgress = "Upload error!";
           this.isLoading = false;
-          this.serverProgress = "Request aborted"; 
-          this.uploadErrors = err.response ? err.response.data : err.message;
-          this.uploadErrorsActive = true;
-          this.attributions = []; 
+          this.viewerUrl = null;
+          this.uploadErrors = err.message;
       })
     },
   }

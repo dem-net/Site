@@ -38,9 +38,12 @@ export default {
         // every component will use this.$elevationHub to access the event bus
         Vue.prototype.$elevationHub = elevationHub;
         // Forward server side SignalR events through $elevationHub, where components will listen to them
-        connection.on('ReportProgress', (message, percent) => {
+        connection.on('ReportGenerateProgress', (message, percent) => {
             elevationHub.$emit('server-progress', { message, percent });
-        })
+        });
+        connection.on('ReportExportProgress', (message, percent) => {
+            elevationHub.$emit('server-export-progress', { message, percent });
+        });
 
         elevationHub.generatorOpened = () => {
             return startedPromise
@@ -51,6 +54,19 @@ export default {
           elevationHub.generatorClosed = () => {
             return startedPromise
               .then(() => connection.invoke('LeaveGeneratorGroup'))
+              // eslint-disable-next-line
+              .catch(console.error);
+          }
+
+          elevationHub.exporterOpened = () => {
+            return startedPromise
+              .then(() => connection.invoke('JoinExportGroup'))
+              // eslint-disable-next-line
+              .catch(console.error);
+          }
+          elevationHub.exporterClosed = () => {
+            return startedPromise
+              .then(() => connection.invoke('LeaveExportGroup'))
               // eslint-disable-next-line
               .catch(console.error);
           }
