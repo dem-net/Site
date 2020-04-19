@@ -98,7 +98,7 @@
               {{ uploadErrors }}
               </b-notification>
 
-          <b-modal :active.sync="this.viewerUrl"
+          <b-modal :active.sync="this.viewerUrl != null"
               has-modal-card
               trap-focus
               aria-role="dialog"
@@ -120,7 +120,7 @@
                         </a>
                     </section>
                     <footer class="modal-card-foot">
-                        <button class="button" type="button" @click="$parent.close()">Close</button>
+                        <router-link to="/">Close</router-link>
                     </footer>
                 </div>
         </b-modal>
@@ -257,14 +257,14 @@ export default {
       .then(result => {
         this.isLoading = false;
         this.serverProgress = "Upload finished";
-        this.viewerUrl = result.viewModelUrl;
+        this.viewerUrl = result.data.viewModelUrl;
         this.uploadErrors = null;
      })
       .catch(err=> {
           this.serverProgress = "Upload error!";
           this.isLoading = false;
           this.viewerUrl = null;
-          this.uploadErrors = err.message;
+          this.uploadErrors = err.response.data.statusCode + ": " + err.response.data.message;
       })
     },
   }

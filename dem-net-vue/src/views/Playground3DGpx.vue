@@ -134,6 +134,12 @@
                     <b-button icon-pack="fas" icon-left="fas fa-copyright" :disabled="!this.glbFile" tag="a" href="#attributions">
                         Attributions
                       </b-button>
+
+                <!-- SketchFab Export -->
+                  <a :disabled="!this.glbFile" :href="this.SketchFabLoginUrl" class="button is-default" target="_blank" rel="noopener noreferrer">
+                    <span class="icon is-small"><img src="../assets/sketchfablogo.png" width="22" height="22" style="align: center"/></span>
+                    <span>SketchFab export...</span>
+                  </a>
               </div>
             <p>
                   <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
@@ -213,7 +219,8 @@ export default {
           normalMap: null,
           albedo: null
         },
-        attributions: []
+        attributions: [],
+        modelId: null,
     }
   },
   computed: {
@@ -228,6 +235,9 @@ export default {
     },
     track3Ddescription() {
       return "If activated, GPX will we translated to a plane mesh, otherwise GPX track will be drawn on texture.";
+    },
+    SketchFabLoginUrl() {
+      return this.modelId ? "https://sketchfab.com/oauth2/authorize/?state=" + this.modelId + "&response_type=token&client_id=SKa6zTHsHdgbs7RE7oug69QQq9TMDPv8gtqAZUuj&approval_prompt=auto" : null;
     }
   },
   methods: 
@@ -292,13 +302,15 @@ export default {
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
           this.demErrors = null; this.demErrorsActive = false;
           this.attributions = assetInfo.attributions; 
+          this.modelId = assetInfo.requestId;
      })
       .catch(err=> {
           this.isLoading = false;
           this.serverProgress = "Request aborted"; 
           this.demErrors = err.response ? err.response.data : err.message;
           this.demErrorsActive = true;
-          this.attributions = []; 
+          this.attributions = [];
+          this.modelId = null;
       })
     },
     modelDownload(){
