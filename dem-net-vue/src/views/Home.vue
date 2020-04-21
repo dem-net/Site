@@ -41,7 +41,8 @@
           </div> 
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
-            Apr 19 2020: - SketchFab export ! <img src="../assets/sketchfab-logo-color.png"/>
+            Apr 19 2020: - SketchFab export
+             ! <img src="../assets/sketchfab-logo-color.png"/>
             <br/>
             Mar 10 2020: - Attributions and Thunderforest imagery
             <br/>

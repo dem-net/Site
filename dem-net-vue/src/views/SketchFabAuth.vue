@@ -113,7 +113,7 @@
                         </section>
                         
                         <br/>
-                        <a :href="this.viewerUrl">
+                        <a :href="this.viewerUrl" target="_blank" rel="noreferrer" title="SketchFab">
                           <img src="../assets/sketchfablogo.png"/>
                           <br/>
                           {{this.viewerUrl}}
