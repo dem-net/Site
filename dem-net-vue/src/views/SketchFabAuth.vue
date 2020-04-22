@@ -221,8 +221,8 @@ export default {
         viewerUrl: null, // Model URL on SkecthFab
         requestParams: {
           modelId: null,
-          modelName: "Model name",
-          description: "Model desc\nline 2",
+          modelName: "",
+          description: "",
           password: "",
           tags: [],
           isPrivate: false,
