@@ -4,6 +4,7 @@
       <div style="width: 90%;height: 100%; background-color:#eee; position:relative;">
         <l-map ref="map" id="map" :zoom="zoom"
             :center="center"
+            :max-zoom="maxZoom"
             :options='{ zoomControl: true }'>
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <!-- IMPORTANT PART HERE -->
@@ -82,9 +83,11 @@ export default {
       geosearchOptions: { // Important part Here
         provider: new OpenStreetMapProvider(),
         autoClose: true,
+        retainZoomLevel: true,
         style: 'bar'
       },
       zoom: 6,
+      maxZoom: 16,
       editableLayers: null,
       drawControl: null,
       layers: [],
