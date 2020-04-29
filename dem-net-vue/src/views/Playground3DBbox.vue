@@ -114,7 +114,7 @@
                       </b-button>
                      
                      <!-- SketchFab Export -->
-                    <a :disabled="!this.glbFile" :href="this.SketchFabLoginUrl" class="button is-default">
+                    <a :disabled="!this.glbFile" :href="this.SketchFabLoginUrl" class="button is-default" target="_blank">
                         <span class="icon is-small"><img src="../assets/sketchfablogo.png" width="22" height="22" style="align: center"/></span>
                         <span>SketchFab export...</span>
                     </a>
