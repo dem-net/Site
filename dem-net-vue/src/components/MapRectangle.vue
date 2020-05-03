@@ -83,7 +83,7 @@ export default {
       geosearchOptions: { // Important part Here
         provider: new OpenStreetMapProvider(),
         autoClose: true,
-        retainZoomLevel: true,
+        retainZoomLevel: false,
         style: 'bar'
       },
       zoom: 6,

@@ -51,10 +51,14 @@
                         </b-field>
                       </div>
                       <!-- TIN-->
-                      <div class="column" v-show="false">
-                        <b-field label="Generate TIN">
+                      <div class="column" v-show="true">
+                        <b-field label="Generate TIN" v-if="this.requestParams.format == 'glTF'">
+                          <b-tooltip label="Decimates the mesh (reduces number of triangles). This is a long operation, be patient."
+                                position="is-bottom" type="is-light"
+                                animated multilined>
                             <b-switch v-model="requestParams.generateTIN">
                             </b-switch>
+                          </b-tooltip>
                         </b-field>
                       </div>
                       <!-- rotate -->
