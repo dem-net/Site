@@ -51,7 +51,7 @@
                         </b-field>
                       </div>
                       <!-- TIN-->
-                      <div class="column" v-show="true">
+                      <div class="column" v-show="false">
                         <b-field label="Generate TIN" v-if="this.requestParams.format == 'glTF'">
                           <b-tooltip label="Decimates the mesh (reduces number of triangles). This is a long operation, be patient."
                                 position="is-bottom" type="is-light"
@@ -243,7 +243,7 @@ export default {
           bbox: null,
           dataSet: "SRTM_GL3",
           textured: true,
-          imageryProvider: "Esri.WorldImagery",
+          imageryProvider: "MapBox-SatelliteStreet",
           textureQuality: 2,
           format: "glTF",
           zFactor: 1,
