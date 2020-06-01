@@ -64,7 +64,7 @@
       <div class="hero-body">
         
         <div class="container has-text-centered"> 
-          <b-message type="is-info"  title="Call for contribution"
+         <!-- <b-message type="is-info"  title="Call for contribution"
             size="is-small" 
             has-icon
             closable
@@ -73,7 +73,7 @@
             icon-pack="fas">
             BabylonJS/VueJS ninja ? ElevationAPI needs your talent to integrate a simple BabylonJS viewer to replace the current one which has some artifacts.
             Interested ? Please mail us contact [at] elevationapi.com
-        </b-message>
+        </b-message> -->
           <b-notification v-if="initErrors" :active.sync="initErrors"
             type="is-warning"
             has-icon
