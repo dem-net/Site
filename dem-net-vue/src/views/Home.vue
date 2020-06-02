@@ -5,8 +5,11 @@
       <h1 class="title">Welcome to DEM.Net Elevation API!</h1>
       <div class="columns">
         <div class="column">
-          <figure class="image is-6by3">
+          <!--<figure class="image is-6by3">
           <img alt="DEM Net Elevation API" src="../assets/DEMNet-cover.jpg">
+          </figure>-->
+          <figure class="image is-16by9">
+          <iframe class="has-ratio" src="https://player.vimeo.com/video/416024952" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
           </figure>
         </div>
         
@@ -41,6 +44,11 @@
           </div> 
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Apr 19 2020: - SketchFab export
+             ! <img src="../assets/sketchfab-logo-color.png"/>
+            <br/>
+            Mar 10 2020: - Attributions and Thunderforest imagery
+            <br/>
             Mar 07 2020: - OSM models / NASADEM dataset / search available in map
             <br/>
             Feb 22 2020: - OSM buildings and ski resorts added (experimental)

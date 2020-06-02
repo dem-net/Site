@@ -35,19 +35,24 @@
           <template slot="end">
               <b-navbar-item tag="div">
                   <div class="buttons">
-                    <a class="button" href="https://github.com/dem-net/DEM.Net" target="_blank" rel="noopener noreferrer">
+                    <a class="button" href="https://github.com/dem-net/DEM.Net" target="_blank" rel="noopener noreferrer" title="GitHub">
                       <span class="icon is-small">
                         <i class="fab fa-github"></i>
                       </span>
                     </a>
-                    <a class="button" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI" target="_blank" rel="noopener noreferrer">
+                    <a class="button" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI" target="_blank" rel="noopener noreferrer" title="Slack">
                       <span class="icon is-small">
                         <i class="fab fa-slack"></i>
                       </span>
                     </a>
-                    <a class="button" href="https://twitter.com/elevationapi" target="_blank" rel="noopener noreferrer">
+                    <a class="button" href="https://twitter.com/elevationapi" target="_blank" rel="noopener noreferrer" title="Twitter">
                       <span class="icon is-small">
                         <i class="fab fa-twitter"></i>
+                      </span>
+                    </a>
+                    <a class="button" href="https://sketchfab.com/xfischer" target="_blank" rel="noopener noreferrer" title="SketchFab">
+                      <span class="icon is-small">
+                        <img src="./assets/sketchfab-logo-black.png"/>
                       </span>
                     </a>
                   </div>
@@ -59,7 +64,16 @@
       <div class="hero-body">
         
         <div class="container has-text-centered"> 
-         
+         <!-- <b-message type="is-info"  title="Call for contribution"
+            size="is-small" 
+            has-icon
+            closable
+            auto-close
+            :duration="10000"
+            icon-pack="fas">
+            BabylonJS/VueJS ninja ? ElevationAPI needs your talent to integrate a simple BabylonJS viewer to replace the current one which has some artifacts.
+            Interested ? Please mail us contact [at] elevationapi.com
+        </b-message> -->
           <b-notification v-if="initErrors" :active.sync="initErrors"
             type="is-warning"
             has-icon

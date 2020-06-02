@@ -21,8 +21,9 @@
 - You MUST cite the data sources
     - Elevation data providers (OpenTopography or NOOA for ETOPO1)
     - Imagery providers
+    - Data providers (OpenStreetMap)
 
-__You'll find in the [About page](/about#imagery) all needed information to credit them. It's open and free data, that's awesome, give them all the credit they deserve.__
+__You'll find in the [About page](/about#imagery), and via the "Attributions" button in generation pages all needed information to credit them. It's open and free data, that's awesome, give them all the credit they deserve.__
 
 - You MUST also cite "DEM Net Elevation API (elevationapi.com)" for all derived work. I have spent many (I mean, MANY) hours of my spare time building this and you should give me the credit for what I've built thanks to open data and [other people's work](https://github.com/dem-net/DEM.Net/blob/master/LICENSE%20-%20ThirdParty.md).
 
@@ -34,7 +35,7 @@ __You'll find in the [About page](/about#imagery) all needed information to cred
 
 - The best way (for now) is to upload it to [SketchFab](https://sketchfab.com), where you can setup the camera and 3D post processing effects, and share your model. See [DEM Net Elevation API gallery](https://sketchfab.com/xfischer).
 
-- We plan to integrate Skectfab direct upload in future releases.
+- We plan to integrate SketchFab direct upload in future releases.
 
 ## Can I run _simple_ elevation data requests?
 
@@ -64,7 +65,7 @@ Yes, there's a rate limit on API endpoints to encourage respectful usage and res
 
 Yes! We plan to add other global datasets:
 
-- GEBCO_2019 for bathymetry
+- Local datasets (for U.S)
 - EU-DEM for Europe elevations at higher latitudes
 - MapBox Elevation Tiles
 
@@ -75,7 +76,7 @@ Yes! We plan to add other global datasets:
 - Better TIN generation
 - RTIN implementation
 - Dual DEM generation (simple mesh / complex normal map)
-- Texture compression
+- Compression (Draco / Universal Basis)
 - ...
 
 ## Can I use this in my own software?
@@ -94,7 +95,9 @@ DEM Net uses publicly available DEMs from [OpenTopography](https://opentopograph
 
 * **SRTM** dataset coverage is within approx. 60 deg. of N/S latitudes. Resolution: 30m for SRTM_GL1 and 90m SRTM_GL3.<br/>*This dataset has no or very few voids. But it appears more smoothed than the ALOS World 3D.*
 
-* **ASTER GDEM v3** dataset coverage is within approx. 83 deg. of N/S latitudes. Resolution: 30m.<br/>*This dataset has is the most accurate for mountains.*
+* **ASTER GDEM v3** dataset coverage is within approx. 83 deg. of N/S latitudes. Resolution: 30m.<br/>
+
+* **NASADEM** dataset coverage is within approx. 60 deg. of N/S latitudes. Resolution: 30m.<br/>*This dataset has is the most accurate for mountains.*
 
 ## Can I use another imagery service ?
 

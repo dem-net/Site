@@ -42,7 +42,7 @@ export default {
         },
         responsive: true,
         maintainAspectRatio: false,
-        showLines: true
+        showLines: false
       }
     }
   },

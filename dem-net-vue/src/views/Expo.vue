@@ -87,7 +87,7 @@
                         <div class="card-image">
                           <figure class="image is-6by3">
                             <a href="https://www.dymonlab.com?wix-vod-video-id=3cab6bd14de24f729c171d464eff07a2&wix-vod-comp-id=comp-jk5xciri" target="_blank" rel="noopener noreferrer">
-                            <img src="http://i.vimeocdn.com/video/825336768_540x303.jpg" alt="Flood Tablet - Augmented UI">
+                            <img src="https://i.vimeocdn.com/video/825336768_540x303.jpg" alt="Flood Tablet - Augmented UI">
                             </a>
                           </figure>
                         </div>

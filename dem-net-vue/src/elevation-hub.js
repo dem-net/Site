@@ -24,35 +24,51 @@ export default {
             .then(function (connectionId) {
                 // eslint-disable-next-line
                 console.log("connectionId: " + connectionId);
-                Vue.prototype.$connectionId = connectionId
-            })
-        })
-        return startedPromise
+                Vue.prototype.$connectionId = connectionId;
+            });
+        });
+        return startedPromise;
         }
-        connection.onclose(() => start())
+        connection.onclose(() => start());
         
-        start()
+        start();
 
         // use new Vue instance as an event bus
-        const elevationHub = new Vue() 
+        const elevationHub = new Vue();
         // every component will use this.$elevationHub to access the event bus
-        Vue.prototype.$elevationHub = elevationHub
+        Vue.prototype.$elevationHub = elevationHub;
         // Forward server side SignalR events through $elevationHub, where components will listen to them
-        connection.on('ReportProgress', (message, percent) => {
-            elevationHub.$emit('server-progress', { message, percent })
-        })
+        connection.on('ReportGenerateProgress', (message, percent) => {
+            elevationHub.$emit('server-progress', { message, percent });
+        });
+        connection.on('ReportExportProgress', (message, percent) => {
+            elevationHub.$emit('server-export-progress', { message, percent });
+        });
 
         elevationHub.generatorOpened = () => {
             return startedPromise
               .then(() => connection.invoke('JoinGeneratorGroup'))
               // eslint-disable-next-line
-              .catch(console.error)
+              .catch(console.error);
           }
           elevationHub.generatorClosed = () => {
             return startedPromise
               .then(() => connection.invoke('LeaveGeneratorGroup'))
               // eslint-disable-next-line
-              .catch(console.error)
+              .catch(console.error);
+          }
+
+          elevationHub.exporterOpened = () => {
+            return startedPromise
+              .then(() => connection.invoke('JoinExportGroup'))
+              // eslint-disable-next-line
+              .catch(console.error);
+          }
+          elevationHub.exporterClosed = () => {
+            return startedPromise
+              .then(() => connection.invoke('LeaveExportGroup'))
+              // eslint-disable-next-line
+              .catch(console.error);
           }
           
 

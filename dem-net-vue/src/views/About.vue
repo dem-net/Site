@@ -149,7 +149,7 @@
               <div class="media-content">
                   <div class="content">
                       <p>
-                          <small>{{ props.row.attribution.text}}</small>
+                          <small v-html="props.row.attribution.acknowledgement"></small>
                           </p>
                   </div>
               </div>

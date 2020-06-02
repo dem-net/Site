@@ -9,6 +9,7 @@ import Playground3DOsm from './views/Playground3DOsm.vue'
 import About from './views/About.vue'
 import FAQ from './views/FAQ.vue'
 import Expo from './views/Expo.vue'
+import SketchFabAuth from './views/SketchFabAuth.vue'
 
 Vue.use(Router)
 
@@ -60,6 +61,11 @@ export default new Router({
       path: '/expo',
       name: 'Expo',
       component: Expo
-    }
+    },
+    {
+      path: '/sketchfab_oauth2',
+      name: 'SketchFabAuth',
+      component: SketchFabAuth
+    },
   ]
 })
