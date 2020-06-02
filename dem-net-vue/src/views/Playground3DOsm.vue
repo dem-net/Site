@@ -78,6 +78,16 @@
                       <!-- building options -->
                       <div class="columns">
                         <div class="column">
+                            <!-- <b-field label="(experimental) OSM Only">
+                              <b-tooltip label="Decimates the mesh (reduces number of triangles). This is a long operation, be patient."
+                                position="is-bottom" type="is-light"
+                                animated multilined>
+                              <b-switch v-model="requestParams.osmOnly">
+                            </b-switch>
+                              </b-tooltip>
+                            </b-field> -->
+                        </div>
+                        <div class="column">
                             <b-field label="Load buildings">
                               <b-switch v-model="requestParams.osmBuildings">
                             </b-switch>
@@ -251,7 +261,8 @@ export default {
           osmBuildings: true,
           useOsmBuildingsColor: false,
           osmPistesSki: false,
-          buildingsColor: '#945200'
+          buildingsColor: '#945200',
+          osmOnly: false
         },
         textureFiles: {
           heightMap: null,
@@ -321,6 +332,9 @@ export default {
                                     + "&withBuildings=" + this.requestParams.osmBuildings
                                     + "&withBuildingsColors=" + this.requestParams.useOsmBuildingsColor
                                     + "&buildingsColor=" + encodeURIComponent(this.requestParams.buildingsColor)
+                                    + "&withSkiPistes=" + this.requestParams.osmPistesSki
+                                    + "&withTerrain=" + !this.requestParams.osmOnly
+                                    + "&centerOnOrigin=" + this.requestParams.osmOnly
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {

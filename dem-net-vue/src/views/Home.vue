@@ -5,8 +5,11 @@
       <h1 class="title">Welcome to DEM.Net Elevation API!</h1>
       <div class="columns">
         <div class="column">
-          <figure class="image is-6by3">
+          <!--<figure class="image is-6by3">
           <img alt="DEM Net Elevation API" src="../assets/DEMNet-cover.jpg">
+          </figure>-->
+          <figure class="image is-16by9">
+          <iframe class="has-ratio" src="https://player.vimeo.com/video/416024952" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
           </figure>
         </div>
         
