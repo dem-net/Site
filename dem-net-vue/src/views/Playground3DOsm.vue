@@ -78,15 +78,17 @@
                       <!-- building options -->
                       <div class="columns">
                         <div class="column">
-                            <!-- <b-field label="(experimental) OSM Only">
-                              <b-tooltip label="Decimates the mesh (reduces number of triangles). This is a long operation, be patient."
+                            <b-field label="OSM Only - no terrain">
+                              <b-tooltip label="Remove terrain from output. Only OSM data"
                                 position="is-bottom" type="is-light"
                                 animated multilined>
                               <b-switch v-model="requestParams.osmOnly">
                             </b-switch>
                               </b-tooltip>
-                            </b-field> -->
+                            </b-field>
                         </div>
+                      </div>
+                      <div class="columns">
                         <div class="column">
                             <b-field label="Load buildings">
                               <b-switch v-model="requestParams.osmBuildings">
@@ -100,7 +102,7 @@
                             </b-field>
                         </div>
                         <div class="column">
-                          <b-field label="Custom building color" v-if="!requestParams.useOsmBuildingsColor && requestParams.osmBuildings">
+                          <b-field label="Default building color" v-if="requestParams.osmBuildings">
                             <swatches v-model="requestParams.buildingsColor" colors="text-advanced" popover-to="left"></swatches>
                           </b-field>
                         </div>
@@ -334,7 +336,6 @@ export default {
                                     + "&buildingsColor=" + encodeURIComponent(this.requestParams.buildingsColor)
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&withTerrain=" + !this.requestParams.osmOnly
-                                    + "&centerOnOrigin=" + this.requestParams.osmOnly
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
