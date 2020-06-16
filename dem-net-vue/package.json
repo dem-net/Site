@@ -17,6 +17,7 @@
     "leaflet-draw": "^1.0.4",
     "leaflet-geosearch": "^2.7.0",
     "minimist": "^1.2.5",
+    "three": "^0.117.1",
     "vue": "^2.6.11",
     "vue-3d-model": "^1.2.2",
     "vue-analytics": "^5.22.1",
