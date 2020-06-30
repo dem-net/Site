@@ -78,14 +78,14 @@
                       <!-- building options -->
                       <div class="columns">
                         <div class="column">
-                            <!-- <b-field label="(experimental) OSM Only">
-                              <b-tooltip label="Decimates the mesh (reduces number of triangles). This is a long operation, be patient."
+                            <b-field label="OSM Only">
+                              <b-tooltip label="No terrain, only OSM data"
                                 position="is-bottom" type="is-light"
                                 animated multilined>
                               <b-switch v-model="requestParams.osmOnly">
                             </b-switch>
                               </b-tooltip>
-                            </b-field> -->
+                            </b-field>
                         </div>
                         <div class="column">
                             <b-field label="Load buildings">
@@ -100,7 +100,7 @@
                             </b-field>
                         </div>
                         <div class="column">
-                          <b-field label="Custom building color" v-if="!requestParams.useOsmBuildingsColor && requestParams.osmBuildings">
+                          <b-field label="Default building color" v-if="requestParams.osmBuildings">
                             <swatches v-model="requestParams.buildingsColor" colors="text-advanced" popover-to="left"></swatches>
                           </b-field>
                         </div>
@@ -109,6 +109,12 @@
                      
                     <!-- ski resorts options -->
                     <div class="columns">
+                        <div class="column">
+                    <b-field label="Load roads">
+                        <b-switch v-model="requestParams.osmRoads">
+                        </b-switch>
+                    </b-field>  
+                        </div>  
                         <div class="column">
                     <b-field label="Load ski pistes">
                         <b-switch v-model="requestParams.osmPistesSki">
@@ -259,7 +265,8 @@ export default {
           zFactor: 1,
           generateTIN: false,
           osmBuildings: true,
-          useOsmBuildingsColor: false,
+          useOsmBuildingsColor: true,
+          osmRoads: true,
           osmPistesSki: false,
           buildingsColor: '#945200',
           osmOnly: false
@@ -333,9 +340,8 @@ export default {
                                     + "&withBuildingsColors=" + this.requestParams.useOsmBuildingsColor
                                     + "&buildingsColor=" + encodeURIComponent(this.requestParams.buildingsColor)
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
+                                    + "&withHighways=" + this.requestParams.osmRoads
                                     + "&withTerrain=" + !this.requestParams.osmOnly
-                                    + "&centerOnOrigin=" + this.requestParams.osmOnly
-                                    + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
           var assetInfo = result.data.assetInfo;
