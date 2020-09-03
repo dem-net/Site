@@ -15,12 +15,19 @@
                     <a class="button is-primary">
                         <b-icon pack="fas" icon="file-upload"></b-icon>
                         <span>Charger un fichier VisualTopo...</span>
-                    </a>
-                </b-upload>
-                <span class="file-name" v-if="vTopoFile">
+                    </a> <span class="file-name" v-if="vTopoFile">
                     {{ vTopoFile.name }}
                 </span>
+                </b-upload>
+               
             </b-field>
+            <b-field class="file level-item">
+                <!-- Generation -->
+                    <b-button @click="upload" :disabled="!vTopoFile" icon-pack="fas" icon-left="fas fa-globe-americas">
+                      Lancer l'analyse
+                    </b-button>  
+            </b-field>
+            
             
 
             <div class="columns">
@@ -75,31 +82,8 @@
             </b-notification>
 
             <!-- Buttons -->
-              <div class="buttons is-centered">
-
-                <!-- Generation -->
-                    <b-button @click="upload" :disabled="!vTopoFile" icon-pack="fas" icon-left="fas fa-globe-americas">
-                      Generate 3D model
-                    </b-button>     
-                <!-- Download -->
-                    <b-button icon-pack="fas" icon-left="fas fa-download"  :disabled="!this.glbFile">
-                      <a :disabled="!this.glbFile" :href="this.glbFile" @click="modelDownload">
-                        Download model
-                      </a>
-                    </b-button>
-                    
-
-                <!-- Attributions -->
-                    <b-button icon-pack="fas" icon-left="fas fa-copyright" :disabled="!this.glbFile" tag="a" href="#attributions">
-                        Attributions
-                      </b-button>
-
-                <!-- SketchFab Export -->
-                  <a :disabled="!this.glbFile" :href="this.SketchFabLoginUrl" class="button is-default" target="_blank">
-                    <span class="icon is-small"><img src="../assets/sketchfablogo.png" width="22" height="22" style="align: center"/></span>
-                    <span>SketchFab export...</span>
-                  </a>
-              </div>
+   
+                
             <p>
                   <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
                   <span style="color: black">{{ serverProgress }}</span>
@@ -154,7 +138,6 @@ export default {
         showAdvancedUI: false,
         isLoadingFullPage: false,
         vTopoFile: null,
-        glbFile: null,
         demErrors: null,   demErrorsActive: false,
         serverProgress: null, serverProgressPercent: 0,
         requestParams: {
@@ -201,10 +184,6 @@ export default {
     onQualitySelected(quality) {
       this.requestParams.textureQuality = quality;
     },
-    loadDemoFile() {
-      this.vTopoFile = this.demovTopoFile;
-      //upload();
-    },
     upload(){
       this.isLoading = true;
       this.$ga.event({
@@ -213,8 +192,7 @@ export default {
         eventLabel: 'speleo-analyse'
       })
       this.demErrors = null;
-      this.serverProgress = "Sending request...";
-      const baseUrl = process.env.VUE_APP_API_BASEURL
+      this.serverProgress = "Patientez...";
       let formData = new FormData();
       formData.append('visualTopoFile', this.vTopoFile);
       axios.post("/api/speleo/visualtopo/excel?dataset=" + this.requestParams.dataSet 
@@ -234,13 +212,16 @@ export default {
           responseType: 'blob',
       }
       ).then(result => {
+          
+          // Download file
           var fileURL = window.URL.createObjectURL(new Blob([result.data]));
           var fileLink = document.createElement('a');
           fileLink.href = fileURL;
-          fileLink.setAttribute('download', 'file.xlsx');
+          fileLink.setAttribute('download', this.vTopoFile.name + '.xlsx');
           document.body.appendChild(fileLink);
           fileLink.click();
-          this.glbFile = baseUrl;
+
+          this.isLoading = false;
           /*
           var assetInfo = result.data.assetInfo;
           this.glbFile = baseUrl + assetInfo.modelFile; this.demErrors = null; this.demErrorsActive = false;
