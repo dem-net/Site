@@ -21,6 +21,9 @@
               <b-navbar-item tag="router-link" :to="{ name: 'Playground3DOsm' }">
                     OSM to 3D
               </b-navbar-item>
+              <b-navbar-item tag="router-link" :to="{ name: 'PlaygroundSpeleology' }">
+                    Speleology
+              </b-navbar-item>
               <b-navbar-item tag="router-link" :to="{ name: 'Expo' }">
                   Expo
               </b-navbar-item>
