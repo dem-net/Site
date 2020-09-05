@@ -11,11 +11,20 @@
         <div class="content">
           <section>
             <b-field class="file level-item">
-                <b-upload v-model="vTopoFile" accept=".tro" expanded>
-                    <a class="button is-primary">
-                        <b-icon pack="fas" icon="file-upload"></b-icon>
-                        <span>Charger un fichier VisualTopo...</span>
-                    </a> <span class="file-name" v-if="vTopoFile">
+                <b-upload v-model="vTopoFile" accept=".tro" drag-drop>
+                  <section class="section">
+                    <div class="content has-text-centered">
+                        <p>
+                            <b-icon
+                                icon="upload"
+                                pack="fas"
+                                size="is-large">
+                            </b-icon>
+                        </p>
+                        <p>Déposez ici un fichier VisualTopo...</p>
+                    </div>
+                </section>
+                   <span class="file-name" v-if="vTopoFile">
                     {{ vTopoFile.name }}
                 </span>
                 </b-upload>
