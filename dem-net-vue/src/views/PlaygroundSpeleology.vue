@@ -9,9 +9,18 @@
       </header>
       <div class="card-content">  
         <div class="content">
-          <section>
+          <section v-show="!modelId">
             <b-field class="file level-item">
-                <b-upload v-model="vTopoFile" accept=".tro" drag-drop>
+              <b-upload v-model="vTopoFile" accept=".tro" >
+                    <a class="button is-primary">
+                        <b-icon pack="fas" icon="file-upload"></b-icon>
+                        <span>Fichier VisualTopo...</span>
+                    </a>
+                </b-upload>
+                <span class="file-name" v-if="vTopoFile">
+                    {{ vTopoFile.name }}
+                </span>
+                <!--<b-upload v-model="vTopoFile" accept=".tro" drag-drop>
                   <section class="section">
                     <div class="content has-text-centered">
                         <p>
@@ -27,18 +36,25 @@
                    <span class="file-name" v-if="vTopoFile">
                     {{ vTopoFile.name }}
                 </span>
-                </b-upload>
-               
+                </b-upload>-->
             </b-field>
             <b-field class="file level-item">
                 <!-- Generation -->
-                    <b-button @click="upload" :disabled="!vTopoFile" icon-pack="fas" icon-left="fas fa-globe-americas">
+                    <b-button @click="uploadModelFile" :disabled="!vTopoFile || modelId" icon-pack="fas" icon-left="fas fa-upload">
                       Lancer l'analyse
                     </b-button>  
             </b-field>
+          </section>
+          <section> <!-- v-show="modelId">-->
             
-            
-
+            <b-field><span v-show="modelId">Le modèle a été téléchargé et analysé. Id : {{modelId}}</span></b-field>
+            <b-button @click="exportToExcel" icon-pack="fas" icon-left="fas fa-table">
+                      Télécharger au format Excel
+                    </b-button> <b-button @click="exportToExcel" icon-pack="fas" icon-left="fas fa-globe-americas">
+                      Visualisation 3D
+                    </b-button> 
+          </section>
+          <section>
             <div class="columns">
               <div class="column" v-show="showAdvancedUI">
                 <DatasetSelector  :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
@@ -92,7 +108,7 @@
 
             <!-- Buttons -->
    
-                
+            <p></p>    
             <p>
                   <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
                   <span style="color: black">{{ serverProgress }}</span>
@@ -193,7 +209,42 @@ export default {
     onQualitySelected(quality) {
       this.requestParams.textureQuality = quality;
     },
-    upload(){
+    uploadModelFile(){
+      this.isLoading = true;
+      this.$ga.event({
+        eventCategory: 'speleo',
+        eventAction: 'upload',
+        eventLabel: 'speleo-upload'
+      })
+      this.demErrors = null;
+      this.serverProgress = "Patientez...";
+      let formData = new FormData();
+      formData.append('visualTopoFile', this.vTopoFile);
+      axios.post("/api/speleo/visualtopo?dataset=" + this.requestParams.dataSet 
+                                    + "&clientConnectionId=" + this.$connectionId,
+      formData,
+      {
+          headers: {
+              'Content-Type': 'multipart/form-data',
+              'Content-Encoding': 'gzip'
+          },
+          //responseType: 'blob',
+      }
+      ).then(result => {
+          
+          this.modelId = result.data;
+          this.isLoading = false;
+     })
+      .catch(err=> {
+          this.isLoading = false;
+          this.serverProgress = "Request aborted"; 
+          this.demErrors = err.response ? err.response.data : err.message;
+          this.demErrorsActive = true;
+          this.attributions = [];
+          this.modelId = null;
+      })
+    },    
+    exportToExcel(){
       this.isLoading = true;
       this.$ga.event({
         eventCategory: 'speleo',
@@ -202,22 +253,9 @@ export default {
       })
       this.demErrors = null;
       this.serverProgress = "Patientez...";
-      let formData = new FormData();
-      formData.append('visualTopoFile', this.vTopoFile);
-      axios.post("/api/speleo/visualtopo/excel?dataset=" + this.requestParams.dataSet 
-                                    + "&generateTIN=" + this.requestParams.generateTIN
-                                    + "&textured=" + this.requestParams.textured
-                                    + "&imageryProvider=" + this.requestParams.imageryProvider 
-                                    + "&textureQuality=" + this.requestParams.textureQuality
-                                    + "&format=" + this.requestParams.format
-                                    + "&zFactor=" + this.requestParams.zFactor
-                                    + "&clientConnectionId=" + this.$connectionId,
-      formData,
+      axios.get("/api/speleo/visualtopo/"+ this.modelId + "/excel/"
+                                    + "?clientConnectionId=" + this.$connectionId,
       {
-          headers: {
-              'Content-Type': 'multipart/form-data',
-              'Content-Encoding': 'gzip'
-          },
           responseType: 'blob',
       }
       ).then(result => {
