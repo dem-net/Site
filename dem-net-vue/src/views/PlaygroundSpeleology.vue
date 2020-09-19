@@ -20,23 +20,6 @@
                 <span class="file-name" v-if="vTopoFile">
                     {{ vTopoFile.name }}
                 </span>
-                <!--<b-upload v-model="vTopoFile" accept=".tro" drag-drop>
-                  <section class="section">
-                    <div class="content has-text-centered">
-                        <p>
-                            <b-icon
-                                icon="upload"
-                                pack="fas"
-                                size="is-large">
-                            </b-icon>
-                        </p>
-                        <p>Déposez ici un fichier VisualTopo...</p>
-                    </div>
-                </section>
-                   <span class="file-name" v-if="vTopoFile">
-                    {{ vTopoFile.name }}
-                </span>
-                </b-upload>-->
             </b-field>
             <b-field class="file level-item">
                 <!-- Generation -->
@@ -50,7 +33,7 @@
             <b-field><span v-show="modelId">Le modèle a été téléchargé et analysé. Id : {{modelId}}</span></b-field>
             <b-button @click="exportToExcel" icon-pack="fas" icon-left="fas fa-table">
                       Télécharger au format Excel
-                    </b-button> <b-button @click="exportToExcel" icon-pack="fas" icon-left="fas fa-globe-americas">
+                    </b-button> <b-button @click="generate3DModel" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Visualisation 3D
                     </b-button> 
           </section>
@@ -96,6 +79,7 @@
                 </b-field>
               </div>
             </div>
+            
             <b-notification v-show="demErrors" :active.sync="demErrorsActive"
                     type="is-warning"
                     has-icon
@@ -107,23 +91,22 @@
             </b-notification>
 
             <!-- Buttons -->
-   
-            <p></p>    
+      
             <p>
                   <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType"  show-value>
                   <span style="color: black">{{ serverProgress }}</span>
               </b-progress>
             </p>
             <div class="glbcontent">
-              <!-- <model-gltf :content="glbFile"></model-gltf> -->
-              <model-gltf
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" @on-load="onLoad"></model-gltf>
-            <model-stl
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" @on-load="onLoad"></model-stl>
-            </div>
+                <!-- <model-gltf :content="glbFile"></model-gltf> -->
+                <model-gltf
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" @on-load="onLoad"></model-gltf>
+              <model-stl
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" @on-load="onLoad"></model-stl>
+              </div>
 
 
-              <Attributions id="attributions" :attributions="this.attributions"></Attributions>
+            <Attributions id="attributions" :attributions="this.attributions"></Attributions>
               
             <b-loading :is-full-page="isLoadingFullPage" :active.sync="isLoading" :can-cancel="false"></b-loading>
             
@@ -131,23 +114,20 @@
         </div>
       </div>
     </div>
-    <section>
-      
-    </section>
   </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import ModelGltf from 'vue-3d-model'
+import { ModelGltf,ModelStl } from 'vue-3d-model'
 import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
 import Attributions from '../components/Attributions'
 
 export default {
   name: 'PlaygroundSpeleology',
-  components: { ModelGltf,DatasetSelector,ImagerySelector,Attributions },
+  components: { ModelGltf,ModelStl,DatasetSelector,ImagerySelector,Attributions },
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
@@ -160,11 +140,13 @@ export default {
   data() {
     return {
         isLoading: false,
-        showAdvancedUI: false,
+        showAdvancedUI: true,
         isLoadingFullPage: false,
+        glbFile: null,
         vTopoFile: null,
         demErrors: null,   demErrorsActive: false,
         serverProgress: null, serverProgressPercent: 0,
+        enableRotation: false,
         requestParams: {
           dataSet: "AW3D30",
           textured: true,
@@ -187,17 +169,13 @@ export default {
     },
     progressType() {
         return (this.demErrors == null) ? "is-warning" : "is-danger";
-    },
-    track3Ddescription() {
-      return "If activated, GPX will we translated to a plane mesh, otherwise GPX track will be drawn on texture.";
-    },
-    SketchFabLoginUrl() {
-      return this.modelId ? "https://sketchfab.com/oauth2/authorize/?state=" + this.modelId + "&response_type=token&client_id=SKa6zTHsHdgbs7RE7oug69QQq9TMDPv8gtqAZUuj&approval_prompt=auto" : null;
     }
   },
   methods: 
   {
     onLoad () {
+      // eslint-disable-next-line no-console
+      console.log("onload");
         this.isLoading = false;
     },
     onDatasetSelected(dstName) {
@@ -238,12 +216,42 @@ export default {
       .catch(err=> {
           this.isLoading = false;
           this.serverProgress = "Request aborted"; 
-          this.demErrors = err.response ? err.response.data : err.message;
+          this.demErrors = err.response ? err.response.data.message : err.message;
           this.demErrorsActive = true;
           this.attributions = [];
           this.modelId = null;
       })
-    },    
+    },
+    generate3DModel(){
+      this.isLoading = true;
+      this.glbFile = null;
+      this.$ga.event({
+        eventCategory: 'speleo',
+        eventAction: '3d',
+        eventLabel: 'speleo-3d'
+      })
+      this.demErrors = null;
+      this.serverProgress = "Patientez...";
+      const baseUrl = process.env.VUE_APP_API_BASEURL
+      axios.get("/api/speleo/visualtopo/"+ this.modelId + "/3d?clientConnectionId=" + this.$connectionId
+                                    + "&textured=" + this.requestParams.textured
+                                    + "&imageryProviderName=" + this.requestParams.imageryProvider 
+                                    + "&textureQuality=" + this.requestParams.textureQuality
+      ).then(result => {
+          var assetInfo = result.data.assetInfo;
+          this.glbFile = baseUrl + assetInfo.modelFile;
+          this.attributions = assetInfo.attributions; 
+          this.demErrors = null; this.demErrorsActive = false;  
+     })
+      .catch(err=> {
+          this.isLoading = false;
+          this.serverProgress = "Request aborted"; 
+          this.demErrors = err.response ? err.response.data.message : err.message;
+          this.demErrorsActive = true;
+          this.attributions = [];
+          this.modelId = null;
+      })
+    },
     exportToExcel(){
       this.isLoading = true;
       this.$ga.event({
@@ -269,12 +277,6 @@ export default {
           fileLink.click();
 
           this.isLoading = false;
-          /*
-          var assetInfo = result.data.assetInfo;
-          this.glbFile = baseUrl + assetInfo.modelFile; this.demErrors = null; this.demErrorsActive = false;
-          this.attributions = assetInfo.attributions; 
-          this.modelId = assetInfo.requestId;
-          */
      })
       .catch(err=> {
           this.isLoading = false;
