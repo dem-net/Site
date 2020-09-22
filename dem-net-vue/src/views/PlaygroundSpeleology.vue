@@ -11,7 +11,7 @@
         <div class="content">
           <section v-show="!modelId">
             <b-field class="file level-item">
-              <b-upload v-model="vTopoFile" accept=".tro" >
+              <b-upload v-model="vTopoFile" accept=".tro" @input="uploadModelFile">
                     <a class="button is-primary">
                         <b-icon pack="fas" icon="file-upload"></b-icon>
                         <span>Fichier VisualTopo...</span>
@@ -21,24 +21,42 @@
                     {{ vTopoFile.name }}
                 </span>
             </b-field>
-            <b-field class="file level-item">
-                <!-- Generation -->
+            <!-- <b-field class="file level-item">
                     <b-button @click="uploadModelFile" :disabled="!vTopoFile || modelId" icon-pack="fas" icon-left="fas fa-upload">
                       Lancer l'analyse
                     </b-button>  
-            </b-field>
+            </b-field> -->
           </section>
-          <section> <!-- v-show="modelId">-->
+          <section v-show="modelId">
             
-            <b-field><span v-show="modelId">Le modèle a été téléchargé et analysé. Id : {{modelId}}</span></b-field>
+            <b-field><span>Le modèle a été téléchargé et analysé. Id : {{modelId}}</span></b-field>
+            <div class="field is-grouped centered">
+              <div class="control">
             <b-button @click="exportToExcel" icon-pack="fas" icon-left="fas fa-table">
                       Télécharger au format Excel
-                    </b-button> <b-button @click="generate3DModel" icon-pack="fas" icon-left="fas fa-globe-americas">
+                    </b-button></div>
+                     <div class="control">
+            <b-button @click="generate3DModel" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Visualisation 3D
-                    </b-button> 
+                    </b-button> </div>
+                     <div class="control">
+                    <b-button class="is-light is-info" @click="resetForm" icon-pack="fas" icon-left="fas fa-eraser">
+                      Recommencer
+                    </b-button> </div>
+            </div>
           </section>
           <section>
+            <p></p>
             <div class="columns">
+              
+              <!-- Texture -->
+              <div class="column is-one-third" v-show="showTextureOptions && modelId">
+                
+                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" :label="this.labelImagery"
+                  @providerSelected="onProviderSelected"
+                  @qualitySelected="onQualitySelected"/>
+              </div>
+
               <div class="column" v-show="showAdvancedUI">
                 <DatasetSelector  :dataSet="this.requestParams.dataSet" @datasetSelected="onDatasetSelected"/>
               </div>
@@ -50,16 +68,6 @@
                     <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
                     <b-radio-button v-model="requestParams.format" native-value="STL">STL (3D printer)</b-radio-button>
                   </b-field>
-              </div>
-              <!-- Texture -->
-              <div class="column" v-show="showTextureOptions && showAdvancedUI">
-                <b-field label="Use imagery texture">
-                    <b-switch v-model="requestParams.textured">
-                    </b-switch>
-                </b-field>
-                <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
-                  @providerSelected="onProviderSelected"
-                  @qualitySelected="onQualitySelected"/>
               </div>
               <!-- Z factor -->
                   <div class="column" v-show="showAdvancedUI">
@@ -139,8 +147,9 @@ export default {
   },
   data() {
     return {
+      labelImagery: "Fournisseur d'imagerie",
         isLoading: false,
-        showAdvancedUI: true,
+        showAdvancedUI: false,
         isLoadingFullPage: false,
         glbFile: null,
         vTopoFile: null,
@@ -151,7 +160,7 @@ export default {
           dataSet: "AW3D30",
           textured: true,
           generateTIN: false,
-          imageryProvider: "MapBox-SatelliteStreet",
+          imageryProvider: "OpenTopoMap",
           textureQuality: 2,
           format: "glTF",
           zFactor: 1
@@ -187,7 +196,16 @@ export default {
     onQualitySelected(quality) {
       this.requestParams.textureQuality = quality;
     },
+    resetForm(){
+      this.vTopoFile = null;
+      this.modelId = null;
+      this.glbFile = null;
+      this.attributions = [];
+      this.isLoading = false;
+      this.serverProgress = null;
+    },
     uploadModelFile(){
+      if (this.vTopoFile == null) return;
       this.isLoading = true;
       this.$ga.event({
         eventCategory: 'speleo',
@@ -234,6 +252,7 @@ export default {
       this.serverProgress = "Patientez...";
       const baseUrl = process.env.VUE_APP_API_BASEURL
       axios.get("/api/speleo/visualtopo/"+ this.modelId + "/3d?clientConnectionId=" + this.$connectionId
+                                    + "&dataset=" + this.requestParams.dataSet 
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProviderName=" + this.requestParams.imageryProvider 
                                     + "&textureQuality=" + this.requestParams.textureQuality

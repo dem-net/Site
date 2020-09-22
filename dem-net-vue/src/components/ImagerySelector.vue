@@ -2,7 +2,7 @@
   <section v-if="availableProviders">
     <div class="field has-text-left">
       <div class="block is-size-6">
-        <b-field label="Imagery Provider">
+        <b-field :label="label">
             <b-select placeholder="Select a provider" v-model="selectedProvider"
             @input="$emit('providerSelected',selectedProvider)">
                 <option
@@ -34,7 +34,8 @@
 <script>
 export default {
   props: {
-    provider: {type: String, default: null}
+    provider: {type: String, default: null},
+    label: {type: String, default: "Imagery Provider"}
   },
   computed: {
       availableProviders() {
