@@ -42,12 +42,12 @@
                     Map + OSM to 3D
             </b-button>
           </div> 
-          <div class="column">
+          <!-- <div class="column">
             
             <b-button icon-pack="fas" icon-left="fas fa-vector-square" tag="router-link" :to="{ name: 'PlaygroundSpeleology' }">
                     Speleology
             </b-button>
-          </div>
+          </div> -->
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
             Nov 01 2020: - Model adornments (scale and north)

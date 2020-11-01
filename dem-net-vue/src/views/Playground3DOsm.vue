@@ -61,10 +61,10 @@
                           </b-tooltip>
                         </b-field>
                       </div>
-                      <!-- rotate -->
+                      <!-- adornments -->
                       <div class="column">
-                        <b-field label="Rotate model">
-                            <b-switch v-model="enableRotation">
+                        <b-field label="Add Scale/North">
+                            <b-switch v-model="requestParams.enableAdornments">
                             </b-switch>
                         </b-field>
                       </div>
@@ -193,9 +193,9 @@
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
                 <model-gltf
-                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'"></model-gltf>
               <model-stl
-                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'"></model-stl>
               </div>
 
 
@@ -245,12 +245,6 @@ export default {
         glbFile: null,
         demErrors: null, demErrorsActive: true,
         serverProgress: null, serverProgressPercent: 0,
-        rotation: {
-                x: 0,
-                y: 0,
-                z: 0,
-            },
-        enableRotation: false,
         requestParams: {
           bbox: null,
           dataSet: "SRTM_GL3",
@@ -264,7 +258,8 @@ export default {
           useOsmBuildingsColor: false,
           osmPistesSki: false,
           buildingsColor: '#945200',
-          osmOnly: false
+          osmOnly: false,
+          enableAdornments: true
         },
         textureFiles: {
           heightMap: null,
@@ -291,16 +286,6 @@ export default {
   },
   methods: 
   {
-    onLoad () {
-        this.isLoading = false;
-        this.rotate();
-    },
-    rotate () {
-      if (this.enableRotation) {
-        this.rotation.y += 0.002;
-        }
-        requestAnimationFrame( this.rotate );
-    },
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
     },
@@ -337,6 +322,7 @@ export default {
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&withTerrain=" + !this.requestParams.osmOnly
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
+                                    + "&adornments=" + this.requestParams.enableAdornments
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
           var assetInfo = result.data.assetInfo;
@@ -347,6 +333,7 @@ export default {
           this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
           this.modelId = assetInfo.requestId;
+          this.isLoading = false;
       })
       .catch(err=> { 
           this.isLoading = false;

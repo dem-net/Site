@@ -75,13 +75,13 @@
                     </b-tooltip>
                 </b-field>
               </div>
-              <!-- rotate -->
-              <div class="column">
-                <b-field label="Rotate model">
-                    <b-switch v-model="enableRotation">
-                    </b-switch>
-                </b-field>
-              </div>
+              <!-- adornments -->
+                  <div class="column">
+                    <b-field label="Add Scale/North">
+                        <b-switch v-model="requestParams.enableAdornments">
+                        </b-switch>
+                    </b-field>
+                  </div>
             </div>
             <b-notification v-show="demErrors" :active.sync="demErrorsActive"
                     type="is-warning"
@@ -153,9 +153,9 @@
             <div class="glbcontent">
               <!-- <model-gltf :content="glbFile"></model-gltf> -->
               <model-gltf
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'"></model-gltf>
             <model-stl
-            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
+            background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'"></model-stl>
             </div>
 
 
@@ -202,12 +202,6 @@ export default {
         demoGpxFile: null,
         demErrors: null,   demErrorsActive: false,
         serverProgress: null, serverProgressPercent: 0,
-        rotation: {
-                x: 0,
-                y: 0,
-                z: 0,
-            },
-        enableRotation: false,
         requestParams: {
           dataSet: "SRTM_GL3",
           textured: true,
@@ -216,7 +210,8 @@ export default {
           textureQuality: 2,
           format: "glTF",
           zFactor: 1,
-          track3D: true
+          track3D: true,
+          enableAdornments: true
         },
         textureFiles: {
           heightMap: null,
@@ -246,16 +241,6 @@ export default {
   },
   methods: 
   {
-    onLoad () {
-        this.isLoading = false;
-        this.rotate();
-    },
-    rotate () {
-      if (this.enableRotation) {
-        this.rotation.y += 0.002;
-        }
-        requestAnimationFrame( this.rotate );
-    },
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
     },
@@ -289,6 +274,7 @@ export default {
                                     + "&track3D=" + this.requestParams.track3D
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
+                                    + "&adornments=" + this.requestParams.enableAdornments
                                     + "&clientConnectionId=" + this.$connectionId,
       //axios.post("/api/elevation/gpx/glb?dataset=AW3D30&generateTIN=false&textured=true",
       formData,
@@ -307,6 +293,7 @@ export default {
           this.demErrors = null; this.demErrorsActive = false;
           this.attributions = assetInfo.attributions; 
           this.modelId = assetInfo.requestId;
+          this.isLoading = false;
      })
       .catch(err=> {
           this.isLoading = false;
