@@ -50,6 +50,8 @@
           </div>
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Nov 01 2020: - Model adornments (scale and north)
+            <br/>
             Apr 19 2020: - SketchFab export
              ! <img src="../assets/sketchfab-logo-color.png"/>
             <br/>
