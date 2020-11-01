@@ -56,10 +56,10 @@
                       </b-tooltip>
                     </b-field>
                   </div>
-                  <!-- rotate -->
+                  <!-- adornments -->
                   <div class="column">
-                    <b-field label="Rotate model">
-                        <b-switch v-model="enableRotation">
+                    <b-field label="Add Scale/North">
+                        <b-switch v-model="requestParams.enableAdornments">
                         </b-switch>
                     </b-field>
                   </div>
@@ -132,9 +132,9 @@
               <div class="glbcontent">
                 <!-- <model-gltf :content="glbFile"></model-gltf> -->
                 <model-gltf
-                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'" :rotation="rotation" @on-load="onLoad"></model-gltf>
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'glTF'"></model-gltf>
               <model-stl
-                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'" :rotation="rotation" @on-load="onLoad"></model-stl>
+                  background-color="#f0f0ff" :src="glbFile" v-if="glbFile && this.requestParams.format == 'STL'"></model-stl>
               </div>
 
               <Attributions id="attributions" :attributions="this.attributions"></Attributions>
@@ -181,12 +181,6 @@ export default {
         glbFile: null,
         demErrors: null, demErrorsActive: true,
         serverProgress: null, serverProgressPercent: 0,
-        rotation: {
-                x: 0,
-                y: 0,
-                z: 0,
-            },
-        enableRotation: false,
         requestParams: {
           bbox: null,
           dataSet: "SRTM_GL3",
@@ -195,7 +189,8 @@ export default {
           textureQuality: 2,
           format: "glTF",
           zFactor: 1,
-          generateTIN: false
+          generateTIN: false,
+          enableAdornments: true
         },
         textureFiles: {
           heightMap: null,
@@ -222,16 +217,6 @@ export default {
   },
   methods: 
   {
-    onLoad () {
-        this.isLoading = false;
-        this.rotate();
-    },
-    rotate () {
-      if (this.enableRotation) {
-        this.rotation.y += 0.002;
-        }
-        requestAnimationFrame( this.rotate );
-    },
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
     },
@@ -262,6 +247,7 @@ export default {
                                     + "&textureQuality=" + this.requestParams.textureQuality
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
+                                    + "&adornments=" + this.requestParams.enableAdornments
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
           var assetInfo = result.data.assetInfo;
@@ -271,7 +257,8 @@ export default {
           this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
           this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
-          this.modelId = assetInfo.requestId;          
+          this.modelId = assetInfo.requestId;  
+          this.isLoading = false;        
       })
       .catch(err=> { 
           this.isLoading = false;
