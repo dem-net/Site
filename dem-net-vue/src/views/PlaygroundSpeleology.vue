@@ -35,6 +35,10 @@
             <b-button @click="exportToExcel" icon-pack="fas" icon-left="fas fa-table">
                       Télécharger au format Excel
                     </b-button></div>
+            <div class="control">
+            <b-button @click="exportToCsv" icon-pack="fas" icon-left="fas fa-table">
+                      Télécharger au format CSV
+                    </b-button></div>
                      <div class="control">
             <b-button @click="generate3DModel" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Visualisation 3D
@@ -149,7 +153,7 @@ export default {
     return {
       labelImagery: "Fournisseur d'imagerie",
         isLoading: false,
-        showAdvancedUI: false,
+        showAdvancedUI: true,
         isLoadingFullPage: false,
         glbFile: null,
         vTopoFile: null,
@@ -157,7 +161,7 @@ export default {
         serverProgress: null, serverProgressPercent: 0,
         enableRotation: false,
         requestParams: {
-          dataSet: "AW3D30",
+          dataSet: "SRTM_GL1",
           textured: true,
           generateTIN: false,
           imageryProvider: "OpenTopoMap",
@@ -292,6 +296,41 @@ export default {
           var fileLink = document.createElement('a');
           fileLink.href = fileURL;
           fileLink.setAttribute('download', this.vTopoFile.name + '.xlsx');
+          document.body.appendChild(fileLink);
+          fileLink.click();
+
+          this.isLoading = false;
+     })
+      .catch(err=> {
+          this.isLoading = false;
+          this.serverProgress = "Request aborted"; 
+          this.demErrors = err.response ? err.response.data : err.message;
+          this.demErrorsActive = true;
+          this.attributions = [];
+          this.modelId = null;
+      })
+    },
+    exportToCsv(){
+      this.isLoading = true;
+      this.$ga.event({
+        eventCategory: 'speleo',
+        eventAction: 'analyse',
+        eventLabel: 'speleo-analyse'
+      })
+      this.demErrors = null;
+      this.serverProgress = "Patientez...";
+      axios.get("/api/speleo/visualtopo/"+ this.modelId + "/csv/"
+                                    + "?clientConnectionId=" + this.$connectionId,
+      {
+          responseType: 'blob',
+      }
+      ).then(result => {
+          
+          // Download file
+          var fileURL = window.URL.createObjectURL(new Blob([result.data]));
+          var fileLink = document.createElement('a');
+          fileLink.href = fileURL;
+          fileLink.setAttribute('download', this.vTopoFile.name + '.csv');
           document.body.appendChild(fileLink);
           fileLink.click();
 
