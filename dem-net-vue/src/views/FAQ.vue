@@ -5,8 +5,9 @@
           <header class="docs-header">
             <h1 class="title">FAQ</h1>
             <h2 class="subtitle">You'll find here some answers to common questions. 
-              If you need more info, we're on <a href="https://twitter.com/ElevationApi" target="_blank" rel="noopener noreferrer">Twitter</a> and 
-              <a target="_blank" rel="noopener noreferrer" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI">Slack</a>.</h2>
+              If you need more info, we're on <a href="https://twitter.com/ElevationApi" target="_blank" rel="noopener noreferrer">Twitter</a>,  
+              <a target="_blank" rel="noopener noreferrer" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI">Slack</a>
+              and <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/AKSWNSX">Discord</a>.</h2>
         </header>
 
 
