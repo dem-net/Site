@@ -42,8 +42,7 @@
                     Map + OSM to 3D
             </b-button>
           </div> 
-          <div class="column">
-            
+          <div class="column" v-if="$featureSpeleoEnabled">            
             <b-button icon-pack="fas" icon-left="fas fa-vector-square" tag="router-link" :to="{ name: 'PlaygroundSpeleology' }">
                     Speleology
             </b-button>

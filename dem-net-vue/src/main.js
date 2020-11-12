@@ -41,6 +41,9 @@ Vue.config.productionTip = false;
 const isProd = process.env.NODE_ENV === 'production';
 Vue.prototype.$isElevationPROD = isProd;
 
+// Features
+Vue.prototype.$featureSpeleoEnabled = false;
+
 // Setup axios as the Vue default $http library
 axios.defaults.baseURL = process.env.VUE_APP_API_BASEURL;
 Vue.prototype.$http = axios;

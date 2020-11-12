@@ -21,7 +21,7 @@
               <b-navbar-item tag="router-link" :to="{ name: 'Playground3DOsm' }">
                     OSM to 3D
               </b-navbar-item>
-              <b-navbar-item tag="router-link" :to="{ name: 'PlaygroundSpeleology' }">
+              <b-navbar-item v-if="$featureSpeleoEnabled" tag="router-link" :to="{ name: 'PlaygroundSpeleology' }">
                     Speleology
               </b-navbar-item>
               <b-navbar-item tag="router-link" :to="{ name: 'Expo' }">
@@ -48,6 +48,12 @@
                         <i class="fab fa-slack"></i>
                       </span>
                     </a>
+                    <a class="button" href="https://discord.gg/AKSWNSX" target="_blank" rel="noopener noreferrer" title="Discord">
+                      <span class="icon is-small">
+                        <i class="fab fa-discord"></i>
+                      </span>
+                    </a>
+                    
                     <a class="button" href="https://twitter.com/elevationapi" target="_blank" rel="noopener noreferrer" title="Twitter">
                       <span class="icon is-small">
                         <i class="fab fa-twitter"></i>
