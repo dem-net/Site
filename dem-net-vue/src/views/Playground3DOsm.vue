@@ -146,8 +146,14 @@
                   <b-dropdown hoverable aria-role="list" :disabled="!this.glbFile">
                             <button class="button" slot="trigger">
                                 <b-icon pack="fas" icon="images"></b-icon>
-                                <span>Download textures</span>
+                                <span>Download data</span>
                             </button>
+                            <b-dropdown-item has-link aria-role="menuitem">
+                                <a href="#" @click="downloadGeoRef()" target="_blank" rel="noopener noreferrer">
+                                    <b-icon pack="fas" icon="globe"></b-icon>
+                                    Geo reference
+                                </a>
+                            </b-dropdown-item>
                             <b-dropdown-item has-link aria-role="menuitem" v-if="this.textureFiles.heightMap">
                                 <a :href="this.textureFiles.heightMap" target="_blank" rel="noopener noreferrer">
                                     <b-icon pack="fas" icon="image"></b-icon>
@@ -267,6 +273,7 @@ export default {
           albedo: null
         },
         attributions: [],
+        assetInfo: null,
         modelId: null
     }
   },
@@ -333,6 +340,7 @@ export default {
           this.attributions = assetInfo.attributions; 
           this.demErrors = null; this.demErrorsActive = false;
           this.modelId = assetInfo.requestId;
+          this.assetInfo = assetInfo;
           this.isLoading = false;
       })
       .catch(err=> { 
@@ -343,6 +351,14 @@ export default {
           this.attributions = [];
           this.modelId = null;
           })
+    },
+    downloadGeoRef(){
+      const blob = new Blob([JSON.stringify(this.assetInfo,null, '\t')], { type: 'application/json' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = this.modelId + ".json"
+        link.click()
+        URL.revokeObjectURL(link.href)
     },
     modelDownload(){
       this.$ga.event({
