@@ -2,6 +2,13 @@
   <div class="home">
     <section class="section">
     <div class="container">
+       <b-message title="We need funding" type="is-info" aria-close-label="Close message">
+            We need your help to get this site running. This is not a business site, this is a site made for anybody, unique, that should exist and remain free. That's why I'm asking for your help. Any donation counts. Only 100$ a month are required to get this site up and running. This is a lot for an individual, but litlle for a collective. Let's join our forces : if every user had donated last year 0.17 $ the costs would be covered !
+            <br/>
+            Thank you !
+            <br/>
+            <br/><i>Xavier Fischer, ElevationAPI</i>
+        </b-message>
       <h1 class="title">Welcome to DEM.Net Elevation API!</h1>
       <div class="columns">
         <div class="column">
@@ -14,6 +21,7 @@
         </div>
         
         <div class="column">
+          
         <section>
 
         <h2 class="subtitle">
