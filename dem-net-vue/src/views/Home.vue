@@ -3,11 +3,28 @@
     <section class="section">
     <div class="container">
        <b-message title="We need funding" type="is-info" aria-close-label="Close message">
-            We need your help to get this site running. This is not a business site, this is a site made for anybody, unique, that should exist and remain free. That's why I'm asking for your help. Any donation counts. Only 100$ a month are required to get this site up and running. This is a lot for an individual, but litlle for a collective. Let's join our forces : if every user had donated last year 0.17 $ the costs would be covered !
+            We need your help to get this site running. This is not a business site, this is a site made for anybody, unique, that should exist and remain free. That's why I'm asking for your help. Any donation counts. Only 100$ a month are required to get this site up and running. This is a lot for an individual, but little for a collective. Let's join our forces : if every user had donated last year 0.17 $ the costs would be covered !
             <br/>
-            Thank you !
             <br/>
-            <br/><i>Xavier Fischer, ElevationAPI</i>
+            Here are the sponsoring / donation links :
+            <br/>
+            <br/>
+            <div class="columns">
+              <div class="column">
+                  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8F428QPSP9W5E&source=url">
+                    <img src="https://raw.githubusercontent.com/dem-net/Resources/master/images/ext/paypal-donate.png" alt="Donate with PayPal button" width="150" height="64">
+                  </a>
+              </div>
+              <div class="column">
+                              <a href="https://www.patreon.com/bePatron?u=24134737">
+                                <img src="https://raw.githubusercontent.com/dem-net/Resources/master/images/ext/become_a_patron_button@2x.png" alt="Become a Patron" width="150" height="64">
+                              </a>
+              </div>
+              <div class="column">
+              <a href="https://github.com/sponsors/xfischer">GitHub sponsoring</a>
+              </div>
+            </div>
+            Thank you !  - <i>Xavier Fischer, ElevationAPI</i>
         </b-message>
       <h1 class="title">Welcome to DEM.Net Elevation API!</h1>
       <div class="columns">
