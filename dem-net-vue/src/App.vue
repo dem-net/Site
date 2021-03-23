@@ -72,7 +72,7 @@
       <!-- Hero content: will be in the middle -->
       <div class="hero-body">
         <div class="container has-text-centered"> 
-         <b-message type="is-warning"  title="Sketchfab export issues"
+         <!-- <b-message type="is-warning"  title="Sketchfab export issues"
             size="is-small" 
             has-icon
             closable
@@ -80,7 +80,7 @@
             :duration="10000"
             icon-pack="fas">
             Sketchfab export is experiencing some issues (blank texture), please apologize for the inconvenience. This will be fixed soon !
-        </b-message>
+        </b-message> -->
           <b-notification v-if="initErrors" :active.sync="initErrors"
             type="is-warning"
             has-icon
