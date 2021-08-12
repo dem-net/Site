@@ -43,11 +43,11 @@
                         <i class="fab fa-github"></i>
                       </span>
                     </a>
-                    <a class="button" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI" target="_blank" rel="noopener noreferrer" title="Slack">
+                    <!-- <a class="button" href="https://join.slack.com/t/dem-net/shared_invite/enQtNjAxOTE3NTcwMDY1LWJjZDRmMzAxZDI3YzM3MWVjMzAzNjY4NDFkMWM3MmViN2E1YzI5OWM2ZDEyYmZlNWUyYmYzMjJlYThlNTU3ZWI" target="_blank" rel="noopener noreferrer" title="Slack">
                       <span class="icon is-small">
                         <i class="fab fa-slack"></i>
                       </span>
-                    </a>
+                    </a> -->
                     <a class="button" href="https://discord.gg/AKSWNSX" target="_blank" rel="noopener noreferrer" title="Discord">
                       <span class="icon is-small">
                         <i class="fab fa-discord"></i>

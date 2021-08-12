@@ -2,12 +2,12 @@
   <div class="home">
     <section class="section">
     <div class="container">
+      <h1 class="title">Welcome to DEM.Net Elevation API!</h1>
        <b-message title="We need funding" type="is-info" aria-close-label="Close message">
+         <small>
             We need your help to get this site running. This is not a business site, this is a site made for anybody, unique, that should exist and remain free. That's why I'm asking for your help. Any donation counts. Only 100$ a month are required to get this site up and running. This is a lot for an individual, but little for a collective. Let's join our forces : if every user had donated last year 0.17 $ the costs would be covered !
             <br/>
-            <br/>
             Here are the sponsoring / donation links :
-            <br/>
             <br/>
             <div class="columns">
               <div class="column">
@@ -24,9 +24,9 @@
               <a href="https://github.com/sponsors/xfischer">GitHub sponsoring</a>
               </div>
             </div>
-            Thank you !  - <i>Xavier Fischer, ElevationAPI</i>
+            <span>Thank you !  - <i>Xavier Fischer, ElevationAPI</i></span>
+         </small>
         </b-message>
-      <h1 class="title">Welcome to DEM.Net Elevation API!</h1>
       <div class="columns">
         <div class="column">
           <!--<figure class="image is-6by3">
@@ -74,6 +74,8 @@
           </div>
         </div>
         <b-message title="News" type="is-info" size="is-small" icon-pack="fas" has-icon>
+            Aug 12 2021: - Mesh reduction, datasets deprecation, IGN (France) support
+            <br/>
             Nov 01 2020: - Model adornments (scale and north)
             <br/>
             Apr 19 2020: - SketchFab export
@@ -84,8 +86,6 @@
             Mar 07 2020: - OSM models / NASADEM dataset / search available in map
             <br/>
             Feb 22 2020: - OSM buildings and ski resorts added (experimental)
-            <br/>
-            Jan 26 2020: - GEBCO 2019 dataset added (global bathymetry 240 m)
         </b-message>
         </h2>
         </section>

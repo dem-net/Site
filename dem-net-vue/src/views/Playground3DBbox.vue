@@ -27,6 +27,18 @@
                       <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
                       </b-field>
                   </div>
+                </div>                
+                <div class="columns">
+                  <div class="column">
+                    <b-field label="Mesh reduction" message="% of triangles to keep (100% = no reduction, 50% = half triangle count)">
+                    <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="1" :max="100" :step="1" :custom-formatter="val => val + '%'"></b-slider>
+                    </b-field>
+                  </div>
+                  <div class="column">
+                    <b-field label="Z multiplier" message="0 (flat), 1 (normal), 10 (elevation * 10)">
+                      <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
+                    </b-field>
+                  </div>
                 </div>
                 <div class="columns">
                   <!-- Texture -->
@@ -39,23 +51,7 @@
                       @providerSelected="onProviderSelected"
                       @qualitySelected="onQualitySelected"/>
                   </div>
-                  <!-- Z factor -->
-                  <div class="column">
-                    <b-field label="Z multiplier">
-                      <b-slider v-model="requestParams.zFactor" size="is-medium" :min="1" :max="10" :step=".5"></b-slider>
-                    </b-field>
-                  </div>
-                  <!-- TIN-->
-                  <div class="column" v-show="false">
-                    <b-field label="Generate TIN" v-if="this.requestParams.format == 'glTF'">
-                      <b-tooltip label="Decimates the mesh (reduces number of triangles). This is a long operation, be patient."
-                            position="is-bottom" type="is-light"
-                            animated multilined>
-                        <b-switch v-model="requestParams.generateTIN">
-                        </b-switch>
-                      </b-tooltip>
-                    </b-field>
-                  </div>
+                  <!-- Z factor -->                  
                   <!-- adornments -->
                   <div class="column">
                     <b-field label="Add Scale/North">
@@ -195,8 +191,8 @@ export default {
           textureQuality: 2,
           format: "glTF",
           zFactor: 1,
-          generateTIN: false,
-          enableAdornments: true
+          enableAdornments: true,
+          meshReduce: 50
         },
         textureFiles: {
           heightMap: null,
@@ -248,13 +244,13 @@ export default {
       const baseUrl = process.env.VUE_APP_API_BASEURL
       axios.get("/api/model/3d/bbox/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
-                                    + "&generateTIN=" + this.requestParams.generateTIN
                                     + "&textured=" + this.requestParams.textured
                                     + "&imageryProvider=" + this.requestParams.imageryProvider 
                                     + "&textureQuality=" + this.requestParams.textureQuality
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
                                     + "&adornments=" + this.requestParams.enableAdornments
+                                    + "&meshReduceFactor=" + this.requestParams.meshReduce / 100.0
                                     + "&clientConnectionId=" + this.$connectionId
       ).then(result => {
           var assetInfo = result.data.assetInfo;
