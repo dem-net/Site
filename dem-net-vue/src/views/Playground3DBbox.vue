@@ -23,15 +23,15 @@
                   <div class="column">
                     <label class="label">Output format</label>
                     <b-field>
-                      <b-radio-button v-model="requestParams.format" native-value="glTF">Binary glTF</b-radio-button>
-                      <b-radio-button v-model="requestParams.format" native-value="STL">STL</b-radio-button>
+                      <b-radio-button v-model="requestParams.format" native-value="glTF" @input="generateModel(true)">Binary glTF</b-radio-button>
+                      <b-radio-button v-model="requestParams.format" native-value="STL" @input="generateModel(true)">STL</b-radio-button>
                       </b-field>
                   </div>
                 </div>                
                 <div class="columns">
                   <div class="column">
                     <b-field label="Mesh reduction" message="% of triangles to keep (100% = no reduction, 50% = half triangle count)">
-                    <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="1" :max="100" :step="1" :custom-formatter="val => val + '%'"></b-slider>
+                    <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="1" :max="100" :step="1" :custom-formatter="val => val + '%'" @change="generateModel(true)"></b-slider>
                     </b-field>
                   </div>
                   <div class="column">
@@ -44,7 +44,7 @@
                   <!-- Texture -->
                   <div class="column" v-show="showTextureOptions">
                     <b-field label="Use imagery texture">
-                        <b-switch v-model="requestParams.textured">
+                        <b-switch v-model="requestParams.textured" @input="generateModel(true)">
                         </b-switch>
                     </b-field>
                     <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
@@ -54,7 +54,7 @@
                   <!-- Z factor -->                  
                   <!-- adornments -->
                   <div class="column">
-                    <b-field label="Add Scale/North">
+                    <b-field label="Add Scale/North" v-show="this.requestParams.format == 'glTF'">
                         <b-switch v-model="requestParams.enableAdornments">
                         </b-switch>
                     </b-field>
@@ -62,6 +62,9 @@
                 </div>
               </div>
             </div>
+            <b-notification ref="sizeEstimate" :closable="false" :type="this.estimatedModelSize > this.maxModelSize ? 'is-warning' : ''" >
+                    <em><strong>Estimated model size : {{Math.ceil(this.estimatedModelSize  * 10) / 10}} MB (max: {{Math.ceil(this.maxModelSize  * 10) / 10}} MB)</strong></em>
+                </b-notification>
             <b-notification v-show="demErrors" :active.sync="demErrorsActive"
                     type="is-warning"
                     has-icon
@@ -75,7 +78,7 @@
               <!-- Buttons -->
                <div class="buttons is-centered">
                 <!-- Generation -->
-                    <b-button @click="generateModel" :disabled="!requestParams.bbox" icon-pack="fas" icon-left="fas fa-globe-americas">
+                    <b-button @click="generateModel(false)" :disabled="!requestParams.bbox" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Generate 3D model
                     </b-button>
                 <!-- Textures -->
@@ -125,7 +128,6 @@
                         <span>SketchFab export...</span>
                     </a>
               </div>
-
               <p>
                 <b-progress v-show="serverProgress" :value="serverProgressPercent" size="is-large" :type="progressType" show-value>
                     <span style="color: black">{{ serverProgress }}</span>
@@ -163,6 +165,7 @@ import DatasetSelector from '../components/DatasetSelector'
 import ImagerySelector from '../components/ImagerySelector'
 import Attributions from '../components/Attributions'
 import MapRectangle from '../components/MapRectangle'
+var loadingComponent = null
 
 export default {
   name: 'Playground3DBbox',
@@ -183,6 +186,7 @@ export default {
         glbFile: null,
         demErrors: null, demErrorsActive: true,
         serverProgress: null, serverProgressPercent: 0,
+        estimatedModelSize: 0, maxModelSize: 0,
         requestParams: {
           bbox: null,
           dataSet: "SRTM_GL3",
@@ -202,6 +206,7 @@ export default {
         attributions: [],
         assetInfo: null,
         modelId: null,
+        timeout: null
     }
   },
   computed: {
@@ -220,27 +225,55 @@ export default {
   },
   methods: 
   {
+    loadSizeEstimate() {
+      loadingComponent = this.$buefy.loading.open({
+                    container: this.$refs.sizeEstimate.$el
+                })
+    },
+    sizeEstimateLoaded() {
+      loadingComponent.close();
+    },
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
+      this.estimateSize();
     },
     onQualitySelected(quality) {
       this.requestParams.textureQuality = quality;
+      this.estimateSize();
     },
     onProviderSelected(providerName) {
       this.requestParams.imageryProvider = providerName;
     },
     setBbox(bbox) {
       this.requestParams.bbox = bbox;
+      
+
+       if (this.timeout) clearTimeout(this.timeout)
+          this.timeout = setTimeout(() => {
+            this.generateModel(true);
+          }, 300)
     },
-    generateModel(){
-      this.isLoading = true;
-      this.$ga.event({
-        eventCategory: 'model',
-        eventAction: 'generate',
-        eventLabel: 'bbox-' + this.requestParams.format
-      })
-      this.demErrors = null;
-      this.serverProgress = "Sending request...";  
+    estimateSize() {
+      if (this.requestParams.bbox)
+      {
+        this.generateModel(true);
+      }
+    },
+    generateModel(onlyEstimateSize){
+      if (onlyEstimateSize) {
+        this.loadSizeEstimate();
+        this.isLoading = false;
+        this.demErrors = null;
+      } else {
+        this.isLoading = true;
+        this.$ga.event({
+          eventCategory: 'model',
+          eventAction: 'generate',
+          eventLabel: 'bbox-' + this.requestParams.format
+        })
+        this.demErrors = null;
+        this.serverProgress = "Sending request...";
+      }      
       const baseUrl = process.env.VUE_APP_API_BASEURL
       axios.get("/api/model/3d/bbox/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
@@ -252,17 +285,30 @@ export default {
                                     + "&adornments=" + this.requestParams.enableAdornments
                                     + "&meshReduceFactor=" + this.requestParams.meshReduce / 100.0
                                     + "&clientConnectionId=" + this.$connectionId
+                                    + "&onlyEstimateSize=" + onlyEstimateSize
       ).then(result => {
-          var assetInfo = result.data.assetInfo;
-          this.glbFile = baseUrl + assetInfo.modelFile;
-          this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
-          this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
-          this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
-          this.attributions = assetInfo.attributions; 
-          this.demErrors = null; this.demErrorsActive = false;
-          this.modelId = assetInfo.requestId;  
-          this.assetInfo = assetInfo;
-          this.isLoading = false;  
+          if (onlyEstimateSize) {            
+            this.isLoading = false;
+            this.estimatedModelSize = result.data.estimatedModelFileSizeMB;
+            this.maxModelSize = result.data.maximumAllowedFileSizeMB;
+            this.serverProgress = "";  
+            this.demErrorsActive = false;
+            this.attributions = [];
+            this.modelId = null;    
+            this.sizeEstimateLoaded();        
+          } else
+          {
+            var assetInfo = result.data.assetInfo;
+            this.glbFile = baseUrl + assetInfo.modelFile;
+            this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
+            this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
+            this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
+            this.attributions = assetInfo.attributions; 
+            this.demErrors = null; this.demErrorsActive = false;
+            this.modelId = assetInfo.requestId;  
+            this.assetInfo = assetInfo;
+            this.isLoading = false;  
+          }
 
       })
       .catch(err=> { 
@@ -272,6 +318,7 @@ export default {
           this.demErrorsActive = true;
           this.attributions = [];
           this.modelId = null;
+          this.sizeEstimateLoaded();
           })
     },
     downloadGeoRef(){

@@ -36,7 +36,7 @@
                     <div class="columns">
                       <div class="column">
                         <b-field label="Mesh reduction" message="% of triangles to keep (100% = no reduction, 50% = half triangle count)">
-                        <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="1" :max="100" :step="1" :custom-formatter="val => val + '%'"></b-slider>
+                        <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="1" :max="100" :step="1" :custom-formatter="val => val + '%'" @change="generateModel(true)"></b-slider>
                         </b-field>
                       </div>
                       <div class="column">
@@ -49,7 +49,7 @@
                       <!-- Texture -->
                       <div class="column" v-show="showTextureOptions">
                         <b-field label="Use imagery texture">
-                            <b-switch v-model="requestParams.textured">
+                            <b-switch v-model="requestParams.textured" @input="generateModel(true)">
                             </b-switch>
                         </b-field>
                         <ImagerySelector v-show="showTextureOptionsProvider" :provider="requestParams.imageryProvider" 
@@ -81,6 +81,20 @@
                             </b-switch>
                               </b-tooltip>
                             </b-field>
+                        </div>
+                      </div>
+                      <div class="columns">
+                        <div class="column">
+                            <b-field label="Load roads">
+                              <b-switch v-model="requestParams.osmHighways">
+                            </b-switch>
+                            </b-field>
+                        </div>
+                        <div class="column"></div>
+                        <div class="column">
+                          <b-field label="Roads color" v-if="requestParams.osmHighways">
+                            <swatches v-model="requestParams.highwaysColor" colors="text-advanced" popover-to="left"></swatches>
+                          </b-field>
                         </div>
                       </div>
                       <div class="columns">
@@ -121,6 +135,9 @@
                
               </div>
             </div>
+            <b-notification ref="sizeEstimate" :closable="false" :type="this.estimatedModelSize > this.maxModelSize ? 'is-warning' : ''" >
+                    <em><strong>Estimated model size : {{Math.ceil(this.estimatedModelSize  * 10) / 10}} MB (max: {{Math.ceil(this.maxModelSize  * 10) / 10}} MB)</strong> (OSM data not included)</em>
+                </b-notification>
             <b-notification v-show="demErrors" :active.sync="demErrorsActive"
                     type="is-warning"
                     has-icon
@@ -134,7 +151,7 @@
               <!-- Buttons -->
               <div class="buttons is-centered">
                 <!-- Generation -->
-                    <b-button @click="generateModel" :disabled="!requestParams.bbox" icon-pack="fas" icon-left="fas fa-globe-americas">
+                    <b-button @click="generateModel(false)" :disabled="!requestParams.bbox" icon-pack="fas" icon-left="fas fa-globe-americas">
                       Generate 3D model
                     </b-button>
                 <!-- Textures -->
@@ -226,6 +243,7 @@ import Swatches from 'vue-swatches'
 import Attributions from '../components/Attributions'
 // Import the styles too, globally
 import "vue-swatches/dist/vue-swatches.min.css"
+var loadingComponent = null
 
 export default {
   name: 'Playground3DOsm',
@@ -246,6 +264,7 @@ export default {
         glbFile: null,
         demErrors: null, demErrorsActive: true,
         serverProgress: null, serverProgressPercent: 0,
+        estimatedModelSize: 0, maxModelSize: 0,
         requestParams: {
           bbox: null,
           dataSet: "SRTM_GL3",
@@ -255,12 +274,15 @@ export default {
           format: "glTF",
           zFactor: 1,
           osmBuildings: true,
+          osmHighways: true,
           useOsmBuildingsColor: false,
           osmPistesSki: false,
-          buildingsColor: '#945200',
+          buildingsColor: '#DCAA86',
+          highwaysColor: '#DDDDDD',
           osmOnly: false,
           enableAdornments: true,
-          meshReduce: 50
+          meshReduce: 50,
+          onlyEstimateSize: false
         },
         textureFiles: {
           heightMap: null,
@@ -269,7 +291,8 @@ export default {
         },
         attributions: [],
         assetInfo: null,
-        modelId: null
+        modelId: null,
+        timeout: null
     }
   },
   computed: {
@@ -288,27 +311,55 @@ export default {
   },
   methods: 
   {
+    loadSizeEstimate() {
+      loadingComponent = this.$buefy.loading.open({
+                    container: this.$refs.sizeEstimate.$el
+                })
+    },
+    sizeEstimateLoaded() {
+      loadingComponent.close();
+    },
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
+      this.estimateSize();
     },
     onQualitySelected(quality) {
       this.requestParams.textureQuality = quality;
+      this.estimateSize();
     },
     onProviderSelected(providerName) {
       this.requestParams.imageryProvider = providerName;
+      this.estimateSize();
     },
     setBbox(bbox) {
       this.requestParams.bbox = bbox;
+
+      if (this.timeout) clearTimeout(this.timeout)
+          this.timeout = setTimeout(() => {
+            this.generateModel(true);
+          }, 300)
     },
-    generateModel(){
-      this.isLoading = true;
-      this.$ga.event({
-        eventCategory: 'model-osm',
-        eventAction: 'generate',
-        eventLabel: 'bbox-osm-' + this.requestParams.format
-      })
-      this.demErrors = null;
-      this.serverProgress = "Sending request...";  
+    estimateSize() {
+      if (this.requestParams.bbox)
+      {
+        this.generateModel(true);
+      }
+    },
+    generateModel(onlyEstimateSize){
+      if (onlyEstimateSize) {
+        this.loadSizeEstimate();
+        this.isLoading = false;
+        this.demErrors = null;
+      } else {
+        this.isLoading = true;
+        this.$ga.event({
+          eventCategory: 'model-osm',
+          eventAction: 'generate',
+          eventLabel: 'bbox-osm-' + this.requestParams.format
+        })
+        this.demErrors = null;
+        this.serverProgress = "Sending request...";  
+      }
       const baseUrl = process.env.VUE_APP_API_BASEURL
       axios.get("/api/model/3d/bbox/osm/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
@@ -317,26 +368,40 @@ export default {
                                     + "&textureQuality=" + this.requestParams.textureQuality
                                     + "&format=" + this.requestParams.format
                                     + "&zFactor=" + this.requestParams.zFactor
+                                    + "&withHighways=" + this.requestParams.osmHighways
+                                    + "&highwaysColor=" + encodeURIComponent(this.requestParams.highwaysColor)
                                     + "&withBuildings=" + this.requestParams.osmBuildings
                                     + "&withBuildingsColors=" + this.requestParams.useOsmBuildingsColor
                                     + "&buildingsColor=" + encodeURIComponent(this.requestParams.buildingsColor)
                                     + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&withTerrain=" + !this.requestParams.osmOnly
-                                    + "&withSkiPistes=" + this.requestParams.osmPistesSki
                                     + "&adornments=" + this.requestParams.enableAdornments
                                     + "&meshReduceFactor=" + this.requestParams.meshReduce / 100.0
                                     + "&clientConnectionId=" + this.$connectionId
+                                    + "&onlyEstimateSize=" + onlyEstimateSize
       ).then(result => {
-          var assetInfo = result.data.assetInfo;
-          this.glbFile = baseUrl + assetInfo.modelFile;
-          this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
-          this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
-          this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
-          this.attributions = assetInfo.attributions; 
-          this.demErrors = null; this.demErrorsActive = false;
-          this.modelId = assetInfo.requestId;
-          this.assetInfo = assetInfo;
-          this.isLoading = false;
+        if (onlyEstimateSize) {            
+            this.isLoading = false;
+            this.estimatedModelSize = result.data.estimatedModelFileSizeMB;
+            this.maxModelSize = result.data.maximumAllowedFileSizeMB;
+            this.serverProgress = "";  
+            this.demErrorsActive = false;
+            this.attributions = [];
+            this.modelId = null;    
+            this.sizeEstimateLoaded();
+          } else
+          {
+            var assetInfo = result.data.assetInfo;
+            this.glbFile = baseUrl + assetInfo.modelFile;
+            this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
+            this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
+            this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
+            this.attributions = assetInfo.attributions; 
+            this.demErrors = null; this.demErrorsActive = false;
+            this.modelId = assetInfo.requestId;
+            this.assetInfo = assetInfo;
+            this.isLoading = false;
+          }
       })
       .catch(err=> { 
           this.isLoading = false;
@@ -345,6 +410,7 @@ export default {
           this.demErrorsActive = true;
           this.attributions = [];
           this.modelId = null;
+          this.sizeEstimateLoaded();
           })
     },
     downloadGeoRef(){
