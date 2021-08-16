@@ -226,12 +226,13 @@ export default {
   methods: 
   {
     loadSizeEstimate() {
+      this.sizeEstimateLoaded();
       loadingComponent = this.$buefy.loading.open({
                     container: this.$refs.sizeEstimate.$el
                 })
     },
     sizeEstimateLoaded() {
-      loadingComponent.close();
+      if (loadingComponent) loadingComponent.close();
     },
     onDatasetSelected(dstName) {
       this.requestParams.dataSet = dstName;
@@ -308,6 +309,7 @@ export default {
             this.modelId = assetInfo.requestId;  
             this.assetInfo = assetInfo;
             this.isLoading = false;  
+            this.sizeEstimateLoaded();  
           }
 
       })
