@@ -31,7 +31,7 @@
                 <div class="columns">
                   <div class="column">
                     <b-field label="Mesh reduction" message="% of triangles to keep (100% = no reduction, 50% = half triangle count)">
-                    <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="1" :max="100" :step="1" :custom-formatter="val => val + '%'" @change="generateModel(true)"></b-slider>
+                    <b-slider v-model="requestParams.meshReduce" size="is-medium" :min="10" :max="100" :step="1" :custom-formatter="val => val + '%'" @change="generateModel(true)"></b-slider>
                     </b-field>
                   </div>
                   <div class="column">
