@@ -62,8 +62,8 @@
                 </div>
               </div>
             </div>
-            <b-notification ref="sizeEstimate" :closable="false" :type="this.estimatedModelSize > this.maxModelSize ? 'is-warning' : ''" >
-                    <em><strong>Estimated model size : {{Math.ceil(this.estimatedModelSize  * 10) / 10}} MB (max: {{Math.ceil(this.maxModelSize  * 10) / 10}} MB)</strong></em>
+            <b-notification ref="sizeEstimate" :closable="false" :type="this.estimatedModelFileSizeAfterReduce > this.maxModelSize ? 'is-warning' : ''" >
+                    <em><strong>Estimated model size : {{Math.ceil(this.estimatedModelFileSizeAfterReduce  * 10) / 10}} MB (max: {{Math.ceil(this.maxModelSize * 10) / 10}} MB)</strong> - raw model: {{Math.ceil(this.estimatedModelSize  * 10) / 10}} MB</em>
                 </b-notification>
             <b-notification v-show="demErrors" :active.sync="demErrorsActive"
                     type="is-warning"
@@ -186,7 +186,7 @@ export default {
         glbFile: null,
         demErrors: null, demErrorsActive: true,
         serverProgress: null, serverProgressPercent: 0,
-        estimatedModelSize: 0, maxModelSize: 0,
+        estimatedModelSize: 0, estimatedModelFileSizeAfterReduce: 0, maxModelSize: 0,
         requestParams: {
           bbox: null,
           dataSet: "SRTM_GL3",
@@ -291,6 +291,7 @@ export default {
           if (onlyEstimateSize) {            
             this.isLoading = false;
             this.estimatedModelSize = result.data.estimatedModelFileSizeMB;
+            this.estimatedModelFileSizeAfterReduce = result.data.estimatedModelFileSizeAfterReduceMB;
             this.maxModelSize = result.data.maximumAllowedFileSizeMB;
             this.serverProgress = "";  
             this.demErrorsActive = false;
