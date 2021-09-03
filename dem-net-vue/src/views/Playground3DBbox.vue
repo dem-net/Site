@@ -113,10 +113,24 @@
                             </b-dropdown-item>
                         </b-dropdown>
                 <!-- Download -->
-                    <b-button icon-pack="fas" icon-left="fas fa-download" :disabled="!this.glbFile" tag="a" :href="this.glbFile" @click="modelDownload">
-                        Download model
-                      </b-button>
-
+                  <b-dropdown hoverable aria-role="list"> <!-- :disabled="!this.glbFile"> -->
+                            <button class="button" slot="trigger">
+                                <b-icon pack="fas" icon="download"></b-icon>
+                                <span>Download model</span>
+                            </button>
+                            <b-dropdown-item aria-role="menuitem" @click="modelDownload()">
+                                <div>
+                                    <b-icon pack="fas" icon="download"></b-icon>
+                                    GLB file
+                                </div>
+                            </b-dropdown-item>
+                            <b-dropdown-item has-link aria-role="menuitem" @click="modelExportObj()">
+                                <a :href="this.baseUrl + '/api/model/export/obj?modelId=' + this.modelId" target="_blank" rel="noopener noreferrer">
+                                    <b-icon pack="fas" icon="download"></b-icon>
+                                    OBJ file
+                                </a>
+                            </b-dropdown-item>
+                        </b-dropdown>
                 <!-- Attributions -->
                     <b-button icon-pack="fas" icon-left="fas fa-copyright" :disabled="!this.glbFile" tag="a" href="#attributions">
                         Attributions
@@ -173,7 +187,8 @@ export default {
   mounted() {
     // Listen to server side progress events
     this.$elevationHub.$on('server-progress', this.onServerProgress);
-    this.$elevationHub.generatorOpened()
+    this.$elevationHub.generatorOpened();
+    this.baseUrl = process.env.VUE_APP_API_BASEURL
   },
   beforeDestroy() {
     this.$elevationHub.$off('server-progress', this.onServerProgress);
@@ -182,6 +197,7 @@ export default {
   data() {
     return {
         isLoading: false,
+        baseUrl: null,
         isLoadingFullPage: false,
         glbFile: null,
         demErrors: null, demErrorsActive: true,
@@ -206,7 +222,7 @@ export default {
         attributions: [],
         assetInfo: null,
         modelId: null,
-        timeout: null
+        timeout: null,
     }
   },
   computed: {
@@ -275,7 +291,6 @@ export default {
         this.demErrors = null;
         this.serverProgress = "Sending request...";
       }      
-      const baseUrl = process.env.VUE_APP_API_BASEURL
       axios.get("/api/model/3d/bbox/" + this.requestParams.bbox
                                     + "?dataset=" + this.requestParams.dataSet 
                                     + "&textured=" + this.requestParams.textured
@@ -301,10 +316,10 @@ export default {
           } else
           {
             var assetInfo = result.data.assetInfo;
-            this.glbFile = baseUrl + assetInfo.modelFile;
-            this.textureFiles.heightMap = assetInfo.heightMap ? process.env.VUE_APP_API_BASEURL + assetInfo.heightMap.filePath : null;
-            this.textureFiles.albedo = assetInfo.albedoTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.albedoTexture.filePath : null;
-            this.textureFiles.normalMap = assetInfo.normalMapTexture ? process.env.VUE_APP_API_BASEURL + assetInfo.normalMapTexture.filePath : null;
+            this.glbFile = this.baseUrl + assetInfo.modelFile;
+            this.textureFiles.heightMap = assetInfo.heightMap ? this.baseUrl + assetInfo.heightMap.filePath : null;
+            this.textureFiles.albedo = assetInfo.albedoTexture ? this.baseUrl + assetInfo.albedoTexture.filePath : null;
+            this.textureFiles.normalMap = assetInfo.normalMapTexture ? this.baseUrl + assetInfo.normalMapTexture.filePath : null;
             this.attributions = assetInfo.attributions; 
             this.demErrors = null; this.demErrorsActive = false;
             this.modelId = assetInfo.requestId;  
@@ -337,6 +352,13 @@ export default {
             eventCategory: 'model',
             eventAction: 'download',
             eventLabel: 'bbox'
+          })
+    },
+    modelExportObj(){
+      this.$ga.event({
+            eventCategory: 'model',
+            eventAction: 'export',
+            eventLabel: 'obj'
           })
     },
     onServerProgress({message, percent}) {
